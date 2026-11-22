@@ -1,13 +1,13 @@
 {
- "version": "1.0.0",
- "code": 1,
- "apk": "TV-Bakim-1.0.0.apk",
- "size": 62497,
- "sha256": "2e7b0afd769484cb394a7c5b5b621112596641c40aa9baef820c270a274f86e3",
- "date": "2026-11-22T13:38:33Z",
+ "version": "1.0.1",
+ "code": 2,
+ "apk": "TV-Bakim-1.0.1.apk",
+ "size": 66569,
+ "sha256": "e56bfddd70a261a9cb6a73a3d883879108e99d651cdc8e8831c63eb68f9c1f70",
+ "date": "2026-11-22T14:39:17Z",
  "notes": {
-  "tr": "İlk sürüm: açılınca bakımı kendiliğinden yapar (RAM, önbellek, gereksiz dosyalar, hızlandırma); Tam Yetki ile her şey otomatik; Türkçe/English/العربية.",
-  "en": "First version: runs maintenance automatically on start (RAM, caches, junk files, speed-up); with Full Access everything is automatic; Turkish/English/Arabic.",
-  "ar": "الإصدار الأول: يجري الصيانة تلقائياً عند الفتح (الذاكرة، الذاكرة المؤقتة، الملفات غير الضرورية، التسريع)؛ ومع الصلاحية الكاملة كل شيء تلقائي؛ تركي/إنجليزي/عربي."
+  "tr": "Arka Plan Kısıtlama (kendiliğinden başlayan uygulamalar RAM yemez), Depolama Analizi (büyük dosyalar ve bırakılmış .apk'lar), Derin Optimizasyona TRIM eklendi, Tam Yetki açılışta kendiliğinden alınır, animasyonları tamamen kapatma seçeneği.",
+  "en": "Background Restriction (self-starting apps no longer eat RAM), Storage Analysis (large files and leftover .apk files), TRIM added to Deep Optimization, Full Access is obtained automatically at start, option to turn animations off completely.",
+  "ar": "تقييد الخلفية (التطبيقات التي تبدأ تلقائياً لا تستهلك الذاكرة)، تحليل التخزين (الملفات الكبيرة وملفات .apk المتروكة)، إضافة TRIM إلى التحسين العميق، الحصول على الصلاحية الكاملة تلقائياً عند البدء، خيار إيقاف الحركة تماماً."
  }
 }

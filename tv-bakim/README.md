@@ -15,6 +15,16 @@ uygulama dış önbellekleri, boş klasörler) temizler, menü animasyonlarını
 `tv-bakim/guncelleme/surum.json` + `TV-Bakim-<sürüm>.apk`. Uygulama açılışta bakar; "Güncelle" APK'yı yüzde, MB ve hızla
 indirir, sha256 ile doğrular ve kurulum penceresini açar.
 
+## Sürüm geçmişi
+- **1.0.1:** Arka Plan Kısıtlama (kendiliğinden başlayan uygulamaların arka planı kesilir, istisna listesi), Depolama Analizi
+  (klasör boyutları, 200 MB+ dosyalar, bırakılmış .apk'ları tek tuşla silme), Derin Optimizasyona `sm fstrim` (TRIM),
+  açılışta kendiliğinden Tam Yetki (ağ hata ayıklaması açıksa), animasyonları tamamen kapatma seçeneği, uygulama "Durdur".
+- **1.0.0:** İlk sürüm.
+
 ## Yeni sürüm
-`ANAHTAR_KLASORU=<C:\Claude Programlarım\_Anahtarlar\TVBakim kopyası> araclar/derle.sh 1.0.1 2 "tr notu" "en note" "ar"`
-(versionCode her sürümde artar) → `git add -A && git commit && git push`.
+Bulutta (aapt2/Gradle olmadan): `ANAHTAR_KLASORU=<tvbakim.jks + sifre.txt klasörü> ARACLAR=<android-all.jar, dx.jar, uber.jar klasörü>
+python3 araclar/paketle.py 1.0.2 3 "tr notu" "en note" "ar"` — önceki APK'daki ikili manifest sürüm alanları yamalanır
+(sürüm adı 5 karakter kalmalı: 1.0.9'dan sonra 1.1.0), `www` ve Java yeniden paketlenir, uber-apk-signer ile v1+v2+v3 imzalanır.
+Araçlar: Maven Central `org.robolectric:android-all:14-robolectric-10818077`, `com.jakewharton.android.repackaged:dalvik-dx:16.0.1`;
+GitHub `patrickfav/uber-apk-signer` v1.3.0. Manifest/res değişecekse `araclar/derle.sh` (aapt2 ile) kullanılır.
+versionCode her sürümde artar → `git add -A && git commit && git push`.
