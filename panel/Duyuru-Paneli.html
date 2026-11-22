@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="tr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Duyuru Paneli v1.0.0</title>
+<style>
+:root{--ana:#2563eb;--zemin:#f3f5f9;--kart:#fff;--yazi:#1d2433;--soluk:#6b7280;--cizgi:#e3e7ee;--kirmizi:#dc2626;--yesil:#16a34a}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,"Segoe UI",Tahoma,sans-serif;background:var(--zemin);color:var(--yazi)}
+header{display:flex;align-items:center;gap:12px;padding:12px 20px;background:#1e293b;color:#fff;position:sticky;top:0;z-index:5}
+header h1{font-size:18px;margin:0;flex:1}header select,header button{border:0;border-radius:7px;padding:6px 10px;font-size:13px}
+main{max-width:1180px;margin:0 auto;padding:20px;display:grid;grid-template-columns:1.1fr .9fr;gap:20px}
+@media(max-width:900px){main{grid-template-columns:1fr}}
+.kart{background:var(--kart);border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);padding:18px}
+.kart h2{margin:0 0 12px;font-size:16px}
+label{display:block;font-size:13px;color:var(--soluk);margin:10px 0 4px}
+input[type=text],input[type=password],input[type=date],textarea,select.g{width:100%;border:1px solid var(--cizgi);border-radius:8px;padding:8px 10px;font:inherit;font-size:14px;background:#fff}
+textarea{min-height:80px;resize:vertical}
+.dil3{display:grid;grid-template-columns:1fr;gap:6px}.dil3 .et{font-size:11px;font-weight:600;color:var(--ana)}
+.satir{display:flex;gap:10px;flex-wrap:wrap}.satir>div{flex:1;min-width:140px}
+.uyg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:4px 10px;font-size:13.5px;margin-top:6px}
+.uyg label{color:var(--yazi);margin:0;display:flex;gap:6px;align-items:center}
+button.b{border:0;border-radius:8px;padding:9px 16px;font-size:14px;cursor:pointer;background:#e5e7eb}
+button.ana{background:var(--ana);color:#fff}button.kir{background:var(--kirmizi);color:#fff}
+.alt{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.oge{border:1px solid var(--cizgi);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.oge.pasif{opacity:.5}.oge h4{margin:0 0 4px;font-size:14.5px}.oge .m{font-size:12px;color:var(--soluk)}
+.oge .d{display:flex;gap:6px;margin-top:8px}.oge .d button{font-size:12px;padding:5px 10px}
+.et-on{background:var(--kirmizi);color:#fff;border-radius:5px;font-size:11px;padding:1px 6px;margin-inline-end:5px}
+#durum{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 18px;border-radius:9px;font-size:14px;display:none;z-index:9}
+.giris{max-width:560px;margin:50px auto}.not{font-size:13px;color:var(--soluk);line-height:1.6}
+a{color:var(--ana)}
+</style>
+</head>
+<body>
+<header>
+  <h1 id="tBaslik">📣 Admin Duyuru Paneli</h1>
+  <select id="arayuzDili"><option value="tr">Türkçe</option><option value="en">English</option><option value="ar">العربية</option></select>
+  <button id="cikis" style="display:none"></button>
+</header>
+
+<div id="girisEkrani" class="kart giris" style="display:none">
+  <h2 id="tGiris"></h2>
+  <p class="not" id="tGirisNot"></p>
+  <p><a id="tokenLink" target="_blank" href="https://github.com/settings/personal-access-tokens/new"></a></p>
+  <label id="tToken"></label>
+  <input type="password" id="token" autocomplete="off">
+  <div class="alt"><button class="b ana" id="girBtn"></button></div>
+</div>
+
+<main id="anaEkran" style="display:none">
+  <section class="kart">
+    <h2 id="tYeni"></h2>
+    <label id="tBas"></label>
+    <div class="dil3">
+      <span class="et">TR</span><input type="text" id="bas_tr">
+      <span class="et">EN</span><input type="text" id="bas_en">
+      <span class="et">AR</span><input type="text" id="bas_ar" dir="rtl">
+    </div>
+    <label id="tMetin"></label>
+    <div class="dil3">
+      <span class="et">TR</span><textarea id="met_tr"></textarea>
+      <span class="et">EN</span><textarea id="met_en"></textarea>
+      <span class="et">AR</span><textarea id="met_ar" dir="rtl"></textarea>
+    </div>
+    <label id="tHedef"></label>
+    <label style="color:var(--yazi);display:flex;gap:6px;align-items:center"><input type="checkbox" id="hepsi" checked> <b id="tHepsi"></b></label>
+    <div class="uyg" id="uygListe"></div>
+    <div class="satir">
+      <div><label id="tOnem"></label><select class="g" id="onem"><option value="normal"></option><option value="onemli"></option></select></div>
+      <div><label id="tLink"></label><input type="text" id="link" placeholder="https://"></div>
+    </div>
+    <div class="satir">
+      <div><label id="tAlt"></label><input type="text" id="altSurum" placeholder="1.0.0"></div>
+      <div><label id="tUst"></label><input type="text" id="ustSurum" placeholder="1.0.4"></div>
+    </div>
+    <div class="satir">
+      <div><label id="tBasl"></label><input type="date" id="baslangic"></div>
+      <div><label id="tBit"></label><input type="date" id="bitis"></div>
+    </div>
+    <label style="color:var(--yazi);display:flex;gap:6px;align-items:center;margin-top:12px"><input type="checkbox" id="gDugme"> <span id="tGDugme"></span></label>
+    <div class="alt">
+      <button class="b" id="temizle"></button>
+      <button class="b" id="onizle"></button>
+      <button class="b ana" id="yayinla"></button>
+    </div>
+  </section>
+  <section class="kart">
+    <h2 id="tListe"></h2>
+    <div id="liste"></div>
+  </section>
+</main>
+<div id="durum"></div>
+
+<script>
+const DEPO = { sahip: 'departures-mil', ad: 'duyurular', dosya: 'duyurular.json', dal: 'main' };
+const UYGULAMALAR = [
+  ['falcon-ofis','Falcon Ofis'],['kitaplik','Kitaplık'],['mahzen','Mahzen'],['bereket-defter','Bereket Defter'],
+  ['organizer','Organizer'],['aile-ajandasi','Ajandam'],['ofis-gunlugu','Ofis Günlüğü'],['sinav-hazirlama','Sınav Hazırlama'],
+  ['cv-maker','CV Maker'],['merkezi-servis','Merkezi Servis'],['baski-hesabi','Baskı Hesabı'],['comm-calc','Comm Calc'],
+  ['kalori-hesaplayici','Kalori Hesaplayıcı'],['desktop-duzen','Desktop Düzen Sabitleyici'],['ing-mufredat','İngilizce Müfredat'],['iha-mufredat','İHA Müfredat']
+];
+const Y = {
+ tr:{baslik:'📣 Admin Duyuru Paneli',cikis:'Çıkış',giris:'GitHub bağlantısı (bir kez)',girisNot:'Duyurular GitHub\'daki "duyurular" deposuna yazılır; programlar oradan okur. Bir kez anahtar (token) oluşturup buraya yapıştırın. Repository access: duyurular → Permissions: Contents = Read and write. Anahtar yalnız bu bilgisayarda saklanır.',tokenLink:'➜ GitHub\'da anahtar oluştur',token:'GitHub anahtarı (token)',gir:'Bağlan',yeni:'Yeni duyuru',bas:'Başlık',metin:'Metin',hedef:'Hangi programlara gitsin?',hepsi:'Bütün programlar',onem:'Önem',normal:'Normal',onemli:'Önemli',link:'Bağlantı (isteğe bağlı)',alt:'Şu sürüm ve üstüne göster (isteğe bağlı)',ust:'Şu sürüm ve altına göster (isteğe bağlı)',basl:'Başlangıç tarihi',bit:'Bitiş tarihi',gDugme:'Duyuruda "Şimdi güncelle" düğmesi olsun',temizle:'Temizle',onizle:'Önizle',yayinla:'Yayınla',guncelle:'Güncelle',liste:'Yayındaki duyurular',duzenle:'Düzenle',pasif:'Durdur',aktif:'Yeniden aç',sil:'Sil',silSor:'Bu duyuru silinsin mi?',bos:'Henüz duyuru yok.',ok:'Yayınlandı ✓ (programlara birkaç dakika içinde ulaşır)',hata:'Hata: ',gerek:'En az Türkçe başlık ve metin yazın.',tumu:'Bütün programlar',durdu:'durduruldu',yukl:'Yükleniyor…'},
+ en:{baslik:'📣 Admin Announcement Panel',cikis:'Sign out',giris:'GitHub connection (once)',girisNot:'Announcements are written to the "duyurular" repository on GitHub; the programs read them from there. Create a token once and paste it here. Repository access: duyurular → Permissions: Contents = Read and write. The token is kept on this computer only.',tokenLink:'➜ Create a token on GitHub',token:'GitHub token',gir:'Connect',yeni:'New announcement',bas:'Title',metin:'Text',hedef:'Which programs?',hepsi:'All programs',onem:'Priority',normal:'Normal',onemli:'Important',link:'Link (optional)',alt:'Show to this version and newer (optional)',ust:'Show to this version and older (optional)',basl:'Start date',bit:'End date',gDugme:'Add an "Update now" button',temizle:'Clear',onizle:'Preview',yayinla:'Publish',guncelle:'Update',liste:'Published announcements',duzenle:'Edit',pasif:'Pause',aktif:'Resume',sil:'Delete',silSor:'Delete this announcement?',bos:'No announcements yet.',ok:'Published ✓ (reaches programs within minutes)',hata:'Error: ',gerek:'Write at least the Turkish title and text.',tumu:'All programs',durdu:'paused',yukl:'Loading…'},
+ ar:{baslik:'📣 لوحة إعلانات المدير',cikis:'خروج',giris:'الاتصال بـ GitHub (مرة واحدة)',girisNot:'تُكتب الإعلانات في مستودع "duyurular" على GitHub وتقرؤها البرامج من هناك. أنشئ رمزاً مرة واحدة والصقه هنا. صلاحية المستودع: duyurular ← Contents = Read and write. يُحفظ الرمز على هذا الحاسوب فقط.',tokenLink:'➜ إنشاء رمز على GitHub',token:'رمز GitHub',gir:'اتصال',yeni:'إعلان جديد',bas:'العنوان',metin:'النص',hedef:'إلى أي البرامج؟',hepsi:'جميع البرامج',onem:'الأهمية',normal:'عادي',onemli:'مهم',link:'رابط (اختياري)',alt:'اعرضه لهذا الإصدار وما بعده (اختياري)',ust:'اعرضه لهذا الإصدار وما قبله (اختياري)',basl:'تاريخ البدء',bit:'تاريخ الانتهاء',gDugme:'إضافة زر "حدّث الآن"',temizle:'مسح',onizle:'معاينة',yayinla:'نشر',guncelle:'تحديث',liste:'الإعلانات المنشورة',duzenle:'تعديل',pasif:'إيقاف',aktif:'استئناف',sil:'حذف',silSor:'هل تريد حذف هذا الإعلان؟',bos:'لا توجد إعلانات بعد.',ok:'تم النشر ✓ (يصل إلى البرامج خلال دقائق)',hata:'خطأ: ',gerek:'اكتب العنوان والنص بالتركية على الأقل.',tumu:'جميع البرامج',durdu:'متوقف',yukl:'جارٍ التحميل…'}
+};
+const $ = id => document.getElementById(id);
+let dil = localStorage.getItem('panel_dil') || 'tr', veri = { surum: 1, duyurular: [] }, sha = null, duzenId = null;
+const t = k => Y[dil][k];
+const kac = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function yazilar() {
+  document.documentElement.lang = dil; document.documentElement.dir = dil === 'ar' ? 'rtl' : 'ltr';
+  $('arayuzDili').value = dil;
+  const m = { tBaslik:'baslik',cikis:'cikis',tGiris:'giris',tGirisNot:'girisNot',tokenLink:'tokenLink',tToken:'token',girBtn:'gir',tYeni:'yeni',tBas:'bas',tMetin:'metin',tHedef:'hedef',tHepsi:'hepsi',tOnem:'onem',tLink:'link',tAlt:'alt',tUst:'ust',tBasl:'basl',tBit:'bit',tGDugme:'gDugme',temizle:'temizle',onizle:'onizle',tListe:'liste' };
+  for (const [id, k] of Object.entries(m)) $(id).textContent = t(k);
+  $('yayinla').textContent = duzenId ? t('guncelle') : t('yayinla');
+  $('onem').options[0].textContent = t('normal'); $('onem').options[1].textContent = t('onemli');
+  ciz();
+}
+function durum(s, sure = 3500) { const d = $('durum'); d.textContent = s; d.style.display = 'block'; clearTimeout(durum.z); durum.z = setTimeout(() => d.style.display = 'none', sure); }
+
+function uygCiz() {
+  $('uygListe').innerHTML = UYGULAMALAR.map(([id, ad]) => `<label><input type="checkbox" class="uc" value="${id}" disabled> ${kac(ad)}</label>`).join('');
+}
+$('hepsi').onchange = () => document.querySelectorAll('.uc').forEach(c => { c.disabled = $('hepsi').checked; if ($('hepsi').checked) c.checked = false; });
+
+const tok = () => localStorage.getItem('panel_token') || '';
+async function gh(yol, ayar = {}) {
+  const r = await fetch('https://api.github.com/repos/' + DEPO.sahip + '/' + DEPO.ad + yol, {
+    ...ayar, headers: { 'Authorization': 'Bearer ' + tok(), 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', ...(ayar.headers || {}) }
+  });
+  if (!r.ok && r.status !== 404) { let m = r.status + ''; try { m += ' ' + (await r.json()).message; } catch (e) {} throw new Error(m); }
+  return r.status === 404 ? null : r.json();
+}
+const b64e = s => btoa(unescape(encodeURIComponent(s)));
+const b64d = s => decodeURIComponent(escape(atob(s.replace(/\n/g, ''))));
+
+async function yukle() {
+  $('liste').textContent = t('yukl');
+  const j = await gh('/contents/' + DEPO.dosya + '?ref=' + DEPO.dal + '&_=' + Date.now());
+  if (j) { sha = j.sha; veri = JSON.parse(b64d(j.content)); veri.duyurular = veri.duyurular || []; } else { sha = null; veri = { surum: 1, duyurular: [] }; }
+  ciz();
+}
+async function kaydet(not) {
+  veri.guncellendi = new Date().toISOString();
+  const govde = { message: not, content: b64e(JSON.stringify(veri, null, 2) + '\n'), branch: DEPO.dal };
+  if (sha) govde.sha = sha;
+  const j = await gh('/contents/' + DEPO.dosya, { method: 'PUT', body: JSON.stringify(govde) });
+  sha = j.content.sha; ciz();
+}
+
+function formOku() {
+  const s = id => $(id).value.trim();
+  const hedef = $('hepsi').checked ? ['*'] : [...document.querySelectorAll('.uc:checked')].map(c => c.value);
+  const d = {
+    id: duzenId || new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14) + '-' + Math.random().toString(36).slice(2, 6),
+    tarih: duzenId ? (veri.duyurular.find(x => x.id === duzenId) || {}).tarih : new Date().toISOString(),
+    baslik: { tr: s('bas_tr'), en: s('bas_en') || s('bas_tr'), ar: s('bas_ar') || s('bas_tr') },
+    metin: { tr: s('met_tr'), en: s('met_en') || s('met_tr'), ar: s('met_ar') || s('met_tr') },
+    hedef: hedef.length ? hedef : ['*'], onem: $('onem').value, aktif: true
+  };
+  if (s('link')) d.link = s('link');
+  if (s('altSurum')) d.altSurum = s('altSurum');
+  if (s('ustSurum')) d.ustSurum = s('ustSurum');
+  if (s('baslangic')) d.baslangic = s('baslangic') + 'T00:00:00';
+  if (s('bitis')) d.bitis = s('bitis') + 'T23:59:59';
+  if ($('gDugme').checked) d.guncellemeDugmesi = true;
+  return d;
+}
+function formDoldur(d) {
+  duzenId = d ? d.id : null;
+  const v = (id, x) => $(id).value = x || '';
+  v('bas_tr', d?.baslik?.tr); v('bas_en', d?.baslik?.en); v('bas_ar', d?.baslik?.ar);
+  v('met_tr', d?.metin?.tr); v('met_en', d?.metin?.en); v('met_ar', d?.metin?.ar);
+  v('link', d?.link); v('altSurum', d?.altSurum); v('ustSurum', d?.ustSurum);
+  v('baslangic', (d?.baslangic || '').slice(0, 10)); v('bitis', (d?.bitis || '').slice(0, 10));
+  $('onem').value = d?.onem || 'normal'; $('gDugme').checked = !!d?.guncellemeDugmesi;
+  const h = d?.hedef || ['*']; $('hepsi').checked = h.includes('*'); $('hepsi').onchange();
+  document.querySelectorAll('.uc').forEach(c => c.checked = h.includes(c.value));
+  $('yayinla').textContent = duzenId ? t('guncelle') : t('yayinla');
+}
+
+function ciz() {
+  const l = $('liste'); if (!l) return;
+  const ad = id => (UYGULAMALAR.find(u => u[0] === id) || [0, id])[1];
+  const ds = [...veri.duyurular].sort((a, b) => String(b.tarih).localeCompare(String(a.tarih)));
+  l.innerHTML = ds.length ? ds.map(d => `<div class="oge ${d.aktif === false ? 'pasif' : ''}">
+    <h4>${d.onem === 'onemli' ? `<span class="et-on">${t('onemli')}</span>` : ''}${kac(d.baslik?.[dil] || d.baslik?.tr)}</h4>
+    <div class="m">${kac(new Date(d.tarih).toLocaleString(dil))} · ${kac((d.hedef || ['*']).includes('*') ? t('tumu') : d.hedef.map(ad).join(', '))}${d.aktif === false ? ' · ' + t('durdu') : ''}${d.altSurum ? ' · ≥' + kac(d.altSurum) : ''}${d.ustSurum ? ' · ≤' + kac(d.ustSurum) : ''}</div>
+    <div style="font-size:13px;margin-top:6px;white-space:pre-wrap">${kac(d.metin?.[dil] || d.metin?.tr)}</div>
+    <div class="d"><button class="b" data-i="duzenle" data-id="${d.id}">${t('duzenle')}</button>
+    <button class="b" data-i="ac" data-id="${d.id}">${d.aktif === false ? t('aktif') : t('pasif')}</button>
+    <button class="b kir" data-i="sil" data-id="${d.id}">${t('sil')}</button></div></div>`).join('') : `<p class="not">${t('bos')}</p>`;
+  l.querySelectorAll('button[data-i]').forEach(b => b.onclick = async () => {
+    const d = veri.duyurular.find(x => x.id === b.dataset.id); if (!d) return;
+    try {
+      if (b.dataset.i === 'duzenle') { formDoldur(d); scrollTo(0, 0); return; }
+      if (b.dataset.i === 'ac') { d.aktif = d.aktif === false; await kaydet('Duyuru durumu: ' + d.baslik.tr); durum(t('ok')); }
+      if (b.dataset.i === 'sil') { if (!confirm(t('silSor'))) return; veri.duyurular = veri.duyurular.filter(x => x !== d); await kaydet('Duyuru silindi: ' + d.baslik.tr); durum(t('ok')); }
+    } catch (e) { durum(t('hata') + e.message, 6000); }
+  });
+}
+
+$('yayinla').onclick = async () => {
+  const d = formOku();
+  if (!d.baslik.tr || !d.metin.tr) return durum(t('gerek'));
+  try {
+    await yukle();
+    const i = veri.duyurular.findIndex(x => x.id === d.id);
+    if (i >= 0) veri.duyurular[i] = d; else veri.duyurular.push(d);
+    await kaydet((i >= 0 ? 'Duyuru güncellendi: ' : 'Yeni duyuru: ') + d.baslik.tr);
+    formDoldur(null); durum(t('ok'));
+  } catch (e) { durum(t('hata') + e.message, 6000); }
+};
+$('temizle').onclick = () => formDoldur(null);
+$('onizle').onclick = () => {
+  const d = formOku(); if (!d.baslik.tr) return durum(t('gerek'));
+  const k = Object.keys(Y).map(L => `--- ${L.toUpperCase()} ---\n${d.baslik[L]}\n\n${d.metin[L]}`).join('\n\n');
+  alert(k);
+};
+$('arayuzDili').onchange = () => { dil = $('arayuzDili').value; localStorage.setItem('panel_dil', dil); yazilar(); };
+$('girBtn').onclick = async () => {
+  localStorage.setItem('panel_token', $('token').value.trim());
+  try { await yukle(); ekran(); } catch (e) { localStorage.removeItem('panel_token'); durum(t('hata') + e.message, 6000); }
+};
+$('cikis').onclick = () => { localStorage.removeItem('panel_token'); ekran(); };
+function ekran() {
+  const var_ = !!tok();
+  $('girisEkrani').style.display = var_ ? 'none' : 'block';
+  $('anaEkran').style.display = var_ ? 'grid' : 'none';
+  $('cikis').style.display = var_ ? 'inline-block' : 'none';
+}
+uygCiz(); yazilar(); ekran();
+if (tok()) yukle().catch(e => durum(t('hata') + e.message, 6000));
+</script>
+</body>
+</html>
