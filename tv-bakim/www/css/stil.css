@@ -1,0 +1,49 @@
+:root{--bg:#0b1220;--card:#131d33;--card2:#1b2844;--ink:#eef3ff;--sub:#9fb0d0;--acc:#36c39a;--acc2:#2a8cff;--warn:#f5b84b;--bad:#ff6b6b;--focus:#ffd34d}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Arabic",sans-serif}
+button,select,input{font:inherit;color:inherit}
+.top{display:flex;align-items:center;gap:12px;padding:14px 28px;background:#0e1830;border-bottom:1px solid #22325a;position:sticky;top:0;z-index:5}
+.brand{display:flex;align-items:center;gap:10px;font-size:22px}
+.brand em{font-style:normal;color:var(--sub);font-size:15px}
+.logo{font-size:26px}
+.top-r{margin-inline-start:auto;display:flex;gap:8px;align-items:center}
+.tb{position:relative;background:var(--card2);border:2px solid transparent;border-radius:12px;padding:8px 14px;cursor:pointer}
+.tb.ic{width:46px;padding:8px 0;text-align:center;font-weight:700}
+.dot{position:absolute;top:5px;inset-inline-end:5px;width:10px;height:10px;border-radius:50%;background:var(--bad)}
+main{padding:22px 28px 40px;max-width:1500px;margin:0 auto}
+h2{margin:0 0 12px;font-size:26px} h3{margin:24px 0 10px;font-size:20px;color:var(--sub)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tile{display:flex;flex-direction:column;gap:6px;text-align:start;background:var(--card);border:3px solid transparent;border-radius:18px;padding:18px 20px;cursor:pointer;min-height:118px}
+.tile b{font-size:20px} .tile span{color:var(--sub);font-size:15px}
+.tile.big{grid-column:span 2;grid-row:span 2;background:linear-gradient(135deg,#1d6f5a,#1b4f8f);min-height:250px;justify-content:center}
+.tile.big b{font-size:34px} .tile.big span{color:#d6e6ff;font-size:18px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.stat{background:var(--card);border-radius:16px;padding:14px 18px;display:flex;flex-direction:column}
+.stat small{color:var(--sub)} .stat b{font-size:24px} .stat span{color:var(--sub);font-size:14px}
+.warn{background:#3a2a10;color:#ffe2a8;border-radius:14px;padding:12px 16px;margin:12px 0}
+.muted{color:var(--sub)}
+.card{background:var(--card);border-radius:18px;padding:18px 22px;margin:12px 0}
+.card.old{display:flex;align-items:center;gap:14px;justify-content:space-between;background:#2b2338}
+.btn{background:var(--card2);border:3px solid transparent;border-radius:12px;padding:10px 18px;cursor:pointer}
+.btn.pri{background:var(--acc2)}
+.btn:disabled{opacity:.5}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.subh{display:flex;align-items:center;gap:16px;margin-bottom:12px} .subh h2{margin:0}
+.list .li{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:14px;padding:10px 14px;margin:8px 0}
+.list .li div{flex:1;display:flex;flex-direction:column} .list small{color:var(--sub)}
+.run h2{margin-bottom:16px}
+#steps{list-style:none;padding:0;margin:0 0 14px}
+#steps li{display:flex;flex-direction:column;padding:12px 16px;border-radius:12px;background:var(--card2);margin:8px 0;border-inline-start:6px solid #44567f}
+#steps li span{color:var(--sub)} #steps li.busy{border-color:var(--acc2)} #steps li.ok{border-color:var(--acc)} #steps li.warnx{border-color:var(--warn)}
+#steps li.busy b::after{content:" …";animation:blink 1s infinite} @keyframes blink{50%{opacity:.2}}
+.tot{font-weight:700;font-size:20px}
+.chk{display:flex;gap:12px;align-items:center;font-size:19px} .chk input{width:26px;height:26px}
+.updbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;background:#11324a;padding:10px 28px}
+.pbar{display:block;flex-basis:100%;height:8px;background:#0b1a2a;border-radius:6px;overflow:hidden} .pbar i{display:block;height:100%;background:var(--acc)}
+.toast{position:fixed;bottom:24px;inset-inline-start:50%;transform:translateX(-50%);background:#22325a;padding:12px 20px;border-radius:12px;z-index:9;max-width:80vw}
+html[dir=rtl] .toast{transform:translateX(50%)}
+select.tb{appearance:none;padding-inline-end:14px}
+/* kumanda odağı: hangi düğmede olduğunuz uzaktan görünsün */
+button:focus,select:focus,input:focus,textarea:focus,.tile:focus{outline:none;border-color:var(--focus)!important;box-shadow:0 0 0 4px rgba(255,211,77,.35)}
+textarea,input[type=text],input[type=email]{background:var(--card2);border:2px solid #2c3d66;border-radius:10px;padding:10px;width:100%}
+@media (max-width:900px){.grid,.stats{grid-template-columns:repeat(2,1fr)}}

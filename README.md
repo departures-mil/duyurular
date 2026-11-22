@@ -25,4 +25,6 @@ Bütün programlara giden admin duyuruları. Programlar şu dosyayı okur (30 da
 }
 ```
 Program kimlikleri: falcon-ofis, kitaplik, mahzen, bereket-defter, organizer, aile-ajandasi, ofis-gunlugu, sinav-hazirlama,
-cv-maker, merkezi-servis, baski-hesabi, comm-calc, kalori-hesaplayici, desktop-duzen, ing-mufredat, iha-mufredat.
+cv-maker, merkezi-servis, baski-hesabi, comm-calc, kalori-hesaplayici, desktop-duzen, ing-mufredat, iha-mufredat, tv-bakim.
+
+`tv-bakim/` — TV Bakım uygulamasının kaynağı ve güncelleme kanalı (ayrı depo açılamadığı için burada).
