@@ -47,3 +47,5 @@ select.tb{appearance:none;padding-inline-end:14px}
 button:focus,select:focus,input:focus,textarea:focus,.tile:focus{outline:none;border-color:var(--focus)!important;box-shadow:0 0 0 4px rgba(255,211,77,.35)}
 textarea,input[type=text],input[type=email]{background:var(--card2);border:2px solid #2c3d66;border-radius:10px;padding:10px;width:100%}
 @media (max-width:900px){.grid,.stats{grid-template-columns:repeat(2,1fr)}}
+.card.setup{background:linear-gradient(135deg,#1b3a5c,#24324f);border:2px solid #2a8cff}
+.card.setup h3{margin:0 0 8px;color:#fff}

@@ -9,6 +9,7 @@
 
   var T = {
     tr: {
+      setupT: 'Bir kez: Ağ hata ayıklamasını açın', setupD: 'Android bu ayarı uygulamaya açtırmıyor. Aşağıdaki düğmelerle ilgili ekranları açın; geri dönünce uygulama bağlantıyı kendisi kurar ve kalan bakımı yapar.', later: 'Sonra', never: 'Bir daha gösterme', autoDone: 'Tam yetki alındı; kalan bakım adımları yapıldı.',
       bg: 'Arka Plan Kısıtlama', bgD: 'Kendiliğinden başlayan uygulamaların arka planda çalışmasını keser; RAM hep boş kalır.',
       disk: 'Depolama Analizi', diskD: 'Yer kaplayan klasörleri, büyük dosyaları ve bırakılmış kurulum (.apk) dosyalarını gösterir.',
       sBg: 'Arka plan uygulamaları kısıtlanıyor', rBg: '{n} uygulamanın arka planda çalışması kısıtlandı.', rBgNo: 'Bunun için «Tam Yetki» gerekir.', rBgSkip: 'Kısıtlanacak uygulama yok.',
@@ -43,6 +44,7 @@
       upInstall: 'İndirildi. Açılan pencerede «Yükle»ye basın.', limits: 'Kullanım Limitleri', browser: 'Deneme kipi (tarayıcı): TV işlemleri yalnız TV\'de çalışır.'
     },
     en: {
+      setupT: 'Once: turn on Network debugging', setupD: 'Android does not let an app switch this on. Use the buttons below to open the screens; when you come back the app connects by itself and finishes the maintenance.', later: 'Later', never: 'Do not show again', autoDone: 'Full access obtained; remaining maintenance steps done.',
       bg: 'Background Restriction', bgD: 'Stops self‑starting apps from running in the background; RAM stays free.',
       disk: 'Storage Analysis', diskD: 'Shows folders that take space, large files and leftover installer (.apk) files.',
       sBg: 'Restricting background apps', rBg: 'Background activity of {n} apps restricted.', rBgNo: '«Full Access» is needed for this.', rBgSkip: 'No apps to restrict.',
@@ -77,6 +79,7 @@
       upInstall: 'Downloaded. Press «Install» in the window that opens.', limits: 'Usage limits', browser: 'Demo mode (browser): TV actions work only on the TV.'
     },
     ar: {
+      setupT: 'مرة واحدة: فعّل تصحيح الأخطاء عبر الشبكة', setupD: 'لا يسمح أندرويد للتطبيق بتفعيل هذا الإعداد. افتح الشاشات بالأزرار أدناه؛ وعند العودة يتصل التطبيق بنفسه ويكمل الصيانة.', later: 'لاحقاً', never: 'لا تعرض مجدداً', autoDone: 'تم الحصول على الصلاحية الكاملة؛ أُنجزت خطوات الصيانة المتبقية.',
       bg: 'تقييد الخلفية', bgD: 'يمنع التطبيقات التي تبدأ تلقائياً من العمل في الخلفية؛ تبقى الذاكرة فارغة.',
       disk: 'تحليل التخزين', diskD: 'يعرض المجلدات التي تشغل مساحة والملفات الكبيرة وملفات التثبيت (.apk) المتروكة.',
       sBg: 'تقييد تطبيقات الخلفية', rBg: 'قُيّد عمل {n} تطبيق في الخلفية.', rBgNo: 'يلزم تفعيل «الصلاحية الكاملة» لذلك.', rBgSkip: 'لا توجد تطبيقات لتقييدها.',
@@ -114,7 +117,7 @@
 
   var APP = window.APP = {
     lang: (function () { var l = ls('tv.dil'); return /^(tr|en|ar)$/.test(l || '') ? l : (/^ar/.test(navigator.language) ? 'ar' : /^tr/.test(navigator.language) ? 'tr' : 'en'); })(),
-    version: '1.0.1', found: null, screen: 'home'
+    version: '1.0.2', found: null, screen: 'home'
   };
   function t(k, v) { var s = (T[APP.lang] && T[APP.lang][k]) || T.tr[k] || k; if (v) for (var x in v) s = s.split('{' + x + '}').join(v[x]); return s; }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -158,11 +161,15 @@
     var i = info();
     $('#main').innerHTML =
       (B ? '' : '<div class="warn">' + esc(t('browser')) + '</div>') +
+      (B && !i.adb && ls('tv.kur') !== '0' ? '<div class="card setup"><h3>' + esc(t('setupT')) + '</h3><p>' + esc(t('setupD')) + '</p><p class="muted">' + esc(t('powerHow')) + '</p><div class="row">' +
+        '<button class="btn pri" data-s="about">' + esc(t('about')) + '</button><button class="btn pri" data-s="dev">' + esc(t('dev')) + '</button>' +
+        '<button class="btn" data-a="later">' + esc(t('later')) + '</button><button class="btn" data-a="never">' + esc(t('never')) + '</button></div></div>' : '') +
       (i.oldApp ? '<div class="card old"><span>' + esc(t('oldApp')) + '</span><button class="btn" data-a="old">' + esc(t('removeOld')) + '</button></div>' : '') +
       '<div class="grid">' + tile('all', 'oneKey', true) + tile('ram', 'ram') + tile('cache', 'cache') + tile('junk', 'junk') + tile('speed', 'speed') +
       tile('bg', 'bg') + tile('disk', 'disk') + tile('apps', 'apps') + tile('hidden', 'hidden') + tile('power', 'power') + tile('deep', 'deep') + '</div>' +
       '<h3>' + esc(t('status')) + '</h3>' + statusHtml(i) + '<p class="muted">' + esc(t('tip')) + '</p>';
     bindActions();
+    $$('[data-s]').forEach(function (b) { b.onclick = function () { if (!B || !B.openSettings(b.getAttribute('data-s'))) toast(t('notOpen')); }; });
     var f = $('[data-a="all"]'); if (f) f.focus();
   }
 
@@ -182,6 +189,8 @@
         else if (a === 'power') powerScreen();
         else if (a === 'deep') deep();
         else if (a === 'old') B && B.uninstall('tr.tvbakim');
+        else if (a === 'later') { var c = $('.card.setup'); if (c) c.parentNode.removeChild(c); $('[data-a="all"]').focus(); }
+        else if (a === 'never') { ls('tv.kur', '0'); home(); }
       };
     });
   }
@@ -386,7 +395,12 @@
   };
 
   // ---------------------------------------------------------------- açılış
-  window.__adbHazir = function (ok) { if (!ok) return; ls('tv.guc', '1'); toast(t('autoAdb')); if (APP.screen === 'home') home(); };
+  window.__adbHazir = function (ok) {
+    if (!ok) return;
+    var ilk = ls('tv.guc') !== '1'; ls('tv.guc', '1'); toast(t('autoAdb'));
+    if (APP.screen === 'home' && ilk) runSteps(['sCache', 'sSpeed', 'sBg'], [doCache, doSpeed, doBg]).then(function () { toast(t('autoDone')); });
+    else if (APP.screen === 'home') home();
+  };
   window.geri = function () { if (APP.screen !== 'home' && APP.screen !== 'run') home(); };
   function start() {
     var i = info();
