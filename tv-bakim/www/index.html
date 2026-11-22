@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="tr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TV Bakım</title>
+<link rel="stylesheet" href="css/stil.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="logo">🛠</span><b data-t="app">TV Bakım</b><em id="ver"></em></div>
+  <div class="top-r">
+    <select id="dil" class="tb" aria-label="Dil">
+      <option value="tr">🌐 Türkçe</option><option value="en">🌐 English</option><option value="ar">🌐 العربية</option>
+    </select>
+    <button class="tb" id="bUpd"><span>⬇</span> <span data-t="update">Güncelle</span><i class="dot" id="updDot" hidden></i></button>
+    <button class="tb" id="bSet"><span>⚙</span> <span data-t="settings">Ayarlar</span></button>
+    <button class="tb ic" id="bMin" data-tt="minimize">—</button>
+    <button class="tb ic" id="bExit" data-tt="close">✕</button>
+  </div>
+</header>
+<div id="updBar" class="updbar" hidden></div>
+<main id="main"></main>
+<div id="toast" class="toast" hidden></div>
+<script src="js/indirme-ilerleme.js"></script>
+<script src="js/app.js"></script>
+<script>window.ADMIN_ILETISIM={app:'TV Bakım',version:function(){return APP.version},lang:function(){return APP.lang},anchor:function(){return document.getElementById('ayarSon')},cls:{card:'card',btn:'btn pri',muted:'muted'}};</script>
+<script src="js/admin-iletisim.js"></script>
+<script src="js/duyuru.js"></script>
+<script src="js/kullanim.js"></script>
+<script>
+  Duyuru.baslat({ uygulama: 'tv-bakim', surum: APP.version, dil: function () { return APP.lang; }, guncelle: function () { APP.updateNow(); } });
+  Kullanim.baslat({ uygulama: 'tv-bakim', bulut: false, ai: false, sinif: 'card', dil: function () { return APP.lang; } });
+  Kullanim.yerlestir(function () { return document.getElementById('ayarSon'); }, true);
+</script>
+</body>
+</html>

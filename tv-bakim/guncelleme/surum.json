@@ -1,0 +1,13 @@
+{
+ "version": "1.0.0",
+ "code": 1,
+ "apk": "TV-Bakim-1.0.0.apk",
+ "size": 62497,
+ "sha256": "2e7b0afd769484cb394a7c5b5b621112596641c40aa9baef820c270a274f86e3",
+ "date": "2026-11-22T13:38:33Z",
+ "notes": {
+  "tr": "İlk sürüm: açılınca bakımı kendiliğinden yapar (RAM, önbellek, gereksiz dosyalar, hızlandırma); Tam Yetki ile her şey otomatik; Türkçe/English/العربية.",
+  "en": "First version: runs maintenance automatically on start (RAM, caches, junk files, speed-up); with Full Access everything is automatic; Turkish/English/Arabic.",
+  "ar": "الإصدار الأول: يجري الصيانة تلقائياً عند الفتح (الذاكرة، الذاكرة المؤقتة، الملفات غير الضرورية، التسريع)؛ ومع الصلاحية الكاملة كل شيء تلقائي؛ تركي/إنجليزي/عربي."
+ }
+}
