@@ -71,16 +71,45 @@ public class MainActivity extends Activity {
     }
 
     /** Ağ hata ayıklaması açıksa açılışta kendiliğinden Tam Yetki alır; kullanıcıdan bir şey istemez. */
+    volatile boolean fg = true, connecting = false;
+
     void autoConnect() {
+        if (connecting) return;
+        connecting = true;
         new Thread(new Runnable() {
             public void run() {
-                if (adb.ready()) return;
-                boolean ok = adb.connect(20000);
-                if (ok && !canSecure()) adb.shell("pm grant " + getPackageName() + " android.permission.WRITE_SECURE_SETTINGS", 8000);
-                js("window.__adbHazir && window.__adbHazir(" + ok + ")");
+                try {
+                    // Uygulama öndeyken 10 sn'de bir dener: kullanıcı ayarı açıp geri dönünce beklemeden bağlanır.
+                    while (fg && !adb.ready()) {
+                        boolean ok = adb.connect(20000);
+                        if (ok) {
+                            if (!canSecure()) adb.shell("pm grant " + getPackageName() + " android.permission.WRITE_SECURE_SETTINGS", 8000);
+                            keepAdbOn();
+                            js("window.__adbHazir && window.__adbHazir(true)");
+                            return;
+                        }
+                        try { Thread.sleep(10000); } catch (InterruptedException e) { return; }
+                    }
+                } finally { connecting = false; }
             }
         }).start();
     }
+
+    /** Alınan izinle geliştirici seçenekleri ve ADB'nin kapanmamasını sağlar (TV güncellemeleri bazen sıfırlar). */
+    void keepAdbOn() {
+        try {
+            if (canSecure()) {
+                Settings.Global.putInt(getContentResolver(), "development_settings_enabled", 1);
+                Settings.Global.putInt(getContentResolver(), "adb_enabled", 1);
+            } else if (adb.ready()) adb.shell("settings put global development_settings_enabled 1; settings put global adb_enabled 1", 8000);
+        } catch (Exception ignored) {}
+    }
+
+    @Override
+    protected void onResume() { super.onResume(); fg = true; keepAdbOn(); autoConnect(); }
+
+    @Override
+    protected void onPause() { super.onPause(); fg = false; }
 
     /** Kullanıcının başlatıcısı (launcher): arka plan kısıtlamasından muaf tutulur. */
     String launcherPkg() {

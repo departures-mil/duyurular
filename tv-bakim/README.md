@@ -16,6 +16,8 @@ uygulama dış önbellekleri, boş klasörler) temizler, menü animasyonlarını
 indirir, sha256 ile doğrular ve kurulum penceresini açar.
 
 ## Sürüm geçmişi
+- **1.0.2:** Kurulum sihirbazı (ağ hata ayıklaması kapalıysa ana ekranda kart + ayar kısayolları), öndeyken 10 sn'de bir
+  kendiliğinden ADB bağlantısı, bağlanınca kalan bakım otomatik, geliştirici seçenekleri/ADB'nin kapanmaması.
 - **1.0.1:** Arka Plan Kısıtlama (kendiliğinden başlayan uygulamaların arka planı kesilir, istisna listesi), Depolama Analizi
   (klasör boyutları, 200 MB+ dosyalar, bırakılmış .apk'ları tek tuşla silme), Derin Optimizasyona `sm fstrim` (TRIM),
   açılışta kendiliğinden Tam Yetki (ağ hata ayıklaması açıksa), animasyonları tamamen kapatma seçeneği, uygulama "Durdur".
