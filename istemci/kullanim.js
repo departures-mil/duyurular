@@ -5,7 +5,7 @@
  * yapay zeka kullanımını (istek / token) uygulama içinde sayar, Ayarlar'da kart olarak gösterir.
  *
  * Tarayıcı / Electron arayüzü:
- *   <script src="kullanim.js"></script>
+ *   <script src="kullanim.js"><\/script>
  *   Kullanim.baslat({ uygulama: 'kitaplik', dil: () => 'tr', bulut: true, ai: false, proje: () => 'proje-id' });
  *   ayarlarKutusu.appendChild(Kullanim.kart());          // kart kendini günceller
  *   window.fetch otomatik izlenir (firestore.googleapis.com, generativelanguage, openai, anthropic).
@@ -23,6 +23,7 @@
   var ANAHTAR = 'kullanim_limit_v1';
   var LIMIT = { okuma: 50000, yazma: 20000, silme: 20000 };   // Firebase ücretsiz (Spark) planı, günlük
   var TZ = 'America/Los_Angeles';
+  var REHBER = 'https://github.com/departures-mil/duyurular/blob/main/firebase-kurulum.md';
 
   var YAZI = {
     tr: {
@@ -34,7 +35,7 @@
       aiDoldu: 'Yapay zeka hesabının sınırı doldu. Sıfırlanınca yeniden kullanılabilir.',
       not: 'Bu cihazın bugünkü kullanımıdır. Sınırlar Firebase ücretsiz planının günlük sınırlarıdır; aynı hesaba bağlı diğer cihazlar da aynı sınırı paylaşır.',
       aiNot: 'Kendi yapay zeka anahtarınla yapılan bugünkü kullanım. Ücretsiz katmanın günlük sınırı modele göre değişir.',
-      konsol: 'Firebase\'de ayrıntılı gör', dun: 'Dün', sifirla: 'Sayacı sıfırla',
+      konsol: 'Firebase\'de ayrıntılı gör', rehber: 'Kendi Firebase hesabınızı kurun (rehber)', dun: 'Dün', sifirla: 'Sayacı sıfırla',
       hic: 'Bu program sınırlı bir bulut ya da yapay zeka hizmeti kullanmıyor; kullanım sınırı yok. Güncellemeler GitHub\'dan ücretsiz gelir.'
     },
     en: {
@@ -46,7 +47,7 @@
       aiDoldu: 'Your AI account limit is reached. It can be used again after the reset.',
       not: 'Usage by this device today. Limits are the daily limits of the Firebase free plan; other devices on the same account share them.',
       aiNot: 'Today\'s usage with your own AI key. The free tier\'s daily limit depends on the model.',
-      konsol: 'View details in Firebase', dun: 'Yesterday', sifirla: 'Reset counter',
+      konsol: 'View details in Firebase', rehber: 'Set up your own Firebase account (guide)', dun: 'Yesterday', sifirla: 'Reset counter',
       hic: 'This program uses no limited cloud or AI service, so there is no usage limit. Updates come free from GitHub.'
     },
     ar: {
@@ -58,7 +59,7 @@
       aiDoldu: 'بلغ حساب الذكاء الاصطناعي حده. يمكن استخدامه مجدداً بعد إعادة التعيين.',
       not: 'استخدام هذا الجهاز اليوم. الحدود هي الحدود اليومية لخطة Firebase المجانية، وتتشاركها الأجهزة الأخرى على الحساب نفسه.',
       aiNot: 'استخدام اليوم بمفتاح الذكاء الاصطناعي الخاص بك. يختلف الحد اليومي للطبقة المجانية حسب النموذج.',
-      konsol: 'عرض التفاصيل في Firebase', dun: 'أمس', sifirla: 'تصفير العداد',
+      konsol: 'عرض التفاصيل في Firebase', rehber: 'أنشئ حساب Firebase الخاص بك (دليل)', dun: 'أمس', sifirla: 'تصفير العداد',
       hic: 'لا يستخدم هذا البرنامج خدمة سحابية أو ذكاءً اصطناعياً محدوداً، لذا لا يوجد حد للاستخدام. تصل التحديثات مجاناً من GitHub.'
     }
   };
@@ -276,15 +277,18 @@
     if (!A.bulut && !A.ai) { el.innerHTML = ic + '<div class="kul-not" style="opacity:.9">✓ ' + kac(T('hic')) + '</div>'; return; }
     ic += '<div class="kul-sifir">⏱ ' + kac(T('sifir')) + ': <b>' + kac(sure(sifirlanmayaMs())) + '</b> (' + kac(sifirSaati()) + ' ' + kac(T('yerel')) + ')</div>';
     var p2 = A.bulut && proje();
-    ic += '<div class="kul-alt">' + (p2 ? '<button type="button" data-k="konsol">' + kac(T('konsol')) + '</button>' : '') + '</div>';
+    ic += '<div class="kul-alt">' + (p2 ? '<button type="button" data-k="konsol">' + kac(T('konsol')) + '</button>' : '') +
+      (A.bulut ? '<button type="button" data-k="rehber">' + kac(T('rehber')) + '</button>' : '') + '</div>';
     el.innerHTML = ic;
-    var k = el.querySelector('[data-k="konsol"]');
-    if (k) k.onclick = function () {
-      var u = 'https://console.firebase.google.com/project/' + encodeURIComponent(p2) + '/firestore/usage';
-      try { if (g.duyuruLinkAc) return g.duyuruLinkAc(u); } catch (e) {}
+    var ac = function (u) {
       try { if (A.linkAc) return A.linkAc(u); } catch (e) {}
+      try { if (g.duyuruLinkAc) return g.duyuruLinkAc(u); } catch (e) {}
       g.open(u, '_blank');
     };
+    var k = el.querySelector('[data-k="konsol"]');
+    if (k) k.onclick = function () { ac('https://console.firebase.google.com/project/' + encodeURIComponent(p2) + '/firestore/usage'); };
+    var r = el.querySelector('[data-k="rehber"]');
+    if (r) r.onclick = function () { ac(REHBER); };
   }
   function kart() {
     stil();
@@ -299,7 +303,7 @@
   }
 
   var K = {
-    surum: SURUM, LIMIT: LIMIT,
+    surum: SURUM, LIMIT: LIMIT, REHBER: REHBER,
     baslat: function (ayar) {
       for (var k in ayar) A[k] = ayar[k];
       if (g.fetch && !g.fetch.__kullanim) g.fetch = fetchSar(g.fetch.bind(g));
