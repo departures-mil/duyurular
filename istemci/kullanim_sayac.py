@@ -127,6 +127,8 @@ def ekle(delta):
             b["bulutDoldu"] = int(time.time() * 1000)
         if delta.get("aiDoldu"):
             b["aiDoldu"] = int(time.time() * 1000)
+        if delta.get("proje"):
+            v["proje"] = delta["proje"]
         _yaz(v)
     for f in list(_dinleyiciler):
         try:
@@ -205,7 +207,11 @@ def cozumle(method, url, govde, status, yanit):
 def kaydet(method, url, govde, status, yanit):
     """Bir HTTP isteğinden sonra çağrılır; hiçbir zaman hata fırlatmaz."""
     try:
-        ekle(cozumle(method, url, govde, status, yanit))
+        d = cozumle(method, url, govde, status, yanit)
+        m = re.search(r"/projects/([^/]+)/", str(url))
+        if d is not None and m and "firestore" in str(url) and (status or 0) < 400:
+            d["proje"] = m.group(1)
+        ekle(d)
     except Exception:
         pass
 
@@ -237,9 +243,10 @@ def T(k):
 
 def _proje():
     try:
-        return (_A["proje"]() if callable(_A["proje"]) else _A["proje"]) or ""
+        p = (_A["proje"]() if callable(_A["proje"]) else _A["proje"]) or ""
     except Exception:
-        return ""
+        p = ""
+    return p or veri().get("proje") or ""
 
 
 def _sayi(n):

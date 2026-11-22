@@ -118,6 +118,7 @@
     });
     if (delta.bulutDoldu) { b.bulutDoldu = Date.now(); degisti = true; }
     if (delta.aiDoldu) { b.aiDoldu = Date.now(); degisti = true; }
+    if (delta.proje && v.proje !== delta.proje) { v.proje = delta.proje; degisti = true; }
     if (degisti) { hamYaz(v); dinleyiciler.forEach(function (f) { try { f(delta); } catch (e) {} }); }
   }
 
@@ -178,7 +179,11 @@
   }
   function cozumle(method, url, govde, status, yanit) {
     var t = tur(url);
-    if (t === 'firestore') return firestoreDelta(method, url, govde, status, yanit);
+    if (t === 'firestore') {
+      var d = firestoreDelta(method, url, govde, status, yanit), m = String(url).match(/\/projects\/([^/]+)\//);
+      if (m && status < 400) d.proje = decodeURIComponent(m[1]);
+      return d;
+    }
     if (t === 'ai') return aiDelta(status, yanit);
     return null;
   }
@@ -219,7 +224,7 @@
     return YAZI[d] ? d : 'tr';
   }
   function T(k) { return YAZI[dil()][k]; }
-  function proje() { try { return typeof A.proje === 'function' ? A.proje() : A.proje; } catch (e) { return ''; } }
+  function proje() { var p = ''; try { p = typeof A.proje === 'function' ? A.proje() : A.proje; } catch (e) {} return p || veri().proje || ''; }
   function sayi(n) { try { return Number(n).toLocaleString(dil() === 'ar' ? 'ar' : dil()); } catch (e) { return String(n); } }
   function kac(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function sure(ms) { var dk = Math.ceil(ms / 60000), s = Math.floor(dk / 60); return (s ? s + ' ' + T('saat') + ' ' : '') + (dk % 60) + ' ' + T('dk'); }
@@ -288,6 +293,7 @@
     var f = function () { if (el.isConnected === false && el.__baglandi) return; ciz(el); };
     dinleyiciler.push(f);
     setTimeout(function () { el.__baglandi = true; }, 0);
+    try { new MutationObserver(function () { ciz(el); }).observe(g.document.documentElement, { attributes: true, attributeFilter: ['lang', 'dir'] }); } catch (e) {}
     var t = setInterval(function () { if (el.isConnected === false && el.__baglandi) { clearInterval(t); dinleyiciler = dinleyiciler.filter(function (x) { return x !== f; }); return; } ciz(el); }, 30000);
     return el;
   }
@@ -302,6 +308,8 @@
     say: function (ad, n) { var d = {}; d[ad] = n == null ? 1 : n; ekle(d); },
     kotaDoldu: function (hangi) { ekle(hangi === 'ai' ? { aiDoldu: 1 } : { bulutDoldu: 1 }); },
     ekle: ekle, cozumle: cozumle, fetchSar: fetchSar,
+    // Ana süreçte tutulan sayaç durumunu arayüze aktarır (Electron: main -> executeJavaScript).
+    ice: function (v) { if (v && v.bugun) { hamYaz(v); dinleyiciler.forEach(function (f) { try { f({}); } catch (e) {} }); } },
     ozet: function () { return veri(); },
     sifirlanmayaMs: sifirlanmayaMs, bugun: bugun,
     dinle: function (f) { dinleyiciler.push(f); },
