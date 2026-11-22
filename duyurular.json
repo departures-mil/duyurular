@@ -1,4 +1,25 @@
 {
-  "surum": 1,
-  "duyurular": []
+ "surum": 1,
+ "duyurular": [
+  {
+   "id": "20261122144043-ing3",
+   "tarih": "2026-11-22T14:40:43Z",
+   "baslik": {
+    "tr": "İngilizce Müfredat: Wi‑Fi eşitleme ve Küçült düğmesi",
+    "en": "English Curriculum: Wi‑Fi sync and Minimize button",
+    "ar": "منهج الإنجليزية: مزامنة Wi‑Fi وزر التصغير"
+   },
+   "metin": {
+    "tr": "Bilgisayar ve telefon artık internetsiz, aynı modem üzerinden eşitlenebilir; üst çubukta Küçült düğmesi var. Bir kerelik yeni programı indirip açmanız yeterli: kurulu programınızı kendisi yeniler, kayıtlarınız olduğu gibi kalır. Telefon için yeni uygulama eskisinin yanına kurulur; kayıtlar eşitlemeyle gelir.\nBilgisayar: https://github.com/departures-mil/ing-mufredat-guncelleme/raw/main/kurulum/IngMufredat_Sistemi_v3.exe\nTelefon: https://github.com/departures-mil/ing-mufredat-guncelleme/raw/main/kurulum/IngMufredat-3.0.0.apk",
+    "en": "Computer and phone can now sync without internet over the same router, and the top bar has a Minimize button. Download and open the new program once: it updates your installed program itself and your records stay as they are. The new phone app installs next to the old one; records arrive by syncing.\nComputer: https://github.com/departures-mil/ing-mufredat-guncelleme/raw/main/kurulum/IngMufredat_Sistemi_v3.exe\nPhone: https://github.com/departures-mil/ing-mufredat-guncelleme/raw/main/kurulum/IngMufredat-3.0.0.apk",
+    "ar": "يمكن الآن مزامنة الحاسوب والهاتف دون إنترنت عبر نفس الراوتر، وفي الشريط العلوي زر للتصغير. نزّل البرنامج الجديد وافتحه مرة واحدة: يحدّث برنامجك المثبّت بنفسه وتبقى سجلاتك كما هي. تطبيق الهاتف الجديد يُثبَّت بجانب القديم وتصل السجلات بالمزامنة.\nالحاسوب: https://github.com/departures-mil/ing-mufredat-guncelleme/raw/main/kurulum/IngMufredat_Sistemi_v3.exe\nالهاتف: https://github.com/departures-mil/ing-mufredat-guncelleme/raw/main/kurulum/IngMufredat-3.0.0.apk"
+   },
+   "hedef": [
+    "ing-mufredat"
+   ],
+   "onem": "onemli",
+   "aktif": true,
+   "link": "https://github.com/departures-mil/ing-mufredat-guncelleme/raw/main/kurulum/IngMufredat_Sistemi_v3.exe"
+  }
+ ]
 }
