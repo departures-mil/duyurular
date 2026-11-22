@@ -67,7 +67,31 @@ public class MainActivity extends Activity {
         if (Build.VERSION.SDK_INT >= 23 && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 7);
         immersive();
+        autoConnect();
     }
+
+    /** Ağ hata ayıklaması açıksa açılışta kendiliğinden Tam Yetki alır; kullanıcıdan bir şey istemez. */
+    void autoConnect() {
+        new Thread(new Runnable() {
+            public void run() {
+                if (adb.ready()) return;
+                boolean ok = adb.connect(20000);
+                if (ok && !canSecure()) adb.shell("pm grant " + getPackageName() + " android.permission.WRITE_SECURE_SETTINGS", 8000);
+                js("window.__adbHazir && window.__adbHazir(" + ok + ")");
+            }
+        }).start();
+    }
+
+    /** Kullanıcının başlatıcısı (launcher): arka plan kısıtlamasından muaf tutulur. */
+    String launcherPkg() {
+        try {
+            Intent i = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME);
+            android.content.pm.ResolveInfo r = getPackageManager().resolveActivity(i, PackageManager.MATCH_DEFAULT_ONLY);
+            return r != null && r.activityInfo != null ? r.activityInfo.packageName : "";
+        } catch (Exception e) { return ""; }
+    }
+
+    static String sh(String s) { return "'" + s.replace("'", "'\\''") + "'"; }
 
     void immersive() {
         if (Build.VERSION.SDK_INT >= 19) getWindow().getDecorView().setSystemUiVisibility(
@@ -279,10 +303,121 @@ public class MainActivity extends Activity {
         public void optimize(final String cb) {
             new Thread(new Runnable() {
                 public void run() {
-                    String r = adb.ready() ? adb.shell("cmd package bg-dexopt-job", 600000) : null;
+                    String r = null;
+                    if (adb.ready()) {
+                        adb.shell("sm fstrim", 120000);                       // flash belleği düzenler (TRIM)
+                        r = adb.shell("cmd package bg-dexopt-job", 600000);   // uygulamaları önceden derler
+                    }
                     js("window." + cb + " && window." + cb + "(" + (r != null) + ")");
                 }
             }).start();
+        }
+
+        /** Arka planda kendiliğinden çalışan (açılışta başlayan) kullanıcı uygulamaları. Dönen: [{pkg,name,boot,restricted}] */
+        @JavascriptInterface
+        public String bgApps() {
+            JSONArray out = new JSONArray();
+            PackageManager pm = getPackageManager();
+            String launcher = launcherPkg();
+            String ops = adb.ready() ? adb.shell("appops get-all 2>/dev/null || true", 15000) : null;
+            try {
+                for (ApplicationInfo a : pm.getInstalledApplications(0)) {
+                    if ((a.flags & ApplicationInfo.FLAG_SYSTEM) != 0) continue;
+                    if (a.packageName.equals(getPackageName()) || a.packageName.equals(launcher)) continue;
+                    boolean boot = false;
+                    try {
+                        PackageInfo pi = pm.getPackageInfo(a.packageName, PackageManager.GET_PERMISSIONS);
+                        if (pi.requestedPermissions != null) for (String p : pi.requestedPermissions)
+                            if ("android.permission.RECEIVE_BOOT_COMPLETED".equals(p)) boot = true;
+                    } catch (Exception ignored) {}
+                    out.put(new JSONObject().put("pkg", a.packageName).put("name", String.valueOf(pm.getApplicationLabel(a))).put("boot", boot));
+                }
+            } catch (Exception ignored) {}
+            return out.toString();
+        }
+
+        /** Verilen uygulamaların arka planda çalışmasını kısıtlar/serbest bırakır (ADB gerekir). Dönen: kısıtlanan sayısı. */
+        @JavascriptInterface
+        public int restrictBackground(String pkgsJson, boolean on) {
+            if (!adb.ready()) return -1;
+            int n = 0;
+            try {
+                JSONArray a = new JSONArray(pkgsJson);
+                StringBuilder sb = new StringBuilder();
+                String mode = on ? "ignore" : "allow";
+                for (int i = 0; i < a.length(); i++) {
+                    String p = sh(a.getString(i));
+                    sb.append("appops set ").append(p).append(" RUN_IN_BACKGROUND ").append(mode).append(" 2>/dev/null;");
+                    sb.append("appops set ").append(p).append(" RUN_ANY_IN_BACKGROUND ").append(mode).append(" 2>/dev/null;");
+                    if (on) sb.append("am force-stop ").append(p).append(" 2>/dev/null;");
+                    n++;
+                }
+                if (n > 0) adb.shell(sb.toString(), 60000);
+            } catch (Exception e) { return -1; }
+            return n;
+        }
+
+        /** Uygulamayı tamamen durdurur (ADB varsa), yoksa arka plan işlerini kapatır. */
+        @JavascriptInterface
+        public boolean forceStop(String pkg) {
+            if (adb.ready()) { adb.shell("am force-stop " + sh(pkg), 8000); return true; }
+            try { ((ActivityManager) getSystemService(ACTIVITY_SERVICE)).killBackgroundProcesses(pkg); } catch (Exception ignored) {}
+            return false;
+        }
+
+        /** Depolama haritası: ortak depolamadaki üst klasörler + Android/data altındaki uygulama verileri, boyutlarıyla. */
+        @JavascriptInterface
+        public String storageMap() {
+            JSONArray out = new JSONArray();
+            try {
+                File root = Environment.getExternalStorageDirectory();
+                File[] l = root.listFiles();
+                if (l != null) for (File f : l) {
+                    long s = dirSize(f);
+                    if (s > 0) out.put(new JSONObject().put("path", f.getName()).put("size", s).put("dir", f.isDirectory()));
+                }
+                File data = new File(root, "Android/data");
+                File[] apps = data.listFiles();
+                if (apps != null) for (File a : apps) {
+                    long s = dirSize(a);
+                    if (s > 5L * 1024 * 1024) out.put(new JSONObject().put("path", "Android/data/" + a.getName()).put("size", s).put("dir", true).put("pkg", a.getName()));
+                }
+                // en büyük dosyalar ve bırakılan kurulum dosyaları (.apk)
+                JSONArray big = new JSONArray();
+                bigFiles(root, 0, big);
+                return new JSONObject().put("dirs", out).put("big", big).put("free", disk()[0]).put("total", disk()[1]).toString();
+            } catch (Exception e) { return "{\"dirs\":[],\"big\":[]}"; }
+        }
+
+        void bigFiles(File dir, int depth, JSONArray big) throws Exception {
+            if (depth > 5) return;
+            File[] l = dir.listFiles();
+            if (l == null) return;
+            for (File f : l) {
+                if (f.isDirectory()) { if (!(depth == 0 && f.getName().equalsIgnoreCase("Android"))) bigFiles(f, depth + 1, big); continue; }
+                String n = f.getName().toLowerCase();
+                boolean apk = n.endsWith(".apk") || n.endsWith(".xapk") || n.endsWith(".apks");
+                if (apk || f.length() >= 200L * 1024 * 1024)
+                    big.put(new JSONObject().put("path", f.getAbsolutePath()).put("name", f.getName()).put("size", f.length()).put("apk", apk));
+            }
+        }
+
+        /** Seçilen dosyaları siler (yalnız ortak depolama içinde). Dönen: {files, freed} */
+        @JavascriptInterface
+        public String deleteFiles(String json) {
+            long freed = 0; int n = 0;
+            try {
+                String root = Environment.getExternalStorageDirectory().getCanonicalPath();
+                JSONArray a = new JSONArray(json);
+                for (int i = 0; i < a.length(); i++) {
+                    File f = new File(a.getString(i));
+                    if (!f.getCanonicalPath().startsWith(root)) continue;
+                    long s = dirSize(f);
+                    long w = wipe(f, false);
+                    if (!f.exists()) { freed += s; n++; }
+                }
+            } catch (Exception ignored) {}
+            try { return new JSONObject().put("files", n).put("freed", freed).put("free", disk()[0]).toString(); } catch (Exception e) { return "{}"; }
         }
 
         @JavascriptInterface

@@ -1,0 +1,32 @@
+TV BAKIM — USB ile kurulum / USB install / التثبيت عبر USB
+================================================================
+
+[TR]
+1) TV-Bakim-1.0.1.apk dosyasını USB belleğe kopyalayın.
+2) USB'yi TV'ye takın. TV'nin dosya yöneticisini (ör. "File Manager", "X-plore", "FX") açın; yoksa
+   Google Play/uygulama mağazasından bir dosya yöneticisi kurun.
+3) USB içindeki TV-Bakim-1.0.1.apk'ya tıklayın → "Bilinmeyen kaynaklara izin ver" sorusu çıkarsa izin verin → Yükle.
+4) Uygulamayı açın. Açılır açılmaz bakımı kendiliğinden yapar (RAM, önbellek, gereksiz dosyalar, hızlandırma).
+5) Her şeyin tam otomatik olması için bir kez: Ayarlar → Cihaz bilgisi → "Derleme numarası"na 7 kez basın →
+   Geliştirici seçenekleri → "Ağ hata ayıklaması"nı (ADB) açın. Uygulama bundan sonra her açılışta
+   Tam Yetki'yi kendisi alır; TV'de çıkan soruda "Her zaman izin ver"i seçin.
+Sonraki sürümler: uygulama içindeki "Güncelle" düğmesi tek tıkla indirir ve kurar.
+
+[EN]
+1) Copy TV-Bakim-1.0.1.apk to a USB stick and plug it into the TV.
+2) Open the TV's file manager (install one from the app store if there is none).
+3) Click TV-Bakim-1.0.1.apk → allow "unknown sources" if asked → Install.
+4) Open the app. It runs maintenance automatically on start.
+5) For full automation, once: Settings → Device info → press "Build number" 7 times → Developer options →
+   turn on "Network debugging" (ADB). The app then obtains Full Access by itself on every start;
+   choose "Always allow" on the TV prompt.
+Later versions: the in-app "Update" button downloads and installs with one click.
+
+[AR]
+١) انسخ TV-Bakim-1.0.1.apk إلى ذاكرة USB وصِلها بالتلفاز.
+٢) افتح مدير الملفات في التلفاز (ثبّت واحداً من المتجر إن لم يوجد).
+٣) اضغط على TV-Bakim-1.0.1.apk ← اسمح بـ"المصادر غير المعروفة" إن طُلب ← تثبيت.
+٤) افتح التطبيق. يجري الصيانة تلقائياً عند الفتح.
+٥) للأتمتة الكاملة، مرة واحدة: الإعدادات ← معلومات الجهاز ← اضغط "رقم الإصدار" ٧ مرات ← خيارات المطوّر ←
+   فعّل "تصحيح الأخطاء عبر الشبكة" (ADB). بعدها يحصل التطبيق على الصلاحية الكاملة بنفسه عند كل فتح؛ اختر "السماح دائماً".
+الإصدارات التالية: زر "تحديث" داخل التطبيق ينزّل ويثبّت بنقرة واحدة.

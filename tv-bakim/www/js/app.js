@@ -9,6 +9,13 @@
 
   var T = {
     tr: {
+      bg: 'Arka Plan Kısıtlama', bgD: 'Kendiliğinden başlayan uygulamaların arka planda çalışmasını keser; RAM hep boş kalır.',
+      disk: 'Depolama Analizi', diskD: 'Yer kaplayan klasörleri, büyük dosyaları ve bırakılmış kurulum (.apk) dosyalarını gösterir.',
+      sBg: 'Arka plan uygulamaları kısıtlanıyor', rBg: '{n} uygulamanın arka planda çalışması kısıtlandı.', rBgNo: 'Bunun için «Tam Yetki» gerekir.', rBgSkip: 'Kısıtlanacak uygulama yok.',
+      boot: 'açılışta başlar', restrict: 'Kısıtla', allow: 'Serbest bırak', restrictAll: 'Hepsini kısıtla', bgNote: 'Serbest bıraktığınız uygulamalar bakımda da kısıtlanmaz. Kısıtlama uygulamayı bozmaz; açınca yine çalışır.',
+      stop: 'Durdur', stopped: 'Durduruldu.', folders: 'Klasörler', bigFiles: 'Büyük dosyalar ve kurulum dosyaları', apkTag: 'kurulum dosyası', del: 'Sil', delAll: 'Kurulum dosyalarını sil',
+      rDel: '{n} dosya silindi, {mb} yer açıldı.', noneBig: 'Büyük dosya yok.', scanning: 'Taranıyor…', used: 'dolu',
+      animSet: 'Menü animasyonu', animHalf: 'Hızlı (0.5x)', animOff: 'Kapalı (en hızlı)', animApplied: 'Uygulandı.', autoAdb: 'Tam yetki kendiliğinden alındı; bakım artık her şeyi yapıyor.',
       app: 'TV Bakım', update: 'Güncelle', settings: 'Ayarlar', minimize: 'Küçült', close: 'Kapat', back: '← Geri',
       oneKey: '★ Tek Tuşla Bakım', oneKeyD: 'RAM, önbellek ve gereksiz dosyaları temizler, menüleri hızlandırır.',
       ram: 'RAM Temizle', ramD: 'Arka planda çalışan uygulamaları kapatır.', cache: 'Önbellekleri Temizle', cacheD: 'Uygulamaların biriken önbelleğini siler.',
@@ -17,7 +24,7 @@
       apps: 'Uygulamalar', appsD: 'Yer kaplayan uygulamaları görün, önbelleğini silin ya da kaldırın.',
       hidden: 'Gizli Android Ayarları', hiddenD: 'TV menüsünde gizlenmiş ayar ekranlarını açar.',
       power: 'Tam Yetki (bir kez)', powerD: 'Ağ hata ayıklaması açıksa kendine izin verir: bütün önbellekler topluca silinir, hızlandırma kendiliğinden yapılır.',
-      deep: 'Derin Optimizasyon', deepD: 'Uygulamaları önceden derler; açılışları hızlanır (birkaç dakika sürebilir).',
+      deep: 'Derin Optimizasyon', deepD: 'Depolamayı düzenler (TRIM) ve uygulamaları önceden derler; açılışlar hızlanır (birkaç dakika sürebilir).',
       status: 'Sistem Durumu', ramL: 'RAM', diskL: 'Depolama', upL: 'Açık kalma', animL: 'Animasyon', free: 'boş', of: '/',
       hours: '{h} sa {m} dk', days: '{d} gün', running: 'Bakım yapılıyor…', done: 'Bakım tamamlandı',
       sRam: 'Arka plan uygulamaları kapatılıyor', sCache: 'Önbellekler temizleniyor', sJunk: 'Gereksiz dosyalar siliniyor', sSpeed: 'Menüler hızlandırılıyor', sDeep: 'Uygulamalar optimize ediliyor',
@@ -36,6 +43,13 @@
       upInstall: 'İndirildi. Açılan pencerede «Yükle»ye basın.', limits: 'Kullanım Limitleri', browser: 'Deneme kipi (tarayıcı): TV işlemleri yalnız TV\'de çalışır.'
     },
     en: {
+      bg: 'Background Restriction', bgD: 'Stops self‑starting apps from running in the background; RAM stays free.',
+      disk: 'Storage Analysis', diskD: 'Shows folders that take space, large files and leftover installer (.apk) files.',
+      sBg: 'Restricting background apps', rBg: 'Background activity of {n} apps restricted.', rBgNo: '«Full Access» is needed for this.', rBgSkip: 'No apps to restrict.',
+      boot: 'starts at boot', restrict: 'Restrict', allow: 'Allow', restrictAll: 'Restrict all', bgNote: 'Apps you allow are not restricted by maintenance either. Restriction does not break an app; it still works when opened.',
+      stop: 'Stop', stopped: 'Stopped.', folders: 'Folders', bigFiles: 'Large files and installer files', apkTag: 'installer file', del: 'Delete', delAll: 'Delete installer files',
+      rDel: '{n} files deleted, {mb} freed.', noneBig: 'No large files.', scanning: 'Scanning…', used: 'used',
+      animSet: 'Menu animation', animHalf: 'Fast (0.5x)', animOff: 'Off (fastest)', animApplied: 'Applied.', autoAdb: 'Full access obtained automatically; maintenance now does everything.',
       app: 'TV Care', update: 'Update', settings: 'Settings', minimize: 'Minimize', close: 'Close', back: '← Back',
       oneKey: '★ One‑Key Care', oneKeyD: 'Cleans RAM, caches and junk files and speeds up the menus.',
       ram: 'Free RAM', ramD: 'Closes apps running in the background.', cache: 'Clear Caches', cacheD: 'Deletes the cache apps have piled up.',
@@ -44,7 +58,7 @@
       apps: 'Apps', appsD: 'See apps that take space, clear their cache or uninstall them.',
       hidden: 'Hidden Android Settings', hiddenD: 'Opens settings screens hidden in the TV menu.',
       power: 'Full Access (once)', powerD: 'If network debugging is on, the app grants itself permission: all caches are cleared at once and speed‑up is automatic.',
-      deep: 'Deep Optimization', deepD: 'Pre‑compiles apps so they open faster (may take a few minutes).',
+      deep: 'Deep Optimization', deepD: 'Trims storage (TRIM) and pre‑compiles apps so they open faster (may take a few minutes).',
       status: 'System Status', ramL: 'RAM', diskL: 'Storage', upL: 'Uptime', animL: 'Animation', free: 'free', of: '/',
       hours: '{h} h {m} min', days: '{d} days', running: 'Maintenance running…', done: 'Maintenance complete',
       sRam: 'Closing background apps', sCache: 'Clearing caches', sJunk: 'Deleting junk files', sSpeed: 'Speeding up menus', sDeep: 'Optimizing apps',
@@ -63,6 +77,13 @@
       upInstall: 'Downloaded. Press «Install» in the window that opens.', limits: 'Usage limits', browser: 'Demo mode (browser): TV actions work only on the TV.'
     },
     ar: {
+      bg: 'تقييد الخلفية', bgD: 'يمنع التطبيقات التي تبدأ تلقائياً من العمل في الخلفية؛ تبقى الذاكرة فارغة.',
+      disk: 'تحليل التخزين', diskD: 'يعرض المجلدات التي تشغل مساحة والملفات الكبيرة وملفات التثبيت (.apk) المتروكة.',
+      sBg: 'تقييد تطبيقات الخلفية', rBg: 'قُيّد عمل {n} تطبيق في الخلفية.', rBgNo: 'يلزم تفعيل «الصلاحية الكاملة» لذلك.', rBgSkip: 'لا توجد تطبيقات لتقييدها.',
+      boot: 'يبدأ عند الإقلاع', restrict: 'تقييد', allow: 'سماح', restrictAll: 'تقييد الكل', bgNote: 'التطبيقات التي تسمح بها لا تُقيَّد في الصيانة أيضاً. التقييد لا يعطّل التطبيق؛ يعمل عند فتحه.',
+      stop: 'إيقاف', stopped: 'تم الإيقاف.', folders: 'المجلدات', bigFiles: 'الملفات الكبيرة وملفات التثبيت', apkTag: 'ملف تثبيت', del: 'حذف', delAll: 'حذف ملفات التثبيت',
+      rDel: 'حُذف {n} ملف، وتحرّر {mb}.', noneBig: 'لا توجد ملفات كبيرة.', scanning: 'جارٍ الفحص…', used: 'مستخدم',
+      animSet: 'حركة القوائم', animHalf: 'سريع (0.5x)', animOff: 'معطّل (الأسرع)', animApplied: 'تم التطبيق.', autoAdb: 'تم الحصول على الصلاحية الكاملة تلقائياً؛ الصيانة تقوم الآن بكل شيء.',
       app: 'صيانة التلفاز', update: 'تحديث', settings: 'الإعدادات', minimize: 'تصغير', close: 'إغلاق', back: '→ رجوع',
       oneKey: '★ صيانة بزر واحد', oneKeyD: 'ينظّف الذاكرة والذاكرة المؤقتة والملفات غير الضرورية ويسرّع القوائم.',
       ram: 'تحرير الذاكرة', ramD: 'يغلق التطبيقات العاملة في الخلفية.', cache: 'مسح الذاكرة المؤقتة', cacheD: 'يحذف ما تراكم من ذاكرة التطبيقات المؤقتة.',
@@ -71,7 +92,7 @@
       apps: 'التطبيقات', appsD: 'اعرض التطبيقات التي تشغل مساحة، وامسح ذاكرتها المؤقتة أو أزلها.',
       hidden: 'إعدادات أندرويد المخفية', hiddenD: 'يفتح شاشات الإعدادات المخفية في قائمة التلفاز.',
       power: 'صلاحية كاملة (مرة واحدة)', powerD: 'إن كان تصحيح الأخطاء عبر الشبكة مفعّلاً، يمنح التطبيق نفسه الإذن: تُمسح كل الذاكرة المؤقتة دفعة واحدة ويتم التسريع تلقائياً.',
-      deep: 'تحسين عميق', deepD: 'يجهّز التطبيقات مسبقاً فتفتح أسرع (قد يستغرق بضع دقائق).',
+      deep: 'تحسين عميق', deepD: 'ينظّم التخزين (TRIM) ويجهّز التطبيقات مسبقاً فتفتح أسرع (قد يستغرق بضع دقائق).',
       status: 'حالة النظام', ramL: 'الذاكرة', diskL: 'التخزين', upL: 'مدة التشغيل', animL: 'الحركة', free: 'فارغ', of: '/',
       hours: '{h} س {m} د', days: '{d} يوم', running: 'جارٍ إجراء الصيانة…', done: 'اكتملت الصيانة',
       sRam: 'إغلاق تطبيقات الخلفية', sCache: 'مسح الذاكرة المؤقتة', sJunk: 'حذف الملفات غير الضرورية', sSpeed: 'تسريع القوائم', sDeep: 'تحسين التطبيقات',
@@ -93,7 +114,7 @@
 
   var APP = window.APP = {
     lang: (function () { var l = ls('tv.dil'); return /^(tr|en|ar)$/.test(l || '') ? l : (/^ar/.test(navigator.language) ? 'ar' : /^tr/.test(navigator.language) ? 'tr' : 'en'); })(),
-    version: '1.0.0', found: null, screen: 'home'
+    version: '1.0.1', found: null, screen: 'home'
   };
   function t(k, v) { var s = (T[APP.lang] && T[APP.lang][k]) || T.tr[k] || k; if (v) for (var x in v) s = s.split('{' + x + '}').join(v[x]); return s; }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -139,7 +160,7 @@
       (B ? '' : '<div class="warn">' + esc(t('browser')) + '</div>') +
       (i.oldApp ? '<div class="card old"><span>' + esc(t('oldApp')) + '</span><button class="btn" data-a="old">' + esc(t('removeOld')) + '</button></div>' : '') +
       '<div class="grid">' + tile('all', 'oneKey', true) + tile('ram', 'ram') + tile('cache', 'cache') + tile('junk', 'junk') + tile('speed', 'speed') +
-      tile('apps', 'apps') + tile('hidden', 'hidden') + tile('power', 'power') + tile('deep', 'deep') + '</div>' +
+      tile('bg', 'bg') + tile('disk', 'disk') + tile('apps', 'apps') + tile('hidden', 'hidden') + tile('power', 'power') + tile('deep', 'deep') + '</div>' +
       '<h3>' + esc(t('status')) + '</h3>' + statusHtml(i) + '<p class="muted">' + esc(t('tip')) + '</p>';
     bindActions();
     var f = $('[data-a="all"]'); if (f) f.focus();
@@ -154,6 +175,8 @@
         else if (a === 'cache') single('sCache', doCache);
         else if (a === 'junk') single('sJunk', doJunk);
         else if (a === 'speed') single('sSpeed', doSpeed);
+        else if (a === 'bg') bgScreen();
+        else if (a === 'disk') diskScreen();
         else if (a === 'apps') appsScreen(false);
         else if (a === 'hidden') hiddenScreen();
         else if (a === 'power') powerScreen();
@@ -169,10 +192,23 @@
   function doJunk() { return later(function () { var r = B ? J(B.cleanJunk(), {}) : { freed: 0, files: 0 }; return { txt: t('rJunk', { n: r.files || 0, mb: mb(r.freed) }), bytes: r.freed || 0 }; }); }
   function doSpeed() {
     return later(function () {
-      var i = info();
-      if (i.anim != null && i.anim <= 0.5) return { txt: t('rSpeedSkip'), bytes: 0 };
-      var ok = B ? B.speedUp(0.5) : false;
+      var i = info(), hedef = animTarget();
+      if (i.anim != null && Math.abs(i.anim - hedef) < 0.01) return { txt: t('rSpeedSkip'), bytes: 0 };
+      var ok = B ? B.speedUp(hedef) : false;
       return { txt: ok ? t('rSpeedOk') : t('rSpeedNo'), bytes: 0, warn: !ok };
+    });
+  }
+
+  function animTarget() { return ls('tv.anim') === '0' ? 0 : 0.5; }
+  function allowed() { return J(ls('tv.serbest') || '[]', []); }
+  function doBg() {
+    return later(function () {
+      if (!B) return { txt: t('rBgNo'), bytes: 0, warn: true };
+      if (!info().adb) return { txt: t('rBgNo'), bytes: 0, warn: true };
+      var ok = allowed(), list = J(B.bgApps(), []).filter(function (a) { return ok.indexOf(a.pkg) < 0; }).map(function (a) { return a.pkg; });
+      if (!list.length) return { txt: t('rBgSkip'), bytes: 0 };
+      var n = B.restrictBackground(JSON.stringify(list), true);
+      return n < 0 ? { txt: t('rBgNo'), bytes: 0, warn: true } : { txt: t('rBg', { n: n }), bytes: 0 };
     });
   }
 
@@ -200,6 +236,7 @@
   function single(k, f) { return runSteps([k], [f]); }
   function runAll() {
     var i = info(), keys = ['sRam', 'sCache', 'sJunk', 'sSpeed'], fns = [doRam, doCache, doJunk, doSpeed];
+    if (i.adb) { keys.push('sBg'); fns.push(doBg); }
     return runSteps(keys, fns);
   }
 
@@ -222,6 +259,55 @@
     $$('[data-info]').forEach(function (b) { b.onclick = function () { B && B.appInfo(b.getAttribute('data-info')); }; });
     $$('[data-del]').forEach(function (b) { b.onclick = function () { B && B.uninstall(b.getAttribute('data-del')); }; });
     var f = $('#aMine'); if (f) f.focus();
+  }
+  function bgScreen() {
+    var list = B ? J(B.bgApps(), []) : [], ok = allowed(), adb = info().adb;
+    list.sort(function (a, b) { return (b.boot ? 1 : 0) - (a.boot ? 1 : 0) || a.name.localeCompare(b.name); });
+    sub(t('bg'), '<p class="muted">' + esc(t('bgNote')) + (adb ? '' : ' ' + t('rBgNo')) + '</p>' +
+      '<div class="row"><button class="btn pri" id="bgAll"' + (adb && list.length ? '' : ' disabled') + '>' + esc(t('restrictAll')) + '</button></div>' +
+      (list.length ? '<div class="list">' + list.map(function (a) {
+        var serbest = ok.indexOf(a.pkg) >= 0;
+        return '<div class="li"><div><b>' + esc(a.name) + '</b><small>' + esc(a.pkg) + (a.boot ? ' · ' + esc(t('boot')) : '') + '</small></div>' +
+          '<button class="btn' + (serbest ? '' : ' pri') + '" data-bg="' + esc(a.pkg) + '" data-on="' + (serbest ? '1' : '0') + '">' + esc(serbest ? t('restrict') : t('allow')) + '</button>' +
+          '<button class="btn" data-stop="' + esc(a.pkg) + '">' + esc(t('stop')) + '</button></div>';
+      }).join('') + '</div>' : '<p class="muted">' + esc(t('none')) + '</p>'));
+    $('#bgAll').onclick = function () { single('sBg', doBg); };
+    $$('[data-bg]').forEach(function (b) {
+      b.onclick = function () {
+        var pkg = b.getAttribute('data-bg'), kisitla = b.getAttribute('data-on') === '1', l = allowed();
+        if (kisitla) { l = l.filter(function (p) { return p !== pkg; }); } else if (l.indexOf(pkg) < 0) l.push(pkg);
+        ls('tv.serbest', JSON.stringify(l));
+        if (B && adb) B.restrictBackground(JSON.stringify([pkg]), kisitla);
+        bgScreen();
+      };
+    });
+    $$('[data-stop]').forEach(function (b) { b.onclick = function () { B && B.forceStop(b.getAttribute('data-stop')); toast(t('stopped')); }; });
+    var f = $('#bgAll'); if (f) f.focus();
+  }
+  function diskScreen() {
+    sub(t('disk'), '<p class="muted" id="dScan">' + esc(t('scanning')) + '</p>');
+    setTimeout(function () {
+      var m = B ? J(B.storageMap(), { dirs: [], big: [] }) : { dirs: [], big: [] };
+      var dirs = (m.dirs || []).sort(function (a, b) { return b.size - a.size; }).slice(0, 14);
+      var big = (m.big || []).sort(function (a, b) { return (b.apk ? 1 : 0) - (a.apk ? 1 : 0) || b.size - a.size; });
+      var apks = big.filter(function (f) { return f.apk; });
+      var mx = dirs.length ? dirs[0].size : 1;
+      sub(t('disk'), (m.total ? '<p class="tot">' + esc(gb(m.total - m.free)) + ' ' + esc(t('used')) + ' ' + t('of') + ' ' + esc(gb(m.total)) + '</p>' : '') +
+        '<h3>' + esc(t('folders')) + '</h3><div class="list">' + dirs.map(function (d) {
+          return '<div class="li"><div><b>' + esc(d.path) + '</b><small>' + mb(d.size) + '</small><i class="pbar"><i style="width:' + Math.max(1, Math.round(d.size / mx * 100)) + '%"></i></i></div>' +
+            (d.pkg ? '<button class="btn" data-info="' + esc(d.pkg) + '">' + esc(t('info')) + '</button>' : '') + '</div>';
+        }).join('') + '</div>' +
+        '<h3>' + esc(t('bigFiles')) + '</h3>' + (apks.length ? '<div class="row"><button class="btn pri" id="delApk">' + esc(t('delAll')) + ' (' + apks.length + ', ' + mb(apks.reduce(function (a, f) { return a + f.size; }, 0)) + ')</button></div>' : '') +
+        (big.length ? '<div class="list">' + big.map(function (f) {
+          return '<div class="li"><div><b>' + esc(f.name) + (f.apk ? ' <small>· ' + esc(t('apkTag')) + '</small>' : '') + '</b><small>' + esc(f.path) + ' · ' + mb(f.size) + '</small></div>' +
+            '<button class="btn" data-del-f="' + esc(f.path) + '">' + esc(t('del')) + '</button></div>';
+        }).join('') + '</div>' : '<p class="muted">' + esc(t('noneBig')) + '</p>'));
+      function sil(paths) { var r = B ? J(B.deleteFiles(JSON.stringify(paths)), {}) : {}; toast(t('rDel', { n: r.files || 0, mb: mb(r.freed) })); diskScreen(); }
+      var da = $('#delApk'); if (da) da.onclick = function () { sil(apks.map(function (f) { return f.path; })); };
+      $$('[data-del-f]').forEach(function (b) { b.onclick = function () { sil([b.getAttribute('data-del-f')]); }; });
+      $$('[data-info]').forEach(function (b) { b.onclick = function () { B && B.appInfo(b.getAttribute('data-info')); }; });
+      var f = $('#delApk') || $('[data-del-f]') || $('#geriB'); if (f) f.focus();
+    }, 50);
   }
   function hiddenScreen() {
     var items = [['all', 'allSet'], ['dev', 'dev'], ['about', 'about'], ['apps', 'appsSet'], ['storage', 'store'], ['display', 'disp'], ['wifi', 'wifi'], ['date', 'date'], ['lang', 'langSet']];
@@ -252,10 +338,13 @@
   }
 
   function settingsScreen() {
+    var an = animTarget();
     sub(t('settings'), '<div class="card"><label class="chk"><input type="checkbox" id="sAuto"' + (ls('tv.oto') !== '0' ? ' checked' : '') + '> ' + esc(t('autoRun')) + '</label></div>' +
+      '<div class="card"><h3>' + esc(t('animSet')) + '</h3><div class="row"><button class="btn' + (an === 0.5 ? ' pri' : '') + '" data-anim="0.5">' + esc(t('animHalf')) + '</button><button class="btn' + (an === 0 ? ' pri' : '') + '" data-anim="0">' + esc(t('animOff')) + '</button></div></div>' +
       '<div class="card"><h3>' + esc(t('update')) + '</h3><p id="upSt" class="muted">v' + esc(APP.version) + '</p><button class="btn pri" id="sUp">' + esc(t('update')) + '</button></div>' +
       '<div id="ayarSon"></div>');
     $('#sAuto').onchange = function (e) { ls('tv.oto', e.target.checked ? '1' : '0'); };
+    $$('[data-anim]').forEach(function (b) { b.onclick = function () { ls('tv.anim', b.getAttribute('data-anim') === '0' ? '0' : '0.5'); var ok = B ? B.speedUp(animTarget()) : false; toast(ok ? t('animApplied') : t('rSpeedNo')); settingsScreen(); }; });
     $('#sUp').onclick = function () { checkUpdate(true); };
     $('#sAuto').focus();
   }
@@ -297,6 +386,7 @@
   };
 
   // ---------------------------------------------------------------- açılış
+  window.__adbHazir = function (ok) { if (!ok) return; ls('tv.guc', '1'); toast(t('autoAdb')); if (APP.screen === 'home') home(); };
   window.geri = function () { if (APP.screen !== 'home' && APP.screen !== 'run') home(); };
   function start() {
     var i = info();
