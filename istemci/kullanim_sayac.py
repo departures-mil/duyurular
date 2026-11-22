@@ -17,6 +17,7 @@ from datetime import datetime, timedelta, timezone
 
 SURUM = "1.0.0"
 LIMIT = {"okuma": 50000, "yazma": 20000, "silme": 20000}
+REHBER = "https://github.com/departures-mil/duyurular/blob/main/firebase-kurulum.md"
 
 YAZI = {
     "tr": dict(baslik="Kullanım Limitleri", bulut="Bulut eşitleme (Firebase)", ai="Yapay zeka", okuma="Okuma",
@@ -26,7 +27,7 @@ YAZI = {
                aiDoldu="Yapay zeka hesabının sınırı doldu. Sıfırlanınca yeniden kullanılabilir.",
                not_="Bu cihazın bugünkü kullanımıdır. Sınırlar Firebase ücretsiz planının günlük sınırlarıdır; aynı hesaba bağlı diğer cihazlar da aynı sınırı paylaşır.",
                aiNot="Kendi yapay zeka anahtarınla yapılan bugünkü kullanım. Ücretsiz katmanın günlük sınırı modele göre değişir.",
-               konsol="Firebase'de ayrıntılı gör", dun="Dün",
+               konsol="Firebase'de ayrıntılı gör", rehber="Kendi Firebase hesabınızı kurun (rehber)", dun="Dün",
                hic="Bu program sınırlı bir bulut ya da yapay zeka hizmeti kullanmıyor; kullanım sınırı yok. Güncellemeler GitHub'dan ücretsiz gelir."),
     "en": dict(baslik="Usage limits", bulut="Cloud sync (Firebase)", ai="AI", okuma="Reads", yazma="Writes",
                silme="Deletes", istek="Requests", token="Tokens", proje="Account / project",
@@ -35,7 +36,7 @@ YAZI = {
                aiDoldu="Your AI account limit is reached. It can be used again after the reset.",
                not_="Usage by this device today. Limits are the daily limits of the Firebase free plan; other devices on the same account share them.",
                aiNot="Today's usage with your own AI key. The free tier's daily limit depends on the model.",
-               konsol="View details in Firebase", dun="Yesterday",
+               konsol="View details in Firebase", rehber="Set up your own Firebase account (guide)", dun="Yesterday",
                hic="This program uses no limited cloud or AI service, so there is no usage limit. Updates come free from GitHub."),
     "ar": dict(baslik="حدود الاستخدام", bulut="المزامنة السحابية (Firebase)", ai="الذكاء الاصطناعي", okuma="قراءة",
                yazma="كتابة", silme="حذف", istek="طلبات", token="رموز", proje="الحساب / المشروع",
@@ -44,7 +45,7 @@ YAZI = {
                aiDoldu="بلغ حساب الذكاء الاصطناعي حده. يمكن استخدامه مجدداً بعد إعادة التعيين.",
                not_="استخدام هذا الجهاز اليوم. الحدود هي الحدود اليومية لخطة Firebase المجانية، وتتشاركها الأجهزة الأخرى على الحساب نفسه.",
                aiNot="استخدام اليوم بمفتاح الذكاء الاصطناعي الخاص بك. يختلف الحد اليومي للطبقة المجانية حسب النموذج.",
-               konsol="عرض التفاصيل في Firebase", dun="أمس",
+               konsol="عرض التفاصيل في Firebase", rehber="أنشئ حساب Firebase الخاص بك (دليل)", dun="أمس",
                hic="لا يستخدم هذا البرنامج خدمة سحابية أو ذكاءً اصطناعياً محدوداً، لذا لا يوجد حد للاستخدام. تصل التحديثات مجاناً من GitHub."),
 }
 
@@ -307,26 +308,23 @@ def KullanimKarti(parent=None):
     """Ayarlar sayfasına eklenecek kart (PySide6). Kendi kendini 30 sn'de bir günceller."""
     from PySide6.QtCore import QTimer, Qt, QUrl
     from PySide6.QtGui import QDesktopServices
-    from PySide6.QtWidgets import QFrame, QLabel, QPushButton, QVBoxLayout, QHBoxLayout
+    from PySide6.QtWidgets import QFrame, QGridLayout, QLabel, QProgressBar, QPushButton, QVBoxLayout, QHBoxLayout, QWidget
 
     kutu = QFrame(parent)
     kutu.setObjectName("kullanimKarti")
-    kutu.setFrameShape(QFrame.StyledPanel)
     kutu.setStyleSheet("#kullanimKarti{border:1px solid rgba(127,127,127,90);border-radius:10px;}")
-    dz = QVBoxLayout(kutu)
-    dz.setContentsMargins(14, 12, 14, 12)
-    bas = QLabel()
-    bas.setStyleSheet("font-weight:600;letter-spacing:1px;")
-    icerik = QLabel()
-    icerik.setTextFormat(Qt.RichText)
-    icerik.setWordWrap(True)
-    dz.addWidget(bas)
-    dz.addWidget(icerik)
+    dis = QVBoxLayout(kutu)
+    dis.setContentsMargins(14, 12, 14, 12)
+    govde = QWidget()
+    dis.addWidget(govde)
     alt = QHBoxLayout()
     dugme = QPushButton()
+    rehber = QPushButton()
+    rehber.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(REHBER)))
     alt.addWidget(dugme)
+    alt.addWidget(rehber)
     alt.addStretch(1)
-    dz.addLayout(alt)
+    dis.addLayout(alt)
 
     def ac():
         p = _proje()
@@ -335,13 +333,83 @@ def KullanimKarti(parent=None):
 
     dugme.clicked.connect(ac)
 
+    def etiket(metin, stil="", sar=True):
+        l = QLabel(metin)
+        l.setWordWrap(sar)
+        if stil:
+            l.setStyleSheet(stil)
+        return l
+
     def yenile():
+        nonlocal govde
         try:
+            v = veri()
+            b = v["bugun"]
+            yeni = QWidget()
+            dz = QVBoxLayout(yeni)
+            dz.setContentsMargins(0, 0, 0, 0)
+            dz.setSpacing(5)
+            dz.addWidget(etiket(T("baslik").upper(), "font-weight:600;letter-spacing:1px;"))
+            if not _A["bulut"] and not _A["ai"]:
+                dz.addWidget(etiket("✓ " + T("hic")))
+            if _A["bulut"]:
+                dz.addWidget(etiket("☁ " + T("bulut"), "font-weight:600;margin-top:4px;"))
+                g = QGridLayout()
+                g.setHorizontalSpacing(10)
+                g.addWidget(etiket(T("proje"), sar=False), 0, 0)
+                pl = etiket(_proje() or T("yok"), "font-weight:600;", sar=False)
+                pl.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
+                g.addWidget(pl, 0, 1)
+                satir = 1
+                for ad in ("okuma", "yazma", "silme"):
+                    n, lim = int(b.get(ad, 0)), LIMIT[ad]
+                    y = min(100.0, n * 100.0 / lim)
+                    renk = "#e5484d" if y >= 100 else "#e2a400" if y >= 80 else "#22a06b"
+                    g.addWidget(etiket(T(ad), sar=False), satir, 0)
+                    d = etiket(f"{_sayi(n)} / {_sayi(lim)} (%{int(y)})", "font-weight:600;", sar=False)
+                    d.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
+                    g.addWidget(d, satir, 1)
+                    cb = QProgressBar()
+                    cb.setRange(0, 1000)
+                    cb.setValue(int(y * 10))
+                    cb.setTextVisible(False)
+                    cb.setFixedHeight(8)
+                    cb.setStyleSheet("QProgressBar{border:0;border-radius:4px;background:rgba(127,127,127,60);}"
+                                     f"QProgressBar::chunk{{border-radius:4px;background:{renk};}}")
+                    g.addWidget(cb, satir + 1, 0, 1, 2)
+                    satir += 2
+                dz.addLayout(g)
+                if b.get("bulutDoldu"):
+                    dz.addWidget(etiket(T("doldu"), "color:#e5484d;font-weight:600;"))
+                if v.get("dun"):
+                    d0 = v["dun"]
+                    dz.addWidget(etiket(f"{T('dun')}: {T('okuma')} {_sayi(d0.get('okuma', 0))} · {T('yazma')} "
+                                        f"{_sayi(d0.get('yazma', 0))} · {T('silme')} {_sayi(d0.get('silme', 0))}", "color:gray;"))
+                dz.addWidget(etiket(T("not_"), "color:gray;"))
+            if _A["ai"]:
+                dz.addWidget(etiket("✦ " + T("ai"), "font-weight:600;margin-top:4px;"))
+                if b.get("aiDoldu"):
+                    dz.addWidget(etiket(T("aiDoldu"), "color:#e5484d;font-weight:600;"))
+                g2 = QGridLayout()
+                for i, (ad, k) in enumerate((("istek", "aiIstek"), ("token", "aiToken"))):
+                    g2.addWidget(etiket(T(ad), sar=False), i, 0)
+                    d = etiket(_sayi(b.get(k, 0)), "font-weight:600;", sar=False)
+                    d.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
+                    g2.addWidget(d, i, 1)
+                dz.addLayout(g2)
+                dz.addWidget(etiket(T("aiNot"), "color:gray;"))
+            if _A["bulut"] or _A["ai"]:
+                sn = sifirlanmaya_sn()
+                saat = (datetime.now() + timedelta(seconds=sn)).strftime("%H:%M")
+                dz.addWidget(etiket(f"⏱ {T('sifir')}: <b>{_sure(sn)}</b> ({saat} {T('yerel')})"))
+            dis.replaceWidget(govde, yeni)
+            govde.deleteLater()
+            govde = yeni
             kutu.setLayoutDirection(Qt.RightToLeft if _dil() == "ar" else Qt.LeftToRight)
-            bas.setText(T("baslik").upper())
-            icerik.setText(html_ozet())
             dugme.setText(T("konsol"))
             dugme.setVisible(bool(_A["bulut"] and _proje()))
+            rehber.setText(T("rehber"))
+            rehber.setVisible(bool(_A["bulut"]))
         except RuntimeError:
             pass
 

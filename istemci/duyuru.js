@@ -1,6 +1,6 @@
 /*!
  * Admin Duyuruları istemcisi v1.0.0 — bütün programlar için ortak.
- * Kullanım:  <script src="duyuru.js"></script>
+ * Kullanım:  <script src="duyuru.js"><\/script>
  *            Duyuru.baslat({ uygulama: 'kitaplik', surum: '2.5.0', dil: () => 'tr' });
  * Kaynak: https://raw.githubusercontent.com/departures-mil/duyurular/main/duyurular.json
  * Görülen duyurular localStorage'da tutulur; bir duyuru bir kez açılır, sonra 🔔 listesinden okunur.
