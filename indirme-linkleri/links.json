@@ -1,0 +1,191 @@
+{
+ "apps": [
+  {
+   "id": "aile-ajandasi",
+   "name": "Ajandam (Aile Ajandası)",
+   "repo": "aile-ajandasi",
+   "links": {
+    "desktop": {
+     "url": "https://github.com/departures-mil/aile-ajandasi/releases/download/v5.7.0/Ajandam-5.7.0-win-setup.exe",
+     "file": "Ajandam-5.7.0-win-setup.exe",
+     "version": "v5.7.0",
+     "mb": 79.9,
+     "date": "2026-11-24T06:18:32Z"
+    }
+   }
+  },
+  {
+   "id": "baski-hesabi",
+   "name": "Baskı Hesabı",
+   "repo": "baski-hesabi",
+   "links": {}
+  },
+  {
+   "id": "bereket-defter",
+   "name": "Bereket Defter",
+   "repo": "bereket-defter",
+   "links": {
+    "apk": {
+     "url": "https://raw.githubusercontent.com/departures-mil/bereket-defter/main/guncelleme/BereketDefter-16.apk",
+     "file": "BereketDefter-16.apk",
+     "version": "v16",
+     "mb": 0.4,
+     "date": null
+    }
+   }
+  },
+  {
+   "id": "comm-calc",
+   "name": "Comm-Calc",
+   "repo": "comm-calc",
+   "links": {
+    "apk": {
+     "url": "https://github.com/departures-mil/comm-calc/releases/download/v1.11/Comm-Calc-v1.11.apk",
+     "file": "Comm-Calc-v1.11.apk",
+     "version": "v1.11",
+     "mb": 0.3,
+     "date": "2026-11-22T13:58:59Z"
+    }
+   }
+  },
+  {
+   "id": "cv-maker",
+   "name": "CV Maker",
+   "repo": "cv-maker",
+   "links": {
+    "desktop": {
+     "url": "https://github.com/departures-mil/cv-maker/releases/download/v2.1.0/CV-Maker-Setup-2.1.0.exe",
+     "file": "CV-Maker-Setup-2.1.0.exe",
+     "version": "v2.1.0",
+     "mb": 103.3,
+     "date": "2026-11-24T09:05:09Z"
+    }
+   }
+  },
+  {
+   "id": "DesktopDuzenSabitleyici",
+   "name": "Desktop Düzen Sabitleyici",
+   "repo": "DesktopDuzenSabitleyici",
+   "links": {
+    "desktop": {
+     "url": "https://github.com/departures-mil/DesktopDuzenSabitleyici/releases/download/v1.0.11/DesktopDuzenSabitleyici.exe",
+     "file": "DesktopDuzenSabitleyici.exe",
+     "version": "v1.0.11",
+     "mb": 62.9,
+     "date": "2026-11-23T19:06:31Z"
+    }
+   }
+  },
+  {
+   "id": "falcon-ofis",
+   "name": "Falcon Ofis",
+   "repo": "falcon-ofis",
+   "links": {}
+  },
+  {
+   "id": "kalori-hesaplayici",
+   "name": "Kalori Hesaplayıcı",
+   "repo": "kalori-hesaplayici",
+   "links": {
+    "apk": {
+     "url": "https://github.com/departures-mil/kalori-hesaplayici/releases/download/v1.0.11/KaloriHesaplayici-v1.0.11.apk",
+     "file": "KaloriHesaplayici-v1.0.11.apk",
+     "version": "v1.0.11",
+     "mb": 103.2,
+     "date": "2026-11-24T05:00:22Z"
+    }
+   }
+  },
+  {
+   "id": "kitaplik",
+   "name": "Kitaplık",
+   "repo": "kitaplik",
+   "links": {
+    "desktop": {
+     "url": "https://github.com/departures-mil/kitaplik/releases/download/v2.15.0/Kitaplik-2.15.0-win-setup.exe",
+     "file": "Kitaplik-2.15.0-win-setup.exe",
+     "version": "v2.15.0",
+     "mb": 83.8,
+     "date": "2026-11-24T06:06:58Z"
+    }
+   }
+  },
+  {
+   "id": "mahzen",
+   "name": "Mahzen",
+   "repo": "mahzen",
+   "links": {}
+  },
+  {
+   "id": "merkezi-servis",
+   "name": "Merkezi Servis",
+   "repo": "merkezi-servis",
+   "links": {
+    "desktop": {
+     "url": "https://github.com/departures-mil/merkezi-servis/releases/download/v1.2.0/MerkeziServis-1.2.0-win-setup.exe",
+     "file": "MerkeziServis-1.2.0-win-setup.exe",
+     "version": "v1.2.0",
+     "mb": 78.9,
+     "date": "2026-11-24T09:05:57Z"
+    }
+   }
+  },
+  {
+   "id": "organizer",
+   "name": "Organizer",
+   "repo": "organizer",
+   "links": {
+    "apk": {
+     "url": "https://raw.githubusercontent.com/departures-mil/organizer/main/guncelleme/organizer-telefon-apk-2.1.0.11.apk",
+     "file": "organizer-telefon-apk-2.1.0.11.apk",
+     "version": "v2.1.0.11",
+     "mb": 0.3,
+     "date": null
+    }
+   }
+  },
+  {
+   "id": "pixhawk-log-analiz",
+   "name": "Pixhawk Log Analiz",
+   "repo": "pixhawk-log-analiz",
+   "links": {
+    "desktop": {
+     "url": "https://github.com/departures-mil/pixhawk-log-analiz/releases/download/v1.0.6/PixhawkLogAnaliz_Setup_1.0.6.exe",
+     "file": "PixhawkLogAnaliz_Setup_1.0.6.exe",
+     "version": "v1.0.6",
+     "mb": 94.2,
+     "date": "2026-11-24T05:23:50Z"
+    }
+   }
+  },
+  {
+   "id": "sinav-hazirlama",
+   "name": "Sınav Hazırlama",
+   "repo": "sinav-hazirlama",
+   "links": {
+    "desktop": {
+     "url": "https://github.com/departures-mil/sinav-hazirlama/releases/download/v1.10.0/SinavHazirlama-1.10.0-win-setup.exe",
+     "file": "SinavHazirlama-1.10.0-win-setup.exe",
+     "version": "v1.10.0",
+     "mb": 102.1,
+     "date": "2026-11-24T09:04:36Z"
+    }
+   }
+  },
+  {
+   "id": "tv-bakim",
+   "name": "TV Bakım",
+   "repo": "duyurular",
+   "links": {
+    "apk": {
+     "url": "https://raw.githubusercontent.com/departures-mil/duyurular/main/tv-bakim/guncelleme/TV-Bakim-1.0.2.apk",
+     "file": "TV-Bakim-1.0.2.apk",
+     "version": "v1.0.2",
+     "mb": 0.1,
+     "date": null
+    }
+   }
+  }
+ ],
+ "updated": "2026-11-24T09:13:39Z"
+}

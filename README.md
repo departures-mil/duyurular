@@ -1,5 +1,7 @@
 # Duyurular
 
+📥 **Bütün programların indirme linkleri:** [INDIRME-LINKLERI.md](INDIRME-LINKLERI.md) (15 dakikada bir kendiliğinden yenilenir)
+
 Bütün programlara giden admin duyuruları. Programlar şu dosyayı okur (30 dakikada bir ve açılışta):
 
 `https://raw.githubusercontent.com/departures-mil/duyurular/main/duyurular.json`
