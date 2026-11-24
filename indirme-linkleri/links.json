@@ -27,11 +27,11 @@
    "repo": "baski-hesabi",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/baski-hesabi/releases/download/v1.13/BaskiHesabi-Setup-1.13.exe",
-     "file": "BaskiHesabi-Setup-1.13.exe",
-     "version": "v1.13",
-     "mb": 2.1,
-     "date": "2026-11-24T09:22:40Z"
+     "url": "https://github.com/departures-mil/baski-hesabi/releases/download/v1.14.0/BaskiHesabi-Setup-1.14.0.exe",
+     "file": "BaskiHesabi-Setup-1.14.0.exe",
+     "version": "v1.14.0",
+     "mb": 2.7,
+     "date": "2026-11-24T09:41:44Z"
     }
    }
   },
@@ -41,11 +41,18 @@
    "repo": "bereket-defter",
    "links": {
     "apk": {
-     "url": "https://raw.githubusercontent.com/departures-mil/bereket-defter/main/guncelleme/BereketDefter-16.apk",
-     "file": "BereketDefter-16.apk",
-     "version": "v16",
-     "mb": 0.4,
-     "date": null
+     "url": "https://github.com/departures-mil/bereket-defter/releases/download/v1.21.1/BereketDefter-1.21.1-android.apk",
+     "file": "BereketDefter-1.21.1-android.apk",
+     "version": "v1.21.1",
+     "mb": 0.9,
+     "date": "2026-11-24T15:24:16Z"
+    },
+    "desktop": {
+     "url": "https://github.com/departures-mil/bereket-defter/releases/download/v1.21.1/BereketDefter-1.21.1-win-setup.exe",
+     "file": "BereketDefter-1.21.1-win-setup.exe",
+     "version": "v1.21.1",
+     "mb": 34.1,
+     "date": "2026-11-24T15:24:16Z"
     }
    }
   },
@@ -55,11 +62,11 @@
    "repo": "comm-calc",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/comm-calc/releases/download/v1.12.2/Comm-Calc-Setup-1.12.2.exe",
-     "file": "Comm-Calc-Setup-1.12.2.exe",
-     "version": "v1.12.2",
-     "mb": 111.1,
-     "date": "2026-11-24T05:48:54Z"
+     "url": "https://github.com/departures-mil/comm-calc/releases/download/v1.13.0/CommCalc-1.13.0-win-setup.exe",
+     "file": "CommCalc-1.13.0-win-setup.exe",
+     "version": "v1.13.0",
+     "mb": 116.6,
+     "date": "2026-11-24T19:08:18Z"
     },
     "apk": {
      "url": "https://github.com/departures-mil/comm-calc/releases/download/v1.11/Comm-Calc-v1.11.apk",
@@ -76,11 +83,11 @@
    "repo": "cv-maker",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/cv-maker/releases/download/v2.1.0/CV-Maker-Setup-2.1.0.exe",
-     "file": "CV-Maker-Setup-2.1.0.exe",
-     "version": "v2.1.0",
+     "url": "https://github.com/departures-mil/cv-maker/releases/download/v2.1.1/CV-Maker-Setup-2.1.1.exe",
+     "file": "CV-Maker-Setup-2.1.1.exe",
+     "version": "v2.1.1",
      "mb": 103.3,
-     "date": "2026-11-24T09:05:09Z"
+     "date": "2026-11-24T15:33:12Z"
     }
    }
   },
@@ -90,11 +97,11 @@
    "repo": "DesktopDuzenSabitleyici",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/DesktopDuzenSabitleyici/releases/download/v1.0.12/DesktopDuzenSabitleyici.exe",
-     "file": "DesktopDuzenSabitleyici.exe",
-     "version": "v1.0.12",
-     "mb": 63.0,
-     "date": "2026-11-24T09:18:16Z"
+     "url": "https://github.com/departures-mil/DesktopDuzenSabitleyici/releases/download/v1.1.1/DesktopDuzenSabitleyici-Setup-1.1.1.exe",
+     "file": "DesktopDuzenSabitleyici-Setup-1.1.1.exe",
+     "version": "v1.1.1",
+     "mb": 57.4,
+     "date": "2026-11-24T15:33:59Z"
     }
    }
   },
@@ -104,11 +111,11 @@
    "repo": "falcon-ofis",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/falcon-ofis/releases/download/v1.57.0/Falcon-Ofis-Setup-1.57.0.exe",
-     "file": "Falcon-Ofis-Setup-1.57.0.exe",
-     "version": "v1.57.0",
-     "mb": 119.3,
-     "date": "2026-11-24T09:27:09Z"
+     "url": "https://github.com/departures-mil/falcon-ofis/releases/download/v1.58.1/FalconOfis-1.58.1-win-setup.exe",
+     "file": "FalconOfis-1.58.1-win-setup.exe",
+     "version": "v1.58.1",
+     "mb": 128.5,
+     "date": "2026-11-24T15:28:55Z"
     }
    }
   },
@@ -118,11 +125,11 @@
    "repo": "kalori-hesaplayici",
    "links": {
     "apk": {
-     "url": "https://github.com/departures-mil/kalori-hesaplayici/releases/download/v1.0.12/KaloriHesaplayici-v1.0.12.apk",
-     "file": "KaloriHesaplayici-v1.0.12.apk",
-     "version": "v1.0.12",
-     "mb": 103.6,
-     "date": "2026-11-24T09:25:13Z"
+     "url": "https://github.com/departures-mil/kalori-hesaplayici/releases/download/v1.1.0/KaloriHesaplayici-v1.1.0.apk",
+     "file": "KaloriHesaplayici-v1.1.0.apk",
+     "version": "v1.1.0",
+     "mb": 104.9,
+     "date": "2026-11-24T19:03:25Z"
     }
    }
   },
@@ -132,18 +139,18 @@
    "repo": "kitaplik",
    "links": {
     "apk": {
-     "url": "https://github.com/departures-mil/kitaplik/releases/download/v2.15.1/Kitaplik-2.15.1-android.apk",
-     "file": "Kitaplik-2.15.1-android.apk",
-     "version": "v2.15.1",
+     "url": "https://github.com/departures-mil/kitaplik/releases/download/v2.15.2/Kitaplik-2.15.2-android.apk",
+     "file": "Kitaplik-2.15.2-android.apk",
+     "version": "v2.15.2",
      "mb": 6.4,
-     "date": "2026-11-24T09:26:08Z"
+     "date": "2026-11-24T15:30:30Z"
     },
     "desktop": {
-     "url": "https://github.com/departures-mil/kitaplik/releases/download/v2.15.1/Kitaplik-2.15.1-win-setup.exe",
-     "file": "Kitaplik-2.15.1-win-setup.exe",
-     "version": "v2.15.1",
+     "url": "https://github.com/departures-mil/kitaplik/releases/download/v2.15.2/Kitaplik-2.15.2-win-setup.exe",
+     "file": "Kitaplik-2.15.2-win-setup.exe",
+     "version": "v2.15.2",
      "mb": 83.8,
-     "date": "2026-11-24T09:26:08Z"
+     "date": "2026-11-24T15:30:30Z"
     }
    }
   },
@@ -153,11 +160,11 @@
    "repo": "mahzen",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/mahzen/releases/download/v3.8/Mahzen-Setup-3.8.exe",
-     "file": "Mahzen-Setup-3.8.exe",
-     "version": "v3.8",
-     "mb": 2.7,
-     "date": "2026-11-24T09:24:30Z"
+     "url": "https://github.com/departures-mil/mahzen/releases/download/v3.9.0/Mahzen-3.9.0-win-setup.exe",
+     "file": "Mahzen-3.9.0-win-setup.exe",
+     "version": "v3.9.0",
+     "mb": 3.2,
+     "date": "2026-11-24T09:42:40Z"
     }
    }
   },
@@ -167,11 +174,11 @@
    "repo": "merkezi-servis",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/merkezi-servis/releases/download/v1.2.0/MerkeziServis-1.2.0-win-setup.exe",
-     "file": "MerkeziServis-1.2.0-win-setup.exe",
-     "version": "v1.2.0",
+     "url": "https://github.com/departures-mil/merkezi-servis/releases/download/v1.2.2/MerkeziServis-1.2.2-win-setup.exe",
+     "file": "MerkeziServis-1.2.2-win-setup.exe",
+     "version": "v1.2.2",
      "mb": 78.9,
-     "date": "2026-11-24T09:05:57Z"
+     "date": "2026-11-24T15:36:59Z"
     }
    }
   },
@@ -181,11 +188,18 @@
    "repo": "organizer",
    "links": {
     "apk": {
-     "url": "https://raw.githubusercontent.com/departures-mil/organizer/main/guncelleme/organizer-telefon-apk-2.1.0.11.apk",
-     "file": "organizer-telefon-apk-2.1.0.11.apk",
-     "version": "v2.1.0.11",
-     "mb": 0.3,
-     "date": null
+     "url": "https://github.com/departures-mil/organizer/releases/download/v2.2.1/Organizer-2.2.1-android.apk",
+     "file": "Organizer-2.2.1-android.apk",
+     "version": "v2.2.1",
+     "mb": 0.8,
+     "date": "2026-11-24T15:18:02Z"
+    },
+    "desktop": {
+     "url": "https://github.com/departures-mil/organizer/releases/download/v2.2.1/Organizer-2.2.1-win-setup.exe",
+     "file": "Organizer-2.2.1-win-setup.exe",
+     "version": "v2.2.1",
+     "mb": 35.2,
+     "date": "2026-11-24T15:18:02Z"
     }
    }
   },
@@ -195,11 +209,11 @@
    "repo": "pixhawk-log-analiz",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/pixhawk-log-analiz/releases/download/v1.0.6/PixhawkLogAnaliz_Setup_1.0.6.exe",
-     "file": "PixhawkLogAnaliz_Setup_1.0.6.exe",
-     "version": "v1.0.6",
-     "mb": 94.2,
-     "date": "2026-11-24T05:23:50Z"
+     "url": "https://github.com/departures-mil/pixhawk-log-analiz/releases/download/v1.1.2/PixhawkLogAnaliz_Setup_1.1.2.exe",
+     "file": "PixhawkLogAnaliz_Setup_1.1.2.exe",
+     "version": "v1.1.2",
+     "mb": 94.8,
+     "date": "2026-11-24T15:34:46Z"
     }
    }
   },
@@ -209,11 +223,11 @@
    "repo": "sinav-hazirlama",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/sinav-hazirlama/releases/download/v1.10.0/SinavHazirlama-1.10.0-win-setup.exe",
-     "file": "SinavHazirlama-1.10.0-win-setup.exe",
-     "version": "v1.10.0",
-     "mb": 102.1,
-     "date": "2026-11-24T09:04:36Z"
+     "url": "https://github.com/departures-mil/sinav-hazirlama/releases/download/v1.10.1/SinavHazirlama-1.10.1-win-setup.exe",
+     "file": "SinavHazirlama-1.10.1-win-setup.exe",
+     "version": "v1.10.1",
+     "mb": 102.3,
+     "date": "2026-11-24T10:15:49Z"
     }
    }
   },
@@ -223,14 +237,14 @@
    "repo": "duyurular",
    "links": {
     "apk": {
-     "url": "https://raw.githubusercontent.com/departures-mil/duyurular/main/tv-bakim/guncelleme/TV-Bakim-1.0.2.apk",
-     "file": "TV-Bakim-1.0.2.apk",
-     "version": "v1.0.2",
-     "mb": 0.1,
-     "date": null
+     "url": "https://github.com/departures-mil/duyurular/releases/download/v1.1.0/TV-Bakim-1.1.0-android.apk",
+     "file": "TV-Bakim-1.1.0-android.apk",
+     "version": "v1.1.0",
+     "mb": 0.6,
+     "date": "2026-11-24T19:07:37Z"
     }
    }
   }
  ],
- "updated": "2026-11-24T09:28:05Z"
+ "updated": "2026-11-24T20:12:46Z"
 }
