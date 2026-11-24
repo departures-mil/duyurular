@@ -1,420 +1,483 @@
-/* TV Bakım — arayüz. Kumandanın yön tuşları ve OK ile kullanılır. */
-(function () {
+/* TV Bakım — ekranlar. Kumandayla (yön tuşları + OK + Geri) kullanılır; dokunmatik/fare da çalışır.
+   Yerel işlemler yalnız window.TV (TvBridge.java) üzerinden: durum okuma, kendi önbelleği, tarama → çöp kutusu (geri alınabilir),
+   uygulama listesi / sistem ekranları, ağ testi. Tarayıcıda (TV köprüsü yoksa) deneme kipi. */
+(function (g) {
   'use strict';
-  var CH = 'https://raw.githubusercontent.com/departures-mil/duyurular/main/tv-bakim/guncelleme/';
-  var B = window.TV || null;                 // Android köprüsü (tarayıcıda yok: deneme kipi)
-  var $ = function (s, r) { return (r || document).querySelector(s); };
-  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
-  var ls = function (k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } };
+  var FC = g.FC, ui = FC.ui, el = ui.el, B = g.TVBakim, TVB = g.TV || null;
+  var T = function (k, v) { return FC.t(k, v); };
+  var L = function () { return FC.i18n.lang(); };
+  var mb = function (b) { return '\u2066' + B.size(b, L()) + '\u2069'; };   // yön yalıtımı: Arapça metin içinde sayı+birim karışmasın
+  var S = FC.storage;
 
-  var T = {
-    tr: {
-      setupT: 'Bir kez: Ağ hata ayıklamasını açın', setupD: 'Android bu ayarı uygulamaya açtırmıyor. Aşağıdaki düğmelerle ilgili ekranları açın; geri dönünce uygulama bağlantıyı kendisi kurar ve kalan bakımı yapar.', later: 'Sonra', never: 'Bir daha gösterme', autoDone: 'Tam yetki alındı; kalan bakım adımları yapıldı.',
-      bg: 'Arka Plan Kısıtlama', bgD: 'Kendiliğinden başlayan uygulamaların arka planda çalışmasını keser; RAM hep boş kalır.',
-      disk: 'Depolama Analizi', diskD: 'Yer kaplayan klasörleri, büyük dosyaları ve bırakılmış kurulum (.apk) dosyalarını gösterir.',
-      sBg: 'Arka plan uygulamaları kısıtlanıyor', rBg: '{n} uygulamanın arka planda çalışması kısıtlandı.', rBgNo: 'Bunun için «Tam Yetki» gerekir.', rBgSkip: 'Kısıtlanacak uygulama yok.',
-      boot: 'açılışta başlar', restrict: 'Kısıtla', allow: 'Serbest bırak', restrictAll: 'Hepsini kısıtla', bgNote: 'Serbest bıraktığınız uygulamalar bakımda da kısıtlanmaz. Kısıtlama uygulamayı bozmaz; açınca yine çalışır.',
-      stop: 'Durdur', stopped: 'Durduruldu.', folders: 'Klasörler', bigFiles: 'Büyük dosyalar ve kurulum dosyaları', apkTag: 'kurulum dosyası', del: 'Sil', delAll: 'Kurulum dosyalarını sil',
-      rDel: '{n} dosya silindi, {mb} yer açıldı.', noneBig: 'Büyük dosya yok.', scanning: 'Taranıyor…', used: 'dolu',
-      animSet: 'Menü animasyonu', animHalf: 'Hızlı (0.5x)', animOff: 'Kapalı (en hızlı)', animApplied: 'Uygulandı.', autoAdb: 'Tam yetki kendiliğinden alındı; bakım artık her şeyi yapıyor.',
-      app: 'TV Bakım', update: 'Güncelle', settings: 'Ayarlar', minimize: 'Küçült', close: 'Kapat', back: '← Geri',
-      oneKey: '★ Tek Tuşla Bakım', oneKeyD: 'RAM, önbellek ve gereksiz dosyaları temizler, menüleri hızlandırır.',
-      ram: 'RAM Temizle', ramD: 'Arka planda çalışan uygulamaları kapatır.', cache: 'Önbellekleri Temizle', cacheD: 'Uygulamaların biriken önbelleğini siler.',
-      junk: 'Gereksiz Dosyalar', junkD: 'Geçici, günlük ve küçük resim dosyalarını siler. Fotoğraf, video ve belgelerinize dokunmaz.',
-      speed: 'Hızlandır', speedD: 'Menü animasyonlarını 0.5x yapar; TV daha çabuk tepki verir.',
-      apps: 'Uygulamalar', appsD: 'Yer kaplayan uygulamaları görün, önbelleğini silin ya da kaldırın.',
-      hidden: 'Gizli Android Ayarları', hiddenD: 'TV menüsünde gizlenmiş ayar ekranlarını açar.',
-      power: 'Tam Yetki (bir kez)', powerD: 'Ağ hata ayıklaması açıksa kendine izin verir: bütün önbellekler topluca silinir, hızlandırma kendiliğinden yapılır.',
-      deep: 'Derin Optimizasyon', deepD: 'Depolamayı düzenler (TRIM) ve uygulamaları önceden derler; açılışlar hızlanır (birkaç dakika sürebilir).',
-      status: 'Sistem Durumu', ramL: 'RAM', diskL: 'Depolama', upL: 'Açık kalma', animL: 'Animasyon', free: 'boş', of: '/',
-      hours: '{h} sa {m} dk', days: '{d} gün', running: 'Bakım yapılıyor…', done: 'Bakım tamamlandı',
-      sRam: 'Arka plan uygulamaları kapatılıyor', sCache: 'Önbellekler temizleniyor', sJunk: 'Gereksiz dosyalar siliniyor', sSpeed: 'Menüler hızlandırılıyor', sDeep: 'Uygulamalar optimize ediliyor',
-      rRam: '{n} uygulamanın arka plan işi kapatıldı, {mb} RAM boşaldı.', rCache: '{mb} önbellek silindi.', rJunk: '{n} gereksiz dosya silindi, {mb} yer açıldı.',
-      rSpeedOk: 'Menü animasyonları 0.5x yapıldı.', rSpeedNo: 'Android bu ayarı izinsiz değiştirtmiyor. «Tam Yetki»yi bir kez açın ya da Geliştirici seçeneklerinden elle yapın.',
-      rSpeedSkip: 'Animasyonlar zaten hızlı.', total: 'Toplam açılan yer: {mb}', tip: 'En iyi sonuç için haftada bir çalıştırın. TV çok yavaşsa fişten çekip 1 dakika sonra açın.',
-      warnDisk: '⚠ Depolama çok dolu; bu TV\'yi yavaşlatır. Kullanmadığınız uygulamaları kaldırın.', warnRam: '⚠ Boş RAM çok az.', warnUp: '⚠ TV {d} gündür yeniden başlatılmamış.',
-      ok: 'Tamam', autoRun: 'Program açılınca bakımı kendiliğinden yap', lang: 'Dil', oldApp: 'Eski «TV Bakım» uygulaması da kurulu. Yenisi her şeyi yapıyor; eskisini kaldırabilirsiniz.',
-      removeOld: 'Eskisini kaldır', mine: 'Benim yüklediklerim', all: 'Tüm uygulamalar (sistem dahil, dikkat)', info: 'Önbellek / Durdur', remove: 'Kaldır', none: 'Listelenecek uygulama yok.',
-      dev: 'Geliştirici seçenekleri', about: 'Cihaz bilgisi (Derleme numarası)', store: 'Depolama', appsSet: 'Uygulama yönetimi', disp: 'Ekran / Görüntü', wifi: 'Wi‑Fi', date: 'Tarih ve saat', langSet: 'Dil', allSet: 'Android Ayarları (tam menü)',
-      notOpen: 'Bu TV bu ekranı gizlemiş, açılamadı.',
-      powerHow: 'Tam yetki için (bir kez): 1) «Cihaz bilgisi»ni açıp «Derleme numarası»na 7 kez basın. 2) «Geliştirici seçenekleri»nde «Ağ hata ayıklaması» (ADB over network) seçeneğini açın. 3) Buraya dönüp «Tam Yetki»ye basın; TV\'de çıkan soruda «Her zaman izin ver»i seçin.',
-      powerWait: 'Bağlanılıyor… TV ekranında izin sorusu çıkarsa «Her zaman izin ver» seçip Tamam\'a basın.', powerOk: 'Tam yetki alındı. Bundan sonra bakım her şeyi kendiliğinden yapar.', powerNo: 'Bağlanılamadı. Ağ hata ayıklaması açık mı?',
-      deepOk: 'Derin optimizasyon tamamlandı.', deepNo: 'Bunun için önce «Tam Yetki» gerekir.',
-      upChecking: 'Güncellemeler denetleniyor…', upToDate: 'Program güncel (v{v}).', upNew: 'Yeni sürüm hazır: v{v}', upNow: 'Şimdi güncelle', upFail: 'Güncelleme alınamadı: {e}',
-      upInstall: 'İndirildi. Açılan pencerede «Yükle»ye basın.', limits: 'Kullanım Limitleri', browser: 'Deneme kipi (tarayıcı): TV işlemleri yalnız TV\'de çalışır.'
-    },
-    en: {
-      setupT: 'Once: turn on Network debugging', setupD: 'Android does not let an app switch this on. Use the buttons below to open the screens; when you come back the app connects by itself and finishes the maintenance.', later: 'Later', never: 'Do not show again', autoDone: 'Full access obtained; remaining maintenance steps done.',
-      bg: 'Background Restriction', bgD: 'Stops self‑starting apps from running in the background; RAM stays free.',
-      disk: 'Storage Analysis', diskD: 'Shows folders that take space, large files and leftover installer (.apk) files.',
-      sBg: 'Restricting background apps', rBg: 'Background activity of {n} apps restricted.', rBgNo: '«Full Access» is needed for this.', rBgSkip: 'No apps to restrict.',
-      boot: 'starts at boot', restrict: 'Restrict', allow: 'Allow', restrictAll: 'Restrict all', bgNote: 'Apps you allow are not restricted by maintenance either. Restriction does not break an app; it still works when opened.',
-      stop: 'Stop', stopped: 'Stopped.', folders: 'Folders', bigFiles: 'Large files and installer files', apkTag: 'installer file', del: 'Delete', delAll: 'Delete installer files',
-      rDel: '{n} files deleted, {mb} freed.', noneBig: 'No large files.', scanning: 'Scanning…', used: 'used',
-      animSet: 'Menu animation', animHalf: 'Fast (0.5x)', animOff: 'Off (fastest)', animApplied: 'Applied.', autoAdb: 'Full access obtained automatically; maintenance now does everything.',
-      app: 'TV Care', update: 'Update', settings: 'Settings', minimize: 'Minimize', close: 'Close', back: '← Back',
-      oneKey: '★ One‑Key Care', oneKeyD: 'Cleans RAM, caches and junk files and speeds up the menus.',
-      ram: 'Free RAM', ramD: 'Closes apps running in the background.', cache: 'Clear Caches', cacheD: 'Deletes the cache apps have piled up.',
-      junk: 'Junk Files', junkD: 'Deletes temporary, log and thumbnail files. Your photos, videos and documents are not touched.',
-      speed: 'Speed Up', speedD: 'Sets menu animations to 0.5x; the TV responds faster.',
-      apps: 'Apps', appsD: 'See apps that take space, clear their cache or uninstall them.',
-      hidden: 'Hidden Android Settings', hiddenD: 'Opens settings screens hidden in the TV menu.',
-      power: 'Full Access (once)', powerD: 'If network debugging is on, the app grants itself permission: all caches are cleared at once and speed‑up is automatic.',
-      deep: 'Deep Optimization', deepD: 'Trims storage (TRIM) and pre‑compiles apps so they open faster (may take a few minutes).',
-      status: 'System Status', ramL: 'RAM', diskL: 'Storage', upL: 'Uptime', animL: 'Animation', free: 'free', of: '/',
-      hours: '{h} h {m} min', days: '{d} days', running: 'Maintenance running…', done: 'Maintenance complete',
-      sRam: 'Closing background apps', sCache: 'Clearing caches', sJunk: 'Deleting junk files', sSpeed: 'Speeding up menus', sDeep: 'Optimizing apps',
-      rRam: 'Background work of {n} apps closed, {mb} RAM freed.', rCache: '{mb} of cache deleted.', rJunk: '{n} junk files deleted, {mb} freed.',
-      rSpeedOk: 'Menu animations set to 0.5x.', rSpeedNo: 'Android does not allow this without permission. Turn on «Full Access» once, or do it in Developer options.',
-      rSpeedSkip: 'Animations are already fast.', total: 'Total space freed: {mb}', tip: 'Run it once a week for best results. If the TV is very slow, unplug it and turn it on again after 1 minute.',
-      warnDisk: '⚠ Storage is almost full; this slows the TV. Uninstall apps you do not use.', warnRam: '⚠ Very little free RAM.', warnUp: '⚠ The TV has not been restarted for {d} days.',
-      ok: 'OK', autoRun: 'Run maintenance automatically when the app opens', lang: 'Language', oldApp: 'The old «TV Bakım» app is also installed. The new one does everything; you can remove the old one.',
-      removeOld: 'Remove the old one', mine: 'Apps I installed', all: 'All apps (incl. system, careful)', info: 'Cache / Stop', remove: 'Uninstall', none: 'No apps to list.',
-      dev: 'Developer options', about: 'Device info (Build number)', store: 'Storage', appsSet: 'App management', disp: 'Display', wifi: 'Wi‑Fi', date: 'Date & time', langSet: 'Language', allSet: 'Android Settings (full menu)',
-      notOpen: 'This TV hides this screen; it could not be opened.',
-      powerHow: 'For full access (once): 1) Open «Device info» and press «Build number» 7 times. 2) In «Developer options» turn on «Network debugging» (ADB over network). 3) Come back and press «Full Access»; choose «Always allow» on the TV prompt.',
-      powerWait: 'Connecting… If a permission prompt appears on the TV, choose «Always allow» and press OK.', powerOk: 'Full access granted. From now on maintenance does everything by itself.', powerNo: 'Could not connect. Is network debugging on?',
-      deepOk: 'Deep optimization complete.', deepNo: '«Full Access» is needed first.',
-      upChecking: 'Checking for updates…', upToDate: 'The app is up to date (v{v}).', upNew: 'New version ready: v{v}', upNow: 'Update now', upFail: 'Update failed: {e}',
-      upInstall: 'Downloaded. Press «Install» in the window that opens.', limits: 'Usage limits', browser: 'Demo mode (browser): TV actions work only on the TV.'
-    },
-    ar: {
-      setupT: 'مرة واحدة: فعّل تصحيح الأخطاء عبر الشبكة', setupD: 'لا يسمح أندرويد للتطبيق بتفعيل هذا الإعداد. افتح الشاشات بالأزرار أدناه؛ وعند العودة يتصل التطبيق بنفسه ويكمل الصيانة.', later: 'لاحقاً', never: 'لا تعرض مجدداً', autoDone: 'تم الحصول على الصلاحية الكاملة؛ أُنجزت خطوات الصيانة المتبقية.',
-      bg: 'تقييد الخلفية', bgD: 'يمنع التطبيقات التي تبدأ تلقائياً من العمل في الخلفية؛ تبقى الذاكرة فارغة.',
-      disk: 'تحليل التخزين', diskD: 'يعرض المجلدات التي تشغل مساحة والملفات الكبيرة وملفات التثبيت (.apk) المتروكة.',
-      sBg: 'تقييد تطبيقات الخلفية', rBg: 'قُيّد عمل {n} تطبيق في الخلفية.', rBgNo: 'يلزم تفعيل «الصلاحية الكاملة» لذلك.', rBgSkip: 'لا توجد تطبيقات لتقييدها.',
-      boot: 'يبدأ عند الإقلاع', restrict: 'تقييد', allow: 'سماح', restrictAll: 'تقييد الكل', bgNote: 'التطبيقات التي تسمح بها لا تُقيَّد في الصيانة أيضاً. التقييد لا يعطّل التطبيق؛ يعمل عند فتحه.',
-      stop: 'إيقاف', stopped: 'تم الإيقاف.', folders: 'المجلدات', bigFiles: 'الملفات الكبيرة وملفات التثبيت', apkTag: 'ملف تثبيت', del: 'حذف', delAll: 'حذف ملفات التثبيت',
-      rDel: 'حُذف {n} ملف، وتحرّر {mb}.', noneBig: 'لا توجد ملفات كبيرة.', scanning: 'جارٍ الفحص…', used: 'مستخدم',
-      animSet: 'حركة القوائم', animHalf: 'سريع (0.5x)', animOff: 'معطّل (الأسرع)', animApplied: 'تم التطبيق.', autoAdb: 'تم الحصول على الصلاحية الكاملة تلقائياً؛ الصيانة تقوم الآن بكل شيء.',
-      app: 'صيانة التلفاز', update: 'تحديث', settings: 'الإعدادات', minimize: 'تصغير', close: 'إغلاق', back: '→ رجوع',
-      oneKey: '★ صيانة بزر واحد', oneKeyD: 'ينظّف الذاكرة والذاكرة المؤقتة والملفات غير الضرورية ويسرّع القوائم.',
-      ram: 'تحرير الذاكرة', ramD: 'يغلق التطبيقات العاملة في الخلفية.', cache: 'مسح الذاكرة المؤقتة', cacheD: 'يحذف ما تراكم من ذاكرة التطبيقات المؤقتة.',
-      junk: 'الملفات غير الضرورية', junkD: 'يحذف الملفات المؤقتة وملفات السجل والصور المصغّرة. لا يمسّ صورك وفيديوهاتك ومستنداتك.',
-      speed: 'تسريع', speedD: 'يجعل حركات القوائم 0.5x؛ يستجيب التلفاز أسرع.',
-      apps: 'التطبيقات', appsD: 'اعرض التطبيقات التي تشغل مساحة، وامسح ذاكرتها المؤقتة أو أزلها.',
-      hidden: 'إعدادات أندرويد المخفية', hiddenD: 'يفتح شاشات الإعدادات المخفية في قائمة التلفاز.',
-      power: 'صلاحية كاملة (مرة واحدة)', powerD: 'إن كان تصحيح الأخطاء عبر الشبكة مفعّلاً، يمنح التطبيق نفسه الإذن: تُمسح كل الذاكرة المؤقتة دفعة واحدة ويتم التسريع تلقائياً.',
-      deep: 'تحسين عميق', deepD: 'ينظّم التخزين (TRIM) ويجهّز التطبيقات مسبقاً فتفتح أسرع (قد يستغرق بضع دقائق).',
-      status: 'حالة النظام', ramL: 'الذاكرة', diskL: 'التخزين', upL: 'مدة التشغيل', animL: 'الحركة', free: 'فارغ', of: '/',
-      hours: '{h} س {m} د', days: '{d} يوم', running: 'جارٍ إجراء الصيانة…', done: 'اكتملت الصيانة',
-      sRam: 'إغلاق تطبيقات الخلفية', sCache: 'مسح الذاكرة المؤقتة', sJunk: 'حذف الملفات غير الضرورية', sSpeed: 'تسريع القوائم', sDeep: 'تحسين التطبيقات',
-      rRam: 'أُغلق عمل {n} تطبيق في الخلفية، وتحرّر {mb} من الذاكرة.', rCache: 'حُذف {mb} من الذاكرة المؤقتة.', rJunk: 'حُذف {n} ملف غير ضروري، وتحرّر {mb}.',
-      rSpeedOk: 'أصبحت حركات القوائم 0.5x.', rSpeedNo: 'لا يسمح أندرويد بذلك دون إذن. فعّل «الصلاحية الكاملة» مرة واحدة أو غيّره من خيارات المطوّر.',
-      rSpeedSkip: 'الحركات سريعة بالفعل.', total: 'إجمالي المساحة المحرَّرة: {mb}', tip: 'شغّله مرة أسبوعياً لأفضل نتيجة. إن كان التلفاز بطيئاً جداً افصله عن الكهرباء ثم شغّله بعد دقيقة.',
-      warnDisk: '⚠ التخزين ممتلئ تقريباً؛ هذا يبطئ التلفاز. أزل التطبيقات التي لا تستخدمها.', warnRam: '⚠ الذاكرة الفارغة قليلة جداً.', warnUp: '⚠ لم يُعَد تشغيل التلفاز منذ {d} يوم.',
-      ok: 'حسناً', autoRun: 'إجراء الصيانة تلقائياً عند فتح التطبيق', lang: 'اللغة', oldApp: 'تطبيق «TV Bakım» القديم مثبّت أيضاً. الجديد يقوم بكل شيء؛ يمكنك إزالة القديم.',
-      removeOld: 'إزالة القديم', mine: 'التطبيقات التي ثبّتّها', all: 'كل التطبيقات (بما فيها النظام، بحذر)', info: 'الذاكرة المؤقتة / إيقاف', remove: 'إزالة', none: 'لا توجد تطبيقات.',
-      dev: 'خيارات المطوّر', about: 'معلومات الجهاز (رقم الإصدار)', store: 'التخزين', appsSet: 'إدارة التطبيقات', disp: 'الشاشة', wifi: 'Wi‑Fi', date: 'التاريخ والوقت', langSet: 'اللغة', allSet: 'إعدادات أندرويد (القائمة الكاملة)',
-      notOpen: 'هذا التلفاز يخفي هذه الشاشة؛ تعذّر فتحها.',
-      powerHow: 'للصلاحية الكاملة (مرة واحدة): ١) افتح «معلومات الجهاز» واضغط «رقم الإصدار» ٧ مرات. ٢) في «خيارات المطوّر» فعّل «تصحيح الأخطاء عبر الشبكة». ٣) عُد إلى هنا واضغط «صلاحية كاملة»؛ واختر «السماح دائماً» في سؤال التلفاز.',
-      powerWait: 'جارٍ الاتصال… إن ظهر سؤال إذن على التلفاز فاختر «السماح دائماً» ثم موافق.', powerOk: 'تم الحصول على الصلاحية الكاملة. من الآن تقوم الصيانة بكل شيء تلقائياً.', powerNo: 'تعذّر الاتصال. هل تصحيح الأخطاء عبر الشبكة مفعّل؟',
-      deepOk: 'اكتمل التحسين العميق.', deepNo: 'يلزم تفعيل «الصلاحية الكاملة» أولاً.',
-      upChecking: 'جارٍ التحقق من التحديثات…', upToDate: 'التطبيق محدَّث (v{v}).', upNew: 'إصدار جديد جاهز: v{v}', upNow: 'حدّث الآن', upFail: 'تعذّر التحديث: {e}',
-      upInstall: 'تم التنزيل. اضغط «تثبيت» في النافذة التي تُفتح.', limits: 'حدود الاستخدام', browser: 'وضع تجريبي (متصفح): عمليات التلفاز تعمل على التلفاز فقط.'
-    }
-  };
+  /* ek simgeler */
+  ui.icons.trash = '<path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/>';
+  ui.icons.grid = '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>';
+  ui.icons.tv = '<rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>';
+  ui.icons.list = '<path d="M9 6h12M9 12h12M9 18h12"/><path d="m3 6 1.5 1.5L7 5M3 12l1.5 1.5L7 11M3 18l1.5 1.5L7 17"/>';
+  ui.icons.undo = '<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>';
+  ui.icons.play = '<path d="m6 4 14 8-14 8z"/>';
+  ui.icons.open = '<path d="M7 17 17 7M8 7h9v9"/>';
 
-  var APP = window.APP = {
-    lang: (function () { var l = ls('tv.dil'); return /^(tr|en|ar)$/.test(l || '') ? l : (/^ar/.test(navigator.language) ? 'ar' : /^tr/.test(navigator.language) ? 'tr' : 'en'); })(),
-    version: '1.0.2', found: null, screen: 'home'
+  var PAGES = [
+    { id: 'home', icon: 'home' }, { id: 'clean', icon: 'sparkles' }, { id: 'apps', icon: 'grid' }, { id: 'speed', icon: 'zap' },
+    { id: 'net', icon: 'wifi' }, { id: 'trash', icon: 'trash' }, { id: 'setup', icon: 'list' }, { id: 'settings', icon: 'settings' }
+  ];
+  var st = {
+    page: 'home', info: {},
+    run: 'idle',                       // idle | busy | done
+    scan: { state: 'idle', items: [], groups: [], sel: null, scanned: 0, found: 0, truncated: false, open: {} },
+    apps: { state: 'idle', items: [], usage: false },
+    net: { state: 'idle', r: null },
+    trash: { items: [], total: 0, sel: {}, permission: true },
+    ownFreed: null
   };
-  function t(k, v) { var s = (T[APP.lang] && T[APP.lang][k]) || T.tr[k] || k; if (v) for (var x in v) s = s.split('{' + x + '}').join(v[x]); return s; }
-  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-  function mb(b) { return IndirmeIlerleme.mb(b || 0, APP.lang); }
-  function gb(b) { return (b / 1073741824).toLocaleString(APP.lang === 'ar' ? 'ar' : APP.lang === 'en' ? 'en-US' : 'tr-TR', { maximumFractionDigits: 1 }) + ' GB'; }
+  var $ = function (id) { return g.document.getElementById(id); };
+
+  /* ---------- köprü ---------- */
   function J(s, d) { try { return JSON.parse(s); } catch (e) { return d; } }
-  var toastT;
-  window.toast = function (m) { var e = $('#toast'); e.textContent = m; e.hidden = false; clearTimeout(toastT); toastT = setTimeout(function () { e.hidden = true; }, 4000); };
-  function info() { return B ? J(B.info(), {}) : { version: APP.version, ramFree: 0, ramTotal: 0, diskFree: 0, diskTotal: 0, uptimeMs: 0, anim: 1 }; }
-  function later(f) { return new Promise(function (res) { setTimeout(function () { res(f()); }, 30); }); }
+  function info() { st.info = TVB ? J(TVB.info(), {}) : {}; return st.info; }
+  var handlers = {};
+  g.__tv = function (kind, data) { var h = handlers[kind]; if (h) try { h(data || {}); } catch (e) { setTimeout(function () { throw e; }); } };
+  function acil(which) { if (!TVB || !TVB.openSettings(which)) ui.toast(T('tv.open.fail'), 'error'); }
 
-  // ---------------------------------------------------------------- çizim
-  function applyLang() {
-    document.documentElement.lang = APP.lang;
-    document.documentElement.dir = APP.lang === 'ar' ? 'rtl' : 'ltr';
-    $$('[data-t]').forEach(function (e) { e.textContent = t(e.getAttribute('data-t')); });
-    $$('[data-tt]').forEach(function (e) { e.title = t(e.getAttribute('data-tt')); e.setAttribute('aria-label', e.title); });
-    document.title = t('app');
-    $('#dil').value = APP.lang;
+  /* ---------- çizim yardımcıları ---------- */
+  function btn(spec, label, icon, onClick, attrs) {
+    var b = el('button.btn' + (spec ? '.' + spec : ''), Object.assign({ type: 'button' }, attrs || {}));
+    b.innerHTML = (icon ? ui.icon(icon) : '') + '<span>' + ui.esc(label) + '</span>';
+    b.addEventListener('click', onClick);
+    return b;
+  }
+  function check(on, label, sub, onClick, key) {
+    var b = el('button.tv-check' + (on ? '.on' : ''), { type: 'button', role: 'checkbox', 'aria-checked': String(!!on), 'data-k': key });
+    b.innerHTML = '<span class="box">' + (on ? ui.icon('check') : '') + '</span><span class="tx"><span class="t1"></span>' + (sub ? '<span class="t2"></span>' : '') + '</span>';
+    b.querySelector('.t1').textContent = label; if (sub) b.querySelector('.t2').textContent = sub;
+    b.addEventListener('click', onClick);
+    return b;
+  }
+  function card(title, icon, desc, kids, cls) {
+    var c = el('section.card.tv-card' + (cls ? '.' + cls : ''));
+    if (title) c.appendChild(el('h3.card-title', { html: (icon ? ui.icon(icon) : '') + '<span>' + ui.esc(title) + '</span>' }));
+    if (desc) c.appendChild(el('p.card-desc', { text: desc }));
+    (kids || []).forEach(function (k) { if (k) c.appendChild(k); });
+    return c;
+  }
+  function row(kids, cls) { return el('div.fc-row' + (cls ? '.' + cls : ''), null, kids.filter(Boolean)); }
+  function notice(kind, text) { return el('div.notice' + (kind ? '.' + kind : ''), { text: text }); }
+  function bar(frac, cls) { var b = el('div.tv-bar' + (cls ? '.' + cls : '')); b.appendChild(el('i', { style: 'width:' + Math.round(Math.max(0, Math.min(1, frac)) * 100) + '%' })); return b; }
+  function dur(ms) { var d = B.duration(ms); return d.d ? T('tv.dur.dh', d) : T('tv.dur.hm', d); }
+  function when(ts) {
+    try { return new Date(ts).toLocaleString(L() === 'ar' ? 'ar-u-nu-latn' : L() === 'en' ? 'en-GB' : 'tr-TR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; }
   }
 
-  function statusHtml(i) {
-    var up = i.uptimeMs || 0, d = Math.floor(up / 86400000), h = Math.floor(up / 3600000) % 24, m = Math.floor(up / 60000) % 60;
-    var upTxt = (d ? t('days', { d: d }) + ' ' : '') + t('hours', { h: h, m: m });
-    var warn = [];
-    if (i.diskTotal && i.diskFree / i.diskTotal < 0.1) warn.push(t('warnDisk'));
-    if (i.lowMem) warn.push(t('warnRam'));
-    if (d >= 7) warn.push(t('warnUp', { d: d }));
-    return '<div class="stats">' +
-      '<div class="stat"><small>' + t('ramL') + '</small><b>' + gb(i.ramFree || 0) + '</b><span>' + t('free') + ' / ' + gb(i.ramTotal || 0) + '</span></div>' +
-      '<div class="stat"><small>' + t('diskL') + '</small><b>' + gb(i.diskFree || 0) + '</b><span>' + t('free') + ' / ' + gb(i.diskTotal || 0) + '</span></div>' +
-      '<div class="stat"><small>' + t('upL') + '</small><b>' + esc(upTxt) + '</b><span>' + esc((i.brand || '') + ' ' + (i.model || '')) + '</span></div>' +
-      '<div class="stat"><small>' + t('animL') + '</small><b>' + (i.anim == null ? '—' : i.anim + 'x') + '</b><span>Android ' + esc(i.android || '') + '</span></div>' +
-      '</div>' + (warn.length ? '<div class="warn">' + warn.map(esc).join('<br>') + '</div>' : '');
-  }
-
-  function tile(id, k, big) { return '<button class="tile' + (big ? ' big' : '') + '" data-a="' + id + '"><b>' + esc(t(k)) + '</b><span>' + esc(t(k + 'D')) + '</span></button>'; }
-
-  function home() {
-    APP.screen = 'home';
-    var i = info();
-    $('#main').innerHTML =
-      (B ? '' : '<div class="warn">' + esc(t('browser')) + '</div>') +
-      (B && !i.adb && ls('tv.kur') !== '0' ? '<div class="card setup"><h3>' + esc(t('setupT')) + '</h3><p>' + esc(t('setupD')) + '</p><p class="muted">' + esc(t('powerHow')) + '</p><div class="row">' +
-        '<button class="btn pri" data-s="about">' + esc(t('about')) + '</button><button class="btn pri" data-s="dev">' + esc(t('dev')) + '</button>' +
-        '<button class="btn" data-a="later">' + esc(t('later')) + '</button><button class="btn" data-a="never">' + esc(t('never')) + '</button></div></div>' : '') +
-      (i.oldApp ? '<div class="card old"><span>' + esc(t('oldApp')) + '</span><button class="btn" data-a="old">' + esc(t('removeOld')) + '</button></div>' : '') +
-      '<div class="grid">' + tile('all', 'oneKey', true) + tile('ram', 'ram') + tile('cache', 'cache') + tile('junk', 'junk') + tile('speed', 'speed') +
-      tile('bg', 'bg') + tile('disk', 'disk') + tile('apps', 'apps') + tile('hidden', 'hidden') + tile('power', 'power') + tile('deep', 'deep') + '</div>' +
-      '<h3>' + esc(t('status')) + '</h3>' + statusHtml(i) + '<p class="muted">' + esc(t('tip')) + '</p>';
-    bindActions();
-    $$('[data-s]').forEach(function (b) { b.onclick = function () { if (!B || !B.openSettings(b.getAttribute('data-s'))) toast(t('notOpen')); }; });
-    var f = $('[data-a="all"]'); if (f) f.focus();
-  }
-
-  function bindActions() {
-    $$('[data-a]').forEach(function (b) {
-      b.onclick = function () {
-        var a = b.getAttribute('data-a');
-        if (a === 'all') runAll(false);
-        else if (a === 'ram') single('sRam', doRam);
-        else if (a === 'cache') single('sCache', doCache);
-        else if (a === 'junk') single('sJunk', doJunk);
-        else if (a === 'speed') single('sSpeed', doSpeed);
-        else if (a === 'bg') bgScreen();
-        else if (a === 'disk') diskScreen();
-        else if (a === 'apps') appsScreen(false);
-        else if (a === 'hidden') hiddenScreen();
-        else if (a === 'power') powerScreen();
-        else if (a === 'deep') deep();
-        else if (a === 'old') B && B.uninstall('tr.tvbakim');
-        else if (a === 'later') { var c = $('.card.setup'); if (c) c.parentNode.removeChild(c); $('[data-a="all"]').focus(); }
-        else if (a === 'never') { ls('tv.kur', '0'); home(); }
-      };
+  /* ---------- kabuk ---------- */
+  function nav() {
+    var n = $('nav'); n.innerHTML = '';
+    PAGES.forEach(function (p) {
+      var b = el('button.nav-item' + (st.page === p.id ? '.active' : ''), { type: 'button', 'data-k': 'nav-' + p.id, 'aria-current': st.page === p.id ? 'page' : null });
+      b.innerHTML = ui.icon(p.icon) + '<span>' + ui.esc(T('tv.nav.' + p.id)) + '</span>' + (p.id === 'setup' ? setupBadge() : '') + (p.id === 'trash' && st.info.trashBytes ? '<span class="nav-badge muted">' + ui.esc(mb(st.info.trashBytes)) + '</span>' : '');
+      b.addEventListener('click', function () { go(p.id); });
+      n.appendChild(b);
     });
+    $('brandName').textContent = T('tv.app');
+    $('brandTag').textContent = T('tv.tag');
+    $('ver').textContent = 'v' + g.Kabuk.version;
   }
-
-  // ---------------------------------------------------------------- bakım adımları
-  function doRam() { return later(function () { var r = B ? J(B.killBackground(), {}) : { count: 0, freed: 0 }; return { txt: t('rRam', { n: r.count || 0, mb: mb(r.freed) }), bytes: 0 }; }); }
-  function doCache() { return later(function () { var r = B ? J(B.clearCaches(), {}) : { freed: 0 }; return { txt: t('rCache', { mb: mb(r.freed) }), bytes: r.freed || 0 }; }); }
-  function doJunk() { return later(function () { var r = B ? J(B.cleanJunk(), {}) : { freed: 0, files: 0 }; return { txt: t('rJunk', { n: r.files || 0, mb: mb(r.freed) }), bytes: r.freed || 0 }; }); }
-  function doSpeed() {
-    return later(function () {
-      var i = info(), hedef = animTarget();
-      if (i.anim != null && Math.abs(i.anim - hedef) < 0.01) return { txt: t('rSpeedSkip'), bytes: 0 };
-      var ok = B ? B.speedUp(hedef) : false;
-      return { txt: ok ? t('rSpeedOk') : t('rSpeedNo'), bytes: 0, warn: !ok };
-    });
+  function setupBadge() {
+    var c = B.setupCount(B.setupSteps(st.info));
+    return TVB && c.done < c.total ? '<span class="nav-badge">' + c.done + '/' + c.total + '</span>' : '';
   }
-
-  function animTarget() { return ls('tv.anim') === '0' ? 0 : 0.5; }
-  function allowed() { return J(ls('tv.serbest') || '[]', []); }
-  function doBg() {
-    return later(function () {
-      if (!B) return { txt: t('rBgNo'), bytes: 0, warn: true };
-      if (!info().adb) return { txt: t('rBgNo'), bytes: 0, warn: true };
-      var ok = allowed(), list = J(B.bgApps(), []).filter(function (a) { return ok.indexOf(a.pkg) < 0; }).map(function (a) { return a.pkg; });
-      if (!list.length) return { txt: t('rBgSkip'), bytes: 0 };
-      var n = B.restrictBackground(JSON.stringify(list), true);
-      return n < 0 ? { txt: t('rBgNo'), bytes: 0, warn: true } : { txt: t('rBg', { n: n }), bytes: 0 };
-    });
+  function go(id, keepFocus) {
+    if (id !== st.page) $('content').scrollTop = 0;
+    st.page = id;
+    if (id === 'trash') loadTrash();
+    if (id === 'apps' && st.apps.state === 'idle') loadApps();
+    render(keepFocus);
+    if (!keepFocus) { var a = $('content').querySelector('[data-autofocus]'); var nb = g.document.querySelector('[data-k="nav-' + id + '"]'); Dpad.focus(a || nb); }
   }
-
-  function progressScreen(steps) {
-    APP.screen = 'run';
-    $('#main').innerHTML = '<div class="card run"><h2 id="runH">' + esc(t('running')) + '</h2><ol id="steps">' +
-      steps.map(function (s, i) { return '<li data-i="' + i + '" class="wait"><b>' + esc(t(s)) + '</b><span></span></li>'; }).join('') +
-      '</ol><p id="runTot" class="tot"></p><button class="btn pri" id="runOk" disabled>' + esc(t('ok')) + '</button></div>';
-  }
-  function stepState(i, cls, txt) { var li = $('#steps li[data-i="' + i + '"]'); if (!li) return; li.className = cls; $('span', li).textContent = txt || ''; }
-
-  async function runSteps(keys, fns) {
-    progressScreen(keys);
-    var total = 0;
-    for (var i = 0; i < fns.length; i++) {
-      stepState(i, 'busy', '…');
-      try { var r = await fns[i](); total += r.bytes || 0; stepState(i, r.warn ? 'warnx' : 'ok', r.txt); }
-      catch (e) { stepState(i, 'warnx', String(e && e.message || e)); }
+  function render(keepFocus) {
+    var act = g.document.activeElement, key = act && act.getAttribute && act.getAttribute('data-k');
+    nav();
+    $('pageTitle').textContent = T('tv.nav.' + st.page);
+    $('pageSub').textContent = T('tv.sub.' + st.page);
+    var c = $('content');
+    if (st.page === 'settings') { showSettings(c); }
+    else {
+      if (settingsGrid && settingsGrid.parentNode) settingsGrid.parentNode.removeChild(settingsGrid);
+      c.innerHTML = '';
+      if (!TVB) c.appendChild(notice('', T('tv.demo')));
+      ({ home: home, clean: clean, apps: apps, speed: speed, net: net, trash: trash, setup: setup })[st.page](c);
     }
-    $('#runH').textContent = t('done');
-    $('#runTot').textContent = t('total', { mb: mb(total) });
-    var ok = $('#runOk'); ok.disabled = false; ok.onclick = home; ok.focus();
-    ls('tv.son', String(Date.now()));
+    g.document.documentElement.setAttribute('data-page', st.page);
+    if (keepFocus) {
+      var n = key && g.document.querySelector('[data-k="' + key + '"]');
+      if (n && !n.disabled) Dpad.focus(n);
+      else if (!g.document.querySelector('.modal-backdrop') && (!g.document.activeElement || g.document.activeElement === g.document.body)) Dpad.focus(Dpad.first($('content')) || g.document.querySelector('.nav-item.active'));
+    }
   }
-  function single(k, f) { return runSteps([k], [f]); }
-  function runAll() {
-    var i = info(), keys = ['sRam', 'sCache', 'sJunk', 'sSpeed'], fns = [doRam, doCache, doJunk, doSpeed];
-    if (i.adb) { keys.push('sBg'); fns.push(doBg); }
-    return runSteps(keys, fns);
+  function refresh() { info(); render(true); }
+
+  /* ---------- bakım ---------- */
+  function bakim(oto) {
+    if (st.run === 'busy') return;
+    st.run = 'busy'; render(true);
+    if (TVB) { var r = J(TVB.clearOwnCache(), {}); st.ownFreed = r.freed || 0; }
+    info();
+    S.set('tv.last', Date.now());
+    if (TVB && st.info.storagePerm) scan(oto);
+    else { if (TVB) st.scan = { state: 'noperm', items: [], groups: [], sel: null, open: {} }; st.run = 'done'; render(true); }
+  }
+  function scan(oto) {
+    if (!TVB) return;
+    st.scan = { state: 'scanning', items: [], groups: [], sel: null, scanned: 0, found: 0, truncated: false, open: {}, auto: !!oto };
+    render(true);
+    TVB.scan();
+  }
+  handlers.scanProgress = function (d) {
+    st.scan.scanned = d.scanned; st.scan.found = d.found;
+    var p = g.document.querySelector('[data-scan-progress]'); if (p) p.textContent = T('tv.clean.scanning', { n: B.num(d.scanned, 0, L()), f: B.num(d.found, 0, L()) });
+  };
+  handlers.scan = function (d) {
+    var auto = st.scan.auto;
+    if (!d.ok) { st.scan = { state: d.needPermission ? 'noperm' : 'error', items: [], groups: [], sel: null, open: {}, error: d.error }; }
+    else {
+      st.scan = { state: 'done', items: d.items || [], groups: B.group(d.items), sel: B.newSelection(), scanned: d.scanned, truncated: !!d.truncated, open: {} };
+      if (auto && S.get('tv.autoTrash', false)) {
+        var c = B.certainIds(st.scan.items);
+        if (c.count) { st.pendingAuto = true; TVB.trash(JSON.stringify(c.ids)); }
+      }
+    }
+    if (st.run === 'busy') st.run = 'done';
+    render(true);
+  };
+  handlers.trashed = function (d) {
+    var moved = {}, auto = st.pendingAuto; st.pendingAuto = false;
+    ui.toast(auto ? T('tv.set.autoMoved', { n: d.moved || 0, mb: mb(d.bytes) }) : T('tv.clean.moved', { n: d.moved || 0, mb: mb(d.bytes) }), 'ok', 6000);
+    if (d.failed) ui.toast(T('tv.clean.movedFail', { n: d.failed }), 'error', 6000);
+    // taşınanları listeden çıkar (köprü taşınamayanları bırakır; yeniden taramadan önce dosya durumunu bilmiyoruz → taşınması istenenler)
+    (st.lastMove || []).forEach(function (id) { moved[id] = true; });
+    if (auto) B.certainIds(st.scan.items).ids.forEach(function (id) { moved[id] = true; });
+    st.lastMove = null;
+    if (!d.failed) {
+      st.scan.items = st.scan.items.filter(function (it) { return !moved[it.id]; });
+      st.scan.groups = B.group(st.scan.items);
+    } else if (TVB) { scan(false); return; }
+    info(); render(true);
+  };
+
+  /* ---------- Genel bakış ---------- */
+  function home(c) {
+    var i = st.info, last = S.get('tv.last', null), busy = st.run === 'busy' || st.scan.state === 'scanning';
+    var hero = el('section.card.tv-hero');
+    var left = el('div.grow');
+    left.appendChild(el('h2', { text: T('tv.run') }));
+    left.appendChild(el('p.muted', { text: T('tv.run.desc') }));
+    left.appendChild(el('p.tv-small', { text: last ? T('tv.run.last', { t: when(last) }) : T('tv.run.never') }));
+    hero.appendChild(left);
+    var go_ = btn('primary.big', busy ? T('tv.run.busy') : T('tv.run'), busy ? 'sync' : 'play', function () { bakim(false); }, { 'data-autofocus': '', 'data-k': 'run' });
+    if (busy) { go_.disabled = true; go_.querySelector('svg').classList.add('fc-spin'); }
+    hero.appendChild(go_);
+    c.appendChild(hero);
+    // sonuç
+    var s = st.scan;
+    if (s.state === 'scanning') c.appendChild(notice('', T('tv.clean.scanning', { n: B.num(s.scanned, 0, L()), f: B.num(s.found, 0, L()) }))).setAttribute('data-scan-progress', '');
+    else if (s.state === 'noperm') c.appendChild(row([notice('warn', T('tv.run.noPerm')), btn('small', T('tv.setup.grant'), 'key', izinDosya, { 'data-k': 'h-perm' })], 'tv-result'));
+    else if (s.state === 'done') {
+      var tot = B.selected(B.newSelection(), s.items);
+      if (tot.count) c.appendChild(row([el('div.notice.warn.grow', { text: T('tv.run.found', { mb: mb(tot.bytes), n: B.num(tot.count, 0, L()) }) }),
+        btn('small.primary', T('tv.clean.move'), 'trash', function () { tasiOnay(tot.ids, tot.bytes); }, { 'data-k': 'h-move' }),
+        btn('small', T('tv.clean.showFiles'), 'list', function () { go('clean'); }, { 'data-k': 'h-show' })], 'tv-result'));
+      else c.appendChild(notice('ok', T('tv.run.none')));
+    }
+    // durum kutuları
+    var d = B.disk(i), a = B.anim(i), up = B.duration(i.uptimeMs);
+    var grid = el('div.tv-stats');
+    grid.appendChild(stat('box', T('tv.st.storage'), i.diskTotal ? T('tv.st.free', { a: mb(i.diskFree), b: mb(i.diskTotal) }) : '—', bar(d.used, d.low ? 'bad' : ''), d.low ? T('tv.st.diskLow') : null));
+    grid.appendChild(stat('gauge', T('tv.st.ram'), i.ramTotal ? T('tv.st.free', { a: mb(i.ramFree), b: mb(i.ramTotal) }) : '—', bar(i.ramTotal ? 1 - i.ramFree / i.ramTotal : 0, i.lowMem ? 'bad' : ''), T('tv.st.ramNote')));
+    grid.appendChild(stat('zap', T('tv.st.anim'), a.state === 'fast' ? T('tv.st.animFast', { v: B.scaleText(a.value) }) : a.state === 'off' ? T('tv.st.animOff') : a.state === 'default' ? T('tv.st.animDefault', { v: B.scaleText(a.value) }) : '—', null, null, a.state === 'default' ? function () { go('speed'); } : null));
+    grid.appendChild(stat('tv', T('tv.st.uptime'), i.uptimeMs ? dur(i.uptimeMs) : '—', null, up.d >= 7 ? T('tv.st.uptimeHint') : (i.model ? (i.brand || '') + ' ' + i.model + ' · Android ' + (i.android || '') : null)));
+    c.appendChild(grid);
+    // kurulum özeti
+    if (TVB) {
+      var cnt = B.setupCount(B.setupSteps(i));
+      if (cnt.done < cnt.total) c.appendChild(row([el('div.grow', null, [el('b', { text: T('tv.setup.title') }), ' · ', el('span.muted', { text: T('tv.setup.count', { a: cnt.done, b: cnt.total }) })]),
+        btn('small', T('tv.setup.open'), 'list', function () { go('setup'); }, { 'data-k': 'h-setup' })], 'tv-setup-sum card'));
+    }
+  }
+  function stat(icon, title, value, barEl, note, onClick) {
+    var s = el(onClick ? 'button.tv-stat.clickable' : 'div.tv-stat', onClick ? { type: 'button', 'data-k': 'stat-' + icon } : null);
+    s.appendChild(el('div.tv-stat-h', { html: ui.icon(icon) + '<span>' + ui.esc(title) + '</span>' }));
+    s.appendChild(el('div.tv-stat-v', { text: value }));
+    if (barEl) s.appendChild(barEl);
+    if (note) s.appendChild(el('div.tv-stat-n', { text: note }));
+    if (onClick) s.addEventListener('click', onClick);
+    return s;
   }
 
-  // ---------------------------------------------------------------- diğer ekranlar
-  function sub(title, html) {
-    APP.screen = 'sub';
-    $('#main').innerHTML = '<div class="subh"><button class="btn" id="geriB">' + esc(t('back')) + '</button><h2>' + esc(title) + '</h2></div>' + html;
-    $('#geriB').onclick = home;
+  /* ---------- Temizlik ---------- */
+  function clean(c) {
+    var i = st.info;
+    // gereksiz dosyalar
+    var s = st.scan, kids = [];
+    if (s.state === 'scanning') {
+      kids.push(el('p.muted', { text: T('tv.clean.scanning', { n: B.num(s.scanned, 0, L()), f: B.num(s.found, 0, L()) }), 'data-scan-progress': '' }));
+      kids.push(row([btn('small', T('tv.clean.cancel'), 'x', function () { if (TVB) TVB.cancelScan(); }, { 'data-k': 'scan-stop' })]));
+    } else if (s.state === 'noperm' || (TVB && !i.storagePerm)) {
+      kids.push(notice('warn', T('tv.run.noPerm')));
+      kids.push(row([btn('small.primary', T('tv.setup.grant'), 'key', izinDosya, { 'data-k': 'perm', 'data-autofocus': '' })]));
+    } else {
+      kids.push(row([btn('small' + (s.state === 'done' ? '' : '.primary'), s.state === 'done' ? T('tv.clean.rescan') : T('tv.clean.scan'), 'sync', function () { scan(false); }, { 'data-k': 'scan', 'data-autofocus': '' })]));
+    }
+    if (s.state === 'done') {
+      if (s.truncated) kids.push(notice('warn', T('tv.clean.cut', { n: s.items.length })));
+      if (!s.groups.length) kids.push(notice('ok', T('tv.run.none')));
+      s.groups.forEach(function (gr) {
+        var on = !!s.sel.cats[gr.cat];
+        var head = el('div.tv-group');
+        head.appendChild(check(on, T('tv.cat.' + gr.cat) + ' · ' + B.num(gr.count, 0, L()) + ' · ' + mb(gr.bytes), T('tv.cat.' + gr.cat + '.d'), function () { B.toggleCat(s.sel, s.groups, gr.cat); render(true); }, 'cat-' + gr.cat));
+        head.appendChild(btn('small.ghost', s.open[gr.cat] ? T('tv.clean.hideFiles') : T('tv.clean.showFiles'), 'list', function () { s.open[gr.cat] = !s.open[gr.cat]; render(true); }, { 'data-k': 'open-' + gr.cat }));
+        kids.push(head);
+        if (s.open[gr.cat]) {
+          var list = el('div.tv-files');
+          gr.items.slice(0, 60).forEach(function (it) {
+            list.appendChild(check(B.isSelected(s.sel, it), it.rel, mb(it.size) + ' · ' + when(it.mtime), function () { B.toggleItem(s.sel, it); render(true); }, 'f-' + it.id));
+          });
+          if (gr.items.length > 60) list.appendChild(el('p.tv-small', { text: T('tv.clean.more', { n: gr.items.length - 60 }) }));
+          kids.push(list);
+        }
+      });
+      var sel = B.selected(s.sel, s.items);
+      if (s.items.length) kids.push(row([el('b.grow', { text: T('tv.clean.selected', { n: B.num(sel.count, 0, L()), mb: mb(sel.bytes) }) }),
+        btn('primary', T('tv.clean.move'), 'trash', function () { tasiOnay(sel.ids, sel.bytes); }, { disabled: sel.count ? null : true, 'data-k': 'move' })], 'tv-sticky'));
+    } else if (s.state === 'error') kids.push(notice('error', String(s.error || '')));
+    c.appendChild(card(T('tv.clean.junk'), 'trash', T('tv.clean.junk.d'), kids));
+    c.appendChild(el('section.card.tv-card.tv-inline', null, [el('div.grow', null, [el('b', { text: T('tv.clean.own') }), el('div.tv-small', { text: T('tv.clean.own.d', { mb: mb(i.ownCache || 0) }) })]),
+      btn('small', T('tv.clean.own.btn'), 'sparkles', function () {
+        var r = TVB ? J(TVB.clearOwnCache(), {}) : { freed: 0 };
+        ui.toast(T('tv.clean.own.done', { mb: mb(r.freed || 0) }), 'ok'); refresh();
+      }, { 'data-k': 'own' })]));
+    c.appendChild(card(T('tv.clean.others'), 'grid', T('tv.clean.others.d'), [row([
+      btn('small', T('tv.clean.others.btn'), 'grid', function () { go('apps'); }, { 'data-k': 'to-apps' }),
+      btn('small', T('tv.clean.storageSet'), 'ext', function () { acil('storage'); }, { 'data-k': 'set-storage' })])]));
   }
-  function appsScreen(all) {
-    var list = B ? J(B.apps(!!all), []) : [];
-    list.sort(function (a, b) { return (b.size || 0) - (a.size || 0); });
-    sub(t('apps'), '<div class="row"><button class="btn' + (all ? '' : ' pri') + '" id="aMine">' + esc(t('mine')) + '</button><button class="btn' + (all ? ' pri' : '') + '" id="aAll">' + esc(t('all')) + '</button></div>' +
-      (list.length ? '<div class="list">' + list.map(function (a) {
-        return '<div class="li"><div><b>' + esc(a.name) + '</b><small>' + esc(a.pkg) + ' · ' + mb(a.size) + '</small></div>' +
-          '<button class="btn" data-info="' + esc(a.pkg) + '">' + esc(t('info')) + '</button><button class="btn" data-del="' + esc(a.pkg) + '">' + esc(t('remove')) + '</button></div>';
-      }).join('') + '</div>' : '<p class="muted">' + esc(t('none')) + '</p>'));
-    $('#aMine').onclick = function () { appsScreen(false); };
-    $('#aAll').onclick = function () { appsScreen(true); };
-    $$('[data-info]').forEach(function (b) { b.onclick = function () { B && B.appInfo(b.getAttribute('data-info')); }; });
-    $$('[data-del]').forEach(function (b) { b.onclick = function () { B && B.uninstall(b.getAttribute('data-del')); }; });
-    var f = $('#aMine'); if (f) f.focus();
+  function tasiOnay(ids, bytes) {
+    if (!ids.length) return;
+    var body = el('div', null, [el('p', { text: T('tv.clean.confirm', { n: B.num(ids.length, 0, L()), mb: mb(bytes) }) })]);
+    ui.modal({ title: T('tv.clean.confirmT'), icon: 'trash', cls: 'small', body: body, buttons: [
+      { label: T('tv.trash.no'), cls: 'ghost' }, 'spacer',
+      { label: T('tv.clean.move'), cls: 'primary', icon: 'trash', onClick: function () { if (TVB) { st.lastMove = ids.slice(); TVB.trash(JSON.stringify(ids)); } } }
+    ] });
   }
-  function bgScreen() {
-    var list = B ? J(B.bgApps(), []) : [], ok = allowed(), adb = info().adb;
-    list.sort(function (a, b) { return (b.boot ? 1 : 0) - (a.boot ? 1 : 0) || a.name.localeCompare(b.name); });
-    sub(t('bg'), '<p class="muted">' + esc(t('bgNote')) + (adb ? '' : ' ' + t('rBgNo')) + '</p>' +
-      '<div class="row"><button class="btn pri" id="bgAll"' + (adb && list.length ? '' : ' disabled') + '>' + esc(t('restrictAll')) + '</button></div>' +
-      (list.length ? '<div class="list">' + list.map(function (a) {
-        var serbest = ok.indexOf(a.pkg) >= 0;
-        return '<div class="li"><div><b>' + esc(a.name) + '</b><small>' + esc(a.pkg) + (a.boot ? ' · ' + esc(t('boot')) : '') + '</small></div>' +
-          '<button class="btn' + (serbest ? '' : ' pri') + '" data-bg="' + esc(a.pkg) + '" data-on="' + (serbest ? '1' : '0') + '">' + esc(serbest ? t('restrict') : t('allow')) + '</button>' +
-          '<button class="btn" data-stop="' + esc(a.pkg) + '">' + esc(t('stop')) + '</button></div>';
-      }).join('') + '</div>' : '<p class="muted">' + esc(t('none')) + '</p>'));
-    $('#bgAll').onclick = function () { single('sBg', doBg); };
-    $$('[data-bg]').forEach(function (b) {
-      b.onclick = function () {
-        var pkg = b.getAttribute('data-bg'), kisitla = b.getAttribute('data-on') === '1', l = allowed();
-        if (kisitla) { l = l.filter(function (p) { return p !== pkg; }); } else if (l.indexOf(pkg) < 0) l.push(pkg);
-        ls('tv.serbest', JSON.stringify(l));
-        if (B && adb) B.restrictBackground(JSON.stringify([pkg]), kisitla);
-        bgScreen();
-      };
+  function izinDosya() {
+    if (!TVB) return;
+    var r = TVB.requestStorage();
+    if (r === 'unavailable') ui.toast(T('tv.setup.unavailable'), 'error', 8000);
+    if (r === 'granted') refresh();
+  }
+
+  /* ---------- Uygulamalar ---------- */
+  function loadApps() { if (!TVB) { st.apps.state = 'done'; return; } st.apps.state = 'loading'; TVB.apps(); }
+  handlers.apps = function (d) { st.apps = { state: 'done', items: B.sortApps(d.items), usage: !!d.usage }; if (st.page === 'apps') render(true); };
+  function apps(c) {
+    var a = st.apps, i = st.info;
+    if (TVB && i.usageSizes && !a.usage) c.appendChild(row([el('div.notice.warn.grow', { text: T('tv.apps.usageNeed') }), btn('small.primary', T('tv.setup.grant'), 'key', function () { acil('usage'); }, { 'data-k': 'usage' })], 'tv-result'));
+    if (a.state === 'loading') { c.appendChild(el('p.muted', { text: T('tv.apps.loading') })); return; }
+    if (!a.items.length) { c.appendChild(el('p.muted', { text: T('tv.apps.none') })); return; }
+    var top = a.items.reduce(function (m, x) { return Math.max(m, B.appTotal(x)); }, 1), sum = a.items.reduce(function (m, x) { return m + B.appTotal(x); }, 0);
+    c.appendChild(row([el('span.muted.grow', { text: T('tv.apps.count', { n: a.items.length, mb: mb(sum) }) }), btn('small.ghost', T('tv.clean.rescan'), 'sync', function () { loadApps(); render(true); }, { 'data-k': 'apps-reload' })]));
+    var list = el('div.tv-apps');
+    a.items.forEach(function (x, n) {
+      var r = el('div.tv-app');
+      var txt = el('div.grow');
+      txt.appendChild(el('div.tv-app-n', null, [el('b', { text: x.name, dir: 'auto' }), x.sys ? el('span.badge', { text: T('tv.apps.sys') }) : null]));
+      txt.appendChild(el('div.tv-small', { text: x.app != null ? T('tv.apps.size', { a: mb(x.app), b: mb(x.data), c: mb(x.cache) }) : T('tv.apps.apkOnly', { a: mb(x.apk) }) }));
+      txt.appendChild(bar(B.appTotal(x) / top));
+      r.appendChild(el('b.tv-app-s', { text: mb(B.appTotal(x)) }));
+      r.appendChild(txt);
+      r.appendChild(btn('small', T('tv.apps.open'), 'open', function () { if (!TVB.openApp(x.pkg)) ui.toast(T('tv.apps.cantOpen'), 'error'); }, { 'data-k': 'ao-' + x.pkg, 'data-autofocus': n === 0 ? '' : null }));
+      r.appendChild(btn('small', T('tv.apps.details'), 'info', function () { if (!TVB.appDetails(x.pkg)) ui.toast(T('tv.apps.cantOpen'), 'error'); }, { 'data-k': 'ad-' + x.pkg }));
+      if (!x.sys) r.appendChild(btn('small.danger-ghost', T('tv.apps.uninstall'), 'trash', function () { st.apps.state = 'stale'; if (!TVB.uninstall(x.pkg)) ui.toast(T('tv.apps.cantOpen'), 'error'); }, { 'data-k': 'au-' + x.pkg }));
+      list.appendChild(r);
     });
-    $$('[data-stop]').forEach(function (b) { b.onclick = function () { B && B.forceStop(b.getAttribute('data-stop')); toast(t('stopped')); }; });
-    var f = $('#bgAll'); if (f) f.focus();
-  }
-  function diskScreen() {
-    sub(t('disk'), '<p class="muted" id="dScan">' + esc(t('scanning')) + '</p>');
-    setTimeout(function () {
-      var m = B ? J(B.storageMap(), { dirs: [], big: [] }) : { dirs: [], big: [] };
-      var dirs = (m.dirs || []).sort(function (a, b) { return b.size - a.size; }).slice(0, 14);
-      var big = (m.big || []).sort(function (a, b) { return (b.apk ? 1 : 0) - (a.apk ? 1 : 0) || b.size - a.size; });
-      var apks = big.filter(function (f) { return f.apk; });
-      var mx = dirs.length ? dirs[0].size : 1;
-      sub(t('disk'), (m.total ? '<p class="tot">' + esc(gb(m.total - m.free)) + ' ' + esc(t('used')) + ' ' + t('of') + ' ' + esc(gb(m.total)) + '</p>' : '') +
-        '<h3>' + esc(t('folders')) + '</h3><div class="list">' + dirs.map(function (d) {
-          return '<div class="li"><div><b>' + esc(d.path) + '</b><small>' + mb(d.size) + '</small><i class="pbar"><i style="width:' + Math.max(1, Math.round(d.size / mx * 100)) + '%"></i></i></div>' +
-            (d.pkg ? '<button class="btn" data-info="' + esc(d.pkg) + '">' + esc(t('info')) + '</button>' : '') + '</div>';
-        }).join('') + '</div>' +
-        '<h3>' + esc(t('bigFiles')) + '</h3>' + (apks.length ? '<div class="row"><button class="btn pri" id="delApk">' + esc(t('delAll')) + ' (' + apks.length + ', ' + mb(apks.reduce(function (a, f) { return a + f.size; }, 0)) + ')</button></div>' : '') +
-        (big.length ? '<div class="list">' + big.map(function (f) {
-          return '<div class="li"><div><b>' + esc(f.name) + (f.apk ? ' <small>· ' + esc(t('apkTag')) + '</small>' : '') + '</b><small>' + esc(f.path) + ' · ' + mb(f.size) + '</small></div>' +
-            '<button class="btn" data-del-f="' + esc(f.path) + '">' + esc(t('del')) + '</button></div>';
-        }).join('') + '</div>' : '<p class="muted">' + esc(t('noneBig')) + '</p>'));
-      function sil(paths) { var r = B ? J(B.deleteFiles(JSON.stringify(paths)), {}) : {}; toast(t('rDel', { n: r.files || 0, mb: mb(r.freed) })); diskScreen(); }
-      var da = $('#delApk'); if (da) da.onclick = function () { sil(apks.map(function (f) { return f.path; })); };
-      $$('[data-del-f]').forEach(function (b) { b.onclick = function () { sil([b.getAttribute('data-del-f')]); }; });
-      $$('[data-info]').forEach(function (b) { b.onclick = function () { B && B.appInfo(b.getAttribute('data-info')); }; });
-      var f = $('#delApk') || $('[data-del-f]') || $('#geriB'); if (f) f.focus();
-    }, 50);
-  }
-  function hiddenScreen() {
-    var items = [['all', 'allSet'], ['dev', 'dev'], ['about', 'about'], ['apps', 'appsSet'], ['storage', 'store'], ['display', 'disp'], ['wifi', 'wifi'], ['date', 'date'], ['lang', 'langSet']];
-    sub(t('hidden'), '<div class="grid">' + items.map(function (x) { return '<button class="tile" data-s="' + x[0] + '"><b>' + esc(t(x[1])) + '</b></button>'; }).join('') + '</div>');
-    $$('[data-s]').forEach(function (b) { b.onclick = function () { if (!B || !B.openSettings(b.getAttribute('data-s'))) toast(t('notOpen')); }; });
-    var f = $('[data-s]'); if (f) f.focus();
-  }
-  function powerScreen() {
-    var i = info();
-    sub(t('power'), '<div class="card"><p>' + esc(i.secure ? t('powerOk') : t('powerHow')) + '</p><div class="row">' +
-      '<button class="btn" data-s="about">' + esc(t('about')) + '</button><button class="btn" data-s="dev">' + esc(t('dev')) + '</button>' +
-      '<button class="btn pri" id="pGo">' + esc(t('power')) + '</button></div><p id="pOut" class="tot"></p></div>');
-    $$('[data-s]').forEach(function (b) { b.onclick = function () { if (!B || !B.openSettings(b.getAttribute('data-s'))) toast(t('notOpen')); }; });
-    $('#pGo').onclick = function () {
-      if (!B) return;
-      $('#pOut').textContent = t('powerWait');
-      window.__guc = function (ok, secure) { $('#pOut').textContent = ok ? t('powerOk') : t('powerNo'); if (ok) ls('tv.guc', '1'); };
-      B.powerMode('__guc');
-    };
-    $('#pGo').focus();
-  }
-  function deep() {
-    var i = info();
-    if (!i.adb) { toast(t('deepNo')); return powerScreen(); }
-    progressScreen(['sDeep']); stepState(0, 'busy', '…');
-    window.__derin = function (ok) { stepState(0, ok ? 'ok' : 'warnx', ok ? t('deepOk') : t('deepNo')); $('#runH').textContent = t('done'); var b = $('#runOk'); b.disabled = false; b.onclick = home; b.focus(); };
-    B.optimize('__derin');
+    c.appendChild(list);
+    c.appendChild(el('p.tv-small', { text: T('tv.apps.detailsHint') }));
   }
 
-  function settingsScreen() {
-    var an = animTarget();
-    sub(t('settings'), '<div class="card"><label class="chk"><input type="checkbox" id="sAuto"' + (ls('tv.oto') !== '0' ? ' checked' : '') + '> ' + esc(t('autoRun')) + '</label></div>' +
-      '<div class="card"><h3>' + esc(t('animSet')) + '</h3><div class="row"><button class="btn' + (an === 0.5 ? ' pri' : '') + '" data-anim="0.5">' + esc(t('animHalf')) + '</button><button class="btn' + (an === 0 ? ' pri' : '') + '" data-anim="0">' + esc(t('animOff')) + '</button></div></div>' +
-      '<div class="card"><h3>' + esc(t('update')) + '</h3><p id="upSt" class="muted">v' + esc(APP.version) + '</p><button class="btn pri" id="sUp">' + esc(t('update')) + '</button></div>' +
-      '<div id="ayarSon"></div>');
-    $('#sAuto').onchange = function (e) { ls('tv.oto', e.target.checked ? '1' : '0'); };
-    $$('[data-anim]').forEach(function (b) { b.onclick = function () { ls('tv.anim', b.getAttribute('data-anim') === '0' ? '0' : '0.5'); var ok = B ? B.speedUp(animTarget()) : false; toast(ok ? t('animApplied') : t('rSpeedNo')); settingsScreen(); }; });
-    $('#sUp').onclick = function () { checkUpdate(true); };
-    $('#sAuto').focus();
+  /* ---------- Ekran hızı ---------- */
+  function speed(c) {
+    var i = st.info, a = B.anim(i);
+    var vals = el('div.tv-scales');
+    [['window', 'animWindow'], ['transition', 'animTransition'], ['animator', 'animator']].forEach(function (p) {
+      var v = i[p[1]];
+      vals.appendChild(el('div.tv-scale' + (v != null && v <= 0.5 ? '.ok' : ''), null, [el('span', { text: T('tv.speed.' + p[0]) }), el('b', { text: v == null ? '—' : B.scaleText(+v) })]));
+    });
+    c.appendChild(card(T('tv.speed.now'), 'zap', null, [vals, notice(a.state === 'fast' || a.state === 'off' ? 'ok' : '', a.state === 'fast' || a.state === 'off' ? T('tv.speed.good') : T('tv.speed.can')), el('p.tv-small', { text: T('tv.speed.why') })]));
+    var steps = el('ol.tv-steps');
+    steps.appendChild(el('li' + (i.devOptions ? '.done' : ''), null, [el('span', { text: i.devOptions ? T('tv.speed.step1ok') : T('tv.speed.step1') }),
+      i.devOptions ? null : row([btn('small', T('tv.speed.about'), 'info', function () { acil('about'); }, { 'data-k': 'about' })])]));
+    steps.appendChild(el('li', null, [el('span', { text: T('tv.speed.step2') }), row([btn('small.primary', T('tv.setup.openDev'), 'ext', function () { acil('dev'); }, { 'data-k': 'dev', 'data-autofocus': '' })])]));
+    steps.appendChild(el('li', null, [el('span', { text: T('tv.speed.step3') })]));
+    c.appendChild(card(T('tv.setup.howto'), 'list', null, [steps]));
+    var tips = el('ul.tv-tips');
+    ['tip1', 'tip2', 'tip3'].forEach(function (k) { tips.appendChild(el('li', { text: T('tv.speed.' + k) })); });
+    c.appendChild(card(T('tv.speed.tips'), 'sparkles', null, [tips]));
   }
 
-  // ---------------------------------------------------------------- güncelleme (GitHub)
-  async function checkUpdate(loud) {
-    var st = $('#upSt');
-    if (loud) { toast(t('upChecking')); if (st) st.textContent = t('upChecking'); }
-    try {
-      var r = await fetch(CH + 'surum.json?t=' + Date.now(), { cache: 'no-store' });
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      var m = await r.json();
-      var cur = info().code || 0;
-      if ((m.code || 0) > cur || (!B && m.version !== APP.version)) {
-        APP.found = m; $('#updDot').hidden = false;
-        var bar = $('#updBar');
-        bar.innerHTML = '<span>' + esc(t('upNew', { v: m.version })) + '</span> <span class="muted">' + esc((m.notes && (m.notes[APP.lang] || m.notes.tr)) || '') + '</span> <button class="btn pri" id="ubGo">' + esc(t('upNow')) + '</button>';
-        bar.hidden = false; $('#ubGo').onclick = APP.updateNow;
-        if (st) st.textContent = t('upNew', { v: m.version });
-        if (loud) APP.updateNow();
-      } else { if (loud) toast(t('upToDate', { v: APP.version })); if (st) st.textContent = t('upToDate', { v: APP.version }); }
-    } catch (e) { if (loud) toast(t('upFail', { e: e.message })); if (st) st.textContent = t('upFail', { e: e.message }); }
+  /* ---------- Ağ testi ---------- */
+  handlers.net = function (d) {
+    if (d.phase === 'error') st.net = { state: 'done', r: st.net.r, error: d.error };
+    else st.net = { state: d.phase === 'done' ? 'done' : 'busy', r: d.result || st.net.r };
+    if (st.page === 'net') render(true);
+  };
+  function net(c) {
+    var n = st.net, r = n.r || {}, busy = n.state === 'busy';
+    var b = btn('primary.big', busy ? T('tv.net.busy') : n.state === 'done' ? T('tv.net.again') : T('tv.net.start'), busy ? 'sync' : 'play', function () {
+      if (!TVB) return; st.net = { state: 'busy', r: null }; render(true); TVB.netTest();
+    }, { 'data-autofocus': '', 'data-k': 'net-start' });
+    if (busy) { b.disabled = true; b.querySelector('svg').classList.add('fc-spin'); }
+    c.appendChild(row([b, btn('small', T('tv.net.settings'), 'ext', function () { acil('network'); }, { 'data-k': 'net-set' }), el('span.tv-small.grow', { text: T('tv.net.note') })], 'tv-hero-row'));
+    var ms = function (v) { return v == null ? '…' : v < 0 ? T('tv.net.fail') : T('tv.net.ms', { n: B.num(v, 0, L()) }); };
+    var grid = el('div.tv-stats');
+    grid.appendChild(stat('wifi', T('tv.net.link'), r.type ? (r.connected ? T('tv.net.' + (r.type === 'wifi' || r.type === 'ethernet' ? r.type : 'other')) : T('tv.net.none')) : '—'));
+    grid.appendChild(stat('globe', T('tv.net.dns'), r.type && r.connected ? ms(r.dnsMs) : '—'));
+    grid.appendChild(stat('gauge', T('tv.net.ping'), r.type && r.connected ? ms(r.pingMs) : '—'));
+    grid.appendChild(stat('download', T('tv.net.down'), r.mbps != null ? (r.downBytes > 0 ? T('tv.net.mbps', { n: B.num(r.mbps, 1, L()) }) : T('tv.net.fail')) : r.type && r.connected && busy ? '…' : '—'));
+    c.appendChild(grid);
+    if (n.state === 'done' && r.connected && r.mbps != null && r.downBytes > 0) {
+      var k = B.netRating(r.mbps, r.pingMs);
+      c.appendChild(notice(k === 'excellent' || k === 'good' ? 'ok' : k === 'ok' ? 'warn' : 'error', T('tv.net.r.' + k)));
+    }
+    if (n.error) c.appendChild(notice('error', String(n.error)));
   }
-  APP.updateNow = function () {
-    var m = APP.found; if (!m) return checkUpdate(true);
-    if (!B) return;
-    var bar = $('#updBar'); bar.hidden = false;
-    var samples = [];
-    window.__upd = function (got, total, done, err) {
-      if (err) { bar.textContent = t('upFail', { e: err }); return; }
-      var now = Date.now(); samples.push({ t: now, b: got }); while (samples.length > 2 && now - samples[0].t > 3000) samples.shift();
-      var sec = (now - samples[0].t) / 1000, hiz = sec > 0.25 ? (got - samples[0].b) / sec : 0;
-      var p = { inen: got, toplam: total, yuzde: total ? got / total * 100 : 0, kalan: total ? total - got : 0, hiz: hiz, bitti: done };
-      bar.innerHTML = '<span>' + esc(t('upNew', { v: m.version })) + '</span> <b>' + esc(IndirmeIlerleme.yazi(p, APP.lang)) + '</b>' +
-        '<i class="pbar"><i style="width:' + Math.floor(p.yuzde) + '%"></i></i>';
-      if (done) toast(t('upInstall'));
-    };
-    B.downloadUpdate(CH + m.apk, m.size || 0, m.sha256 || '', '__upd');
+
+  /* ---------- Çöp kutusu ---------- */
+  function loadTrash() {
+    var d = TVB ? J(TVB.trashList(), { items: [], total: 0 }) : { items: [], total: 0, permission: true };
+    var items = (d.items || []).sort(function (a, b) { return b.at - a.at; });
+    var sel = {}; items.forEach(function (x) { if (st.trash.sel[x.id]) sel[x.id] = true; });
+    st.trash = { items: items, total: d.total || 0, sel: sel, permission: d.permission !== false, folder: d.folder || 'TVBakim-CopKutusu' };
+  }
+  handlers.restored = function (d) {
+    ui.toast(T('tv.trash.restored', { n: d.ok || 0 }), 'ok'); if (d.failed) ui.toast(T('tv.trash.restoreFail', { n: d.failed }), 'error');
+    st.trash.sel = {}; loadTrash(); refresh();
+  };
+  handlers.emptied = function (d) {
+    if (d.cancelled) ui.toast(T('tv.trash.cancelled'));
+    else ui.toast(T('tv.trash.deleted', { n: d.count || 0, mb: mb(d.bytes) }), 'ok');
+    st.trash.sel = {}; loadTrash(); refresh();
+  };
+  function trash(c) {
+    var t = st.trash;
+    if (TVB && !t.permission) { c.appendChild(notice('warn', T('tv.trash.noPerm'))); c.appendChild(row([btn('small.primary', T('tv.setup.grant'), 'key', izinDosya, { 'data-k': 'perm', 'data-autofocus': '' })])); return; }
+    if (!t.items.length) { c.appendChild(notice('ok', T('tv.trash.empty'))); c.appendChild(el('p.tv-small', { text: T('tv.trash.folder', { f: t.folder || 'TVBakim-CopKutusu' }) })); return; }
+    var ids = Object.keys(t.sel).filter(function (k) { return t.sel[k]; }), selBytes = t.items.filter(function (x) { return t.sel[x.id]; }).reduce(function (m, x) { return m + x.size; }, 0);
+    var all = ids.length === t.items.length;
+    c.appendChild(row([el('b.grow', { text: T('tv.trash.total', { n: B.num(t.items.length, 0, L()), mb: mb(t.total) }) }),
+      btn('small', all ? T('tv.trash.selectNone') : T('tv.trash.selectAll'), 'check', function () { t.sel = {}; if (!all) t.items.forEach(function (x) { t.sel[x.id] = true; }); render(true); }, { 'data-k': 'tsel', 'data-autofocus': '' }),
+      btn('small.primary', T('tv.trash.restore') + (ids.length ? ' (' + ids.length + ')' : ''), 'undo', function () { if (ids.length && TVB) TVB.restore(JSON.stringify(ids)); }, { disabled: ids.length ? null : true, 'data-k': 'trest' }),
+      btn('small.danger-ghost', T('tv.trash.delete') + (ids.length ? ' (' + ids.length + ')' : ''), 'trash', function () {
+        if (!ids.length || !TVB) return;
+        TVB.emptyTrash(JSON.stringify(ids), T('tv.trash.confirmT'), T('tv.trash.confirm', { n: ids.length, mb: mb(selBytes) }), T('tv.trash.yes'), T('tv.trash.no'));
+      }, { disabled: ids.length ? null : true, 'data-k': 'tdel' })], 'tv-sticky'));
+    var list = el('div.tv-files');
+    t.items.slice(0, 300).forEach(function (x) {
+      list.appendChild(check(!!t.sel[x.id], x.name, mb(x.size) + ' · ' + when(x.at) + ' · ' + T('tv.trash.from', { p: x.orig }), function () { t.sel[x.id] = !t.sel[x.id]; render(true); }, 't-' + x.id));
+    });
+    c.appendChild(list);
+    c.appendChild(el('p.tv-small', { text: T('tv.trash.folder', { f: t.folder }) }));
+  }
+
+  /* ---------- Kurulum ---------- */
+  function setup(c) {
+    var i = st.info;
+    c.appendChild(el('p.muted.tv-intro', { text: T('tv.setup.intro') }));
+    var steps = B.setupSteps(TVB ? i : { storagePerm: false, usageSizes: true, sdk: 30 });
+    var list = el('div.tv-setup');
+    var first = true;
+    steps.forEach(function (s) {
+      var r = el('div.tv-setup-row' + (s.done ? '.done' : s.need ? '' : '.na'));
+      r.appendChild(el('span.tv-dot', { html: s.done ? ui.icon('check') : s.need ? ui.icon('alert') : ui.icon('minus') }));
+      var tx = el('div.grow');
+      tx.appendChild(el('b', { text: T('tv.setup.' + s.id) }));
+      tx.appendChild(el('span.badge', { text: s.done ? T('tv.setup.ok') : !s.need ? T('tv.setup.na') : s.optional ? T('tv.setup.optional') : T('tv.setup.todo') }));
+      tx.appendChild(el('div.tv-small', { text: T('tv.setup.' + s.id + '.d') }));
+      r.appendChild(tx);
+      var act = null, auto = !s.done && s.need && first ? '' : null;
+      if (s.id === 'storage' && !s.done) act = btn('small.primary', T('tv.setup.grant'), 'key', izinDosya, { 'data-k': 'su-storage', 'data-autofocus': auto });
+      if (s.id === 'usage' && !s.done && s.need) act = btn('small', T('tv.setup.grant'), 'key', function () { acil('usage'); }, { 'data-k': 'su-usage', 'data-autofocus': auto });
+      if (s.id === 'anim' && !s.done) act = btn('small', T('tv.setup.howto'), 'zap', function () { go('speed'); }, { 'data-k': 'su-anim', 'data-autofocus': auto });
+      if (s.id === 'install' && !s.done && s.need) act = btn('small', T('tv.setup.grant'), 'key', function () { acil('unknown'); }, { 'data-k': 'su-install', 'data-autofocus': auto });
+      if (s.id === 'old') act = btn('small.danger-ghost', T('tv.setup.remove'), 'trash', function () { if (TVB && !TVB.uninstall('tr.tvbakim')) ui.toast(T('tv.apps.cantOpen'), 'error'); }, { 'data-k': 'su-old', 'data-autofocus': auto });
+      if (s.id === 'adb') act = btn('small', T('tv.setup.openDev'), 'ext', function () { acil('dev'); }, { 'data-k': 'su-adb', 'data-autofocus': auto });
+      if (act) { r.appendChild(act); if (auto != null) first = false; }
+      list.appendChild(r);
+    });
+    c.appendChild(list);
+    c.appendChild(el('p.tv-small', { text: T('tv.dpad') }));
+  }
+
+  /* ---------- Ayarlar (çekirdek kartları + bakım + Android kısayolları; Admin ile iletişim EN SON) ---------- */
+  var settingsGrid = null, maintCard = null, androidCard = null;
+  function drawMaint() {
+    maintCard.innerHTML = '';
+    maintCard.appendChild(el('h3.card-title', { html: ui.icon('sparkles') + '<span>' + ui.esc(T('tv.set.maint')) + '</span>' }));
+    maintCard.appendChild(el('p.card-desc', { text: T('tv.set.maint.d') }));
+    var auto = S.get('tv.auto', true), at = S.get('tv.autoTrash', false);
+    maintCard.appendChild(check(auto, T('tv.set.auto'), null, function () { S.set('tv.auto', !auto); drawMaint(); Dpad.focus(maintCard.querySelector('[data-k="s-auto"]')); }, 's-auto'));
+    maintCard.appendChild(check(at, T('tv.set.autoTrash'), T('tv.set.autoTrash.d'), function () { S.set('tv.autoTrash', !at); drawMaint(); Dpad.focus(maintCard.querySelector('[data-k="s-autotrash"]')); }, 's-autotrash'));
+  }
+  function drawAndroid() {
+    androidCard.innerHTML = '';
+    androidCard.appendChild(el('h3.card-title', { html: ui.icon('tv') + '<span>' + ui.esc(T('tv.set.android')) + '</span>' }));
+    androidCard.appendChild(el('p.card-desc', { text: T('tv.set.android.d') }));
+    var r = el('div.fc-row.tv-wrap');
+    [['main', 'settings'], ['storage', 'box'], ['apps', 'grid'], ['display', 'tv'], ['wifi', 'wifi'], ['date', 'info'], ['lang', 'globe'], ['about', 'info'], ['dev', 'zap']].forEach(function (p) {
+      r.appendChild(btn('small', T('tv.set.s.' + p[0]), p[1], function () { acil(p[0]); }, { 'data-k': 'as-' + p[0] }));
+    });
+    androidCard.appendChild(r);
+  }
+  function showSettings(c) {
+    c.innerHTML = '';
+    if (!settingsGrid) {
+      maintCard = el('section.card', { 'data-fc-card': 'tv-maint' }); androidCard = el('section.card', { 'data-fc-card': 'tv-android' });
+      var holder = el('div');
+      settingsGrid = g.Kabuk.ayarlar(holder, [maintCard, androidCard], g.Kabuk.rehberAyar(function () { go('setup'); })).el;
+    }
+    drawMaint(); drawAndroid();
+    c.appendChild(settingsGrid);
+    var f = settingsGrid.querySelector('button'); if (f) f.setAttribute('data-autofocus', '');
+  }
+
+  /* ---------- Geri / Menü / dönüş ---------- */
+  g.__tvGeri = function () {
+    var m = g.document.querySelectorAll('.modal-backdrop');
+    if (m.length) { var x = m[m.length - 1].querySelector('.modal-header .icon-btn'); if (x) x.click(); else m[m.length - 1].remove(); return true; }
+    var uf = g.document.querySelector('.update-float:not([hidden])');
+    if (uf && uf.contains(g.document.activeElement)) { Dpad.focus(g.document.querySelector('.update-act')); return true; }
+    if (st.page !== 'home') { go('home'); return true; }
+    return false;
+  };
+  g.__tvMenu = function () { go('settings'); };
+  g.__tvResume = function () {
+    var once = st.info.storagePerm;
+    info();
+    if (st.apps.state === 'stale' || (st.page === 'apps' && st.apps.state === 'done')) loadApps();
+    if (st.page === 'trash') loadTrash();
+    if (!once && st.info.storagePerm && st.scan.state !== 'scanning' && (st.page === 'clean' || st.page === 'home' || st.page === 'setup')) { if (st.page !== 'setup') scan(false); }
+    render(true);
   };
 
-  // ---------------------------------------------------------------- açılış
-  window.__adbHazir = function (ok) {
-    if (!ok) return;
-    var ilk = ls('tv.guc') !== '1'; ls('tv.guc', '1'); toast(t('autoAdb'));
-    if (APP.screen === 'home' && ilk) runSteps(['sCache', 'sSpeed', 'sBg'], [doCache, doSpeed, doBg]).then(function () { toast(t('autoDone')); });
-    else if (APP.screen === 'home') home();
-  };
-  window.geri = function () { if (APP.screen !== 'home' && APP.screen !== 'run') home(); };
+  /* ---------- açılış ---------- */
   function start() {
-    var i = info();
-    APP.version = i.version || APP.version;
-    $('#ver').textContent = 'v' + APP.version;
-    applyLang();
-    $('#dil').onchange = function (e) { APP.lang = e.target.value; ls('tv.dil', APP.lang); applyLang(); APP.screen === 'sub' && $('#ayarSon') ? settingsScreen() : home(); };
-    $('#bUpd').onclick = function () { APP.found ? APP.updateNow() : checkUpdate(true); };
-    $('#bSet').onclick = settingsScreen;
-    $('#bMin').onclick = function () { B && B.minimize(); };
-    $('#bExit').onclick = function () { B ? B.exit() : window.close(); };
-    // İlk açılış ya da ayar açıksa: bakım kendiliğinden yapılır (USB'den kurup açınca her şey hallolur)
-    if (B && ls('tv.oto') !== '0') runAll(); else home();
-    setTimeout(function () { checkUpdate(false); }, 2500);
+    Dpad.install();
+    g.Kabuk.ustCubuk($('topbar'), function () { go('settings'); });
+    FC.i18n.onChange(function () { render(true); if (maintCard) { drawMaint(); drawAndroid(); } });
+    info();
+    render();
+    Dpad.focus(Dpad.first($('content')) || g.document.querySelector('.nav-item'));
+    var ilk = g.Kabuk.ilkAcilis(function () { go('setup'); });
+    if (TVB && S.get('tv.auto', true)) bakim(true);
+    else if (!ilk && TVB && g.Kabuk.legacy) go('setup');
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
-})();
+  if (g.document.readyState === 'loading') g.document.addEventListener('DOMContentLoaded', start); else start();
+  g.TVApp = { state: st, go: go, render: render };
+})(typeof globalThis !== 'undefined' ? globalThis : this);
