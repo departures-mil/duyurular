@@ -2,6 +2,28 @@
  "surum": 1,
  "duyurular": [
   {
+   "id": "20261124211500-fo-onarim",
+   "tarih": "2026-11-24T21:15:00Z",
+   "baslik": {
+    "tr": "Falcon Ofis: güncelleme takıldıysa tek tık onarım",
+    "en": "Falcon Ofis: one-click repair if the update got stuck",
+    "ar": "Falcon Ofis: إصلاح بنقرة واحدة إذا توقّف التحديث"
+   },
+   "metin": {
+    "tr": "Güncelle'ye basınca siyah pencereler açılıyor ve program yenilenmiyorsa: aşağıdaki dosyayı indirin, içindeki FalconOfis-Onarim.cmd dosyasına çift tıklayın ve Onar'a basın. Sonra Falcon Ofis'i tamamen kapatıp açın; \"Yeni kurulum gerekli\" çıkarsa Şimdi kur'a basın. Kayıtlarınız, PIN ve eşitleme bağlantınız korunur. Windows uyarı verirse \"Ek bilgi\" → \"Yine de çalıştır\".\nhttps://github.com/departures-mil/falcon-ofis/releases/download/onarim/FalconOfis-Onarim.zip",
+    "en": "If pressing Update opens black windows and the program does not update: download the file below, double-click FalconOfis-Onarim.cmd inside it and press Repair. Then close Falcon Ofis completely and open it again; if \"New installation required\" appears, press Install now. Your records, PIN and sync connection are kept. If Windows warns you: \"More info\" → \"Run anyway\".\nhttps://github.com/departures-mil/falcon-ofis/releases/download/onarim/FalconOfis-Onarim.zip",
+    "ar": "إذا فُتحت نوافذ سوداء عند الضغط على تحديث ولم يتحدّث البرنامج: نزّل الملف أدناه، وانقر نقرًا مزدوجًا على FalconOfis-Onarim.cmd داخله ثم اضغط إصلاح. بعد ذلك أغلق Falcon Ofis تمامًا وافتحه مجددًا؛ إذا ظهرت \"يلزم تثبيت جديد\" فاضغط تثبيت الآن. تبقى سجلاتك ورمز PIN واتصال المزامنة كما هي. إذا ظهر تحذير من Windows: \"مزيد من المعلومات\" ← \"تشغيل على أي حال\".\nhttps://github.com/departures-mil/falcon-ofis/releases/download/onarim/FalconOfis-Onarim.zip"
+   },
+   "hedef": [
+    "falcon-ofis"
+   ],
+   "onem": "onemli",
+   "aktif": true,
+   "link": "https://github.com/departures-mil/falcon-ofis/releases/download/onarim/FalconOfis-Onarim.zip",
+   "altSurum": "1.58.0",
+   "ustSurum": "1.58.1"
+  },
+  {
    "id": "20261122144043-ing3",
    "tarih": "2026-11-22T14:40:43Z",
    "baslik": {
