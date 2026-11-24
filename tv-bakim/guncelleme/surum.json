@@ -1,13 +1,13 @@
 {
- "version": "1.0.2",
- "code": 3,
- "apk": "TV-Bakim-1.0.2.apk",
- "size": 66569,
- "sha256": "a122719a216f0e387c1ae1c7ef82f8ba51fbe1b566770001b3f4f41e6fa04292",
- "date": "2026-11-22T21:02:47Z",
+ "version": "1.1.0",
+ "code": 10100,
+ "apk": "TV-Bakim-1.1.0.apk",
+ "size": 605007,
+ "sha256": "739e7749b3969729e644dd46134cf96c7f3c1d04c9ac1c3177be4d61f9886e5e",
+ "date": "2026-11-24T19:07:33Z",
  "notes": {
-  "tr": "Kurulum sihirbazı: Ağ hata ayıklaması açık değilse ana ekranda tek seferlik kart ilgili ayar ekranlarını açar; uygulama öndeyken 10 sn'de bir kendisi bağlanmayı dener, bağlanınca kalan bakımı (önbellek, hızlandırma, arka plan kısıtlama) kendiliğinden yapar; geliştirici seçenekleri ve ADB'nin kapanmaması sağlanır.",
-  "en": "Setup wizard: if Network debugging is off, a one-time card on the home screen opens the right settings screens; while the app is in front it retries the connection every 10 s and, once connected, finishes the remaining maintenance (caches, speed-up, background restriction) by itself; keeps developer options and ADB from being switched off.",
-  "ar": "معالج الإعداد: إن كان تصحيح الأخطاء عبر الشبكة مغلقاً تظهر بطاقة لمرة واحدة تفتح شاشات الإعدادات المناسبة؛ وأثناء وجود التطبيق في المقدمة يعيد محاولة الاتصال كل ١٠ ثوانٍ، وعند الاتصال يكمل الصيانة المتبقية تلقائياً؛ ويمنع إيقاف خيارات المطوّر وADB."
+  "tr": "Baştan yazıldı: yeni görünüm (Falcon), renk şemaları (\"Klasik\" eski görünüm), yazı boyutu, Türkçe / English / العربية.\nGereksiz dosyalar artık silinmiyor: önce size gösteriliyor, onayınızla \"TVBakim-CopKutusu\" klasörüne taşınıyor ve geri alınabiliyor.\nYeni: uygulamaların kapladığı yer, ağ hız testi, ekran hızı (animasyon) rehberi, kurulum sayfası.\nGüvenlik: TV'nin kendi hata ayıklama (ADB) bağlantısı ve geliştirici seçeneklerini açık tutma kaldırıldı; isterseniz ADB'yi kapatabilirsiniz.\nGüncellemeler artık GitHub sürümlerinden; yalnızca değişen kısımlar iner (yüzde, MB, kalan, hız).",
+  "en": "Rewritten: new look (Falcon), colour schemes (\"Classic\" is the previous look), font size, Türkçe / English / العربية.\nJunk files are no longer deleted: they are shown to you first, moved to the \"TVBakim-CopKutusu\" folder with your confirmation, and can be restored.\nNew: space used by apps, network speed test, screen speed (animation) guide, setup page.\nSecurity: the connection to the TV's own debugging (ADB) and keeping developer options on were removed; you can turn ADB off.\nUpdates now come from GitHub releases; only the changed parts are downloaded (percent, MB, remaining, speed).",
+  "ar": "أُعيدت كتابته: مظهر جديد (Falcon)، أنظمة ألوان (\"الكلاسيكي\" هو المظهر السابق)، حجم الخط، Türkçe / English / العربية.\nلم تعد الملفات غير الضرورية تُحذف: تُعرض عليك أولاً، وتُنقل بموافقتك إلى مجلد \"TVBakim-CopKutusu\" ويمكن استعادتها.\nجديد: المساحة التي تشغلها التطبيقات، اختبار سرعة الشبكة، دليل سرعة الشاشة (الحركة)، صفحة الإعداد.\nالأمان: أُزيل الاتصال بتصحيح أخطاء التلفاز (ADB) وإبقاء خيارات المطوّر مفعّلة؛ يمكنك إيقاف ADB.\nالتحديثات الآن من إصدارات GitHub؛ تُنزَّل الأجزاء المتغيرة فقط (النسبة، MB، المتبقي، السرعة)."
  }
 }
