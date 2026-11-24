@@ -5,12 +5,19 @@
    "name": "Ajandam (Aile Ajandası)",
    "repo": "aile-ajandasi",
    "links": {
+    "apk": {
+     "url": "https://github.com/departures-mil/aile-ajandasi/releases/download/v5.7.1/Ajandam-5.7.1-android.apk",
+     "file": "Ajandam-5.7.1-android.apk",
+     "version": "v5.7.1",
+     "mb": 4.9,
+     "date": "2026-11-24T09:26:29Z"
+    },
     "desktop": {
-     "url": "https://github.com/departures-mil/aile-ajandasi/releases/download/v5.7.0/Ajandam-5.7.0-win-setup.exe",
-     "file": "Ajandam-5.7.0-win-setup.exe",
-     "version": "v5.7.0",
+     "url": "https://github.com/departures-mil/aile-ajandasi/releases/download/v5.7.1/Ajandam-5.7.1-win-setup.exe",
+     "file": "Ajandam-5.7.1-win-setup.exe",
+     "version": "v5.7.1",
      "mb": 79.9,
-     "date": "2026-11-24T06:18:32Z"
+     "date": "2026-11-24T09:26:29Z"
     }
    }
   },
@@ -18,7 +25,15 @@
    "id": "baski-hesabi",
    "name": "Baskı Hesabı",
    "repo": "baski-hesabi",
-   "links": {}
+   "links": {
+    "desktop": {
+     "url": "https://github.com/departures-mil/baski-hesabi/releases/download/v1.13/BaskiHesabi-Setup-1.13.exe",
+     "file": "BaskiHesabi-Setup-1.13.exe",
+     "version": "v1.13",
+     "mb": 2.1,
+     "date": "2026-11-24T09:22:40Z"
+    }
+   }
   },
   {
    "id": "bereket-defter",
@@ -39,6 +54,13 @@
    "name": "Comm-Calc",
    "repo": "comm-calc",
    "links": {
+    "desktop": {
+     "url": "https://github.com/departures-mil/comm-calc/releases/download/v1.12.2/Comm-Calc-Setup-1.12.2.exe",
+     "file": "Comm-Calc-Setup-1.12.2.exe",
+     "version": "v1.12.2",
+     "mb": 111.1,
+     "date": "2026-11-24T05:48:54Z"
+    },
     "apk": {
      "url": "https://github.com/departures-mil/comm-calc/releases/download/v1.11/Comm-Calc-v1.11.apk",
      "file": "Comm-Calc-v1.11.apk",
@@ -68,11 +90,11 @@
    "repo": "DesktopDuzenSabitleyici",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/DesktopDuzenSabitleyici/releases/download/v1.0.11/DesktopDuzenSabitleyici.exe",
+     "url": "https://github.com/departures-mil/DesktopDuzenSabitleyici/releases/download/v1.0.12/DesktopDuzenSabitleyici.exe",
      "file": "DesktopDuzenSabitleyici.exe",
-     "version": "v1.0.11",
-     "mb": 62.9,
-     "date": "2026-11-23T19:06:31Z"
+     "version": "v1.0.12",
+     "mb": 63.0,
+     "date": "2026-11-24T09:18:16Z"
     }
    }
   },
@@ -80,7 +102,15 @@
    "id": "falcon-ofis",
    "name": "Falcon Ofis",
    "repo": "falcon-ofis",
-   "links": {}
+   "links": {
+    "desktop": {
+     "url": "https://github.com/departures-mil/falcon-ofis/releases/download/v1.57.0/Falcon-Ofis-Setup-1.57.0.exe",
+     "file": "Falcon-Ofis-Setup-1.57.0.exe",
+     "version": "v1.57.0",
+     "mb": 119.3,
+     "date": "2026-11-24T09:27:09Z"
+    }
+   }
   },
   {
    "id": "kalori-hesaplayici",
@@ -88,11 +118,11 @@
    "repo": "kalori-hesaplayici",
    "links": {
     "apk": {
-     "url": "https://github.com/departures-mil/kalori-hesaplayici/releases/download/v1.0.11/KaloriHesaplayici-v1.0.11.apk",
-     "file": "KaloriHesaplayici-v1.0.11.apk",
-     "version": "v1.0.11",
-     "mb": 103.2,
-     "date": "2026-11-24T05:00:22Z"
+     "url": "https://github.com/departures-mil/kalori-hesaplayici/releases/download/v1.0.12/KaloriHesaplayici-v1.0.12.apk",
+     "file": "KaloriHesaplayici-v1.0.12.apk",
+     "version": "v1.0.12",
+     "mb": 103.6,
+     "date": "2026-11-24T09:25:13Z"
     }
    }
   },
@@ -101,12 +131,19 @@
    "name": "Kitaplık",
    "repo": "kitaplik",
    "links": {
+    "apk": {
+     "url": "https://github.com/departures-mil/kitaplik/releases/download/v2.15.1/Kitaplik-2.15.1-android.apk",
+     "file": "Kitaplik-2.15.1-android.apk",
+     "version": "v2.15.1",
+     "mb": 6.4,
+     "date": "2026-11-24T09:26:08Z"
+    },
     "desktop": {
-     "url": "https://github.com/departures-mil/kitaplik/releases/download/v2.15.0/Kitaplik-2.15.0-win-setup.exe",
-     "file": "Kitaplik-2.15.0-win-setup.exe",
-     "version": "v2.15.0",
+     "url": "https://github.com/departures-mil/kitaplik/releases/download/v2.15.1/Kitaplik-2.15.1-win-setup.exe",
+     "file": "Kitaplik-2.15.1-win-setup.exe",
+     "version": "v2.15.1",
      "mb": 83.8,
-     "date": "2026-11-24T06:06:58Z"
+     "date": "2026-11-24T09:26:08Z"
     }
    }
   },
@@ -114,7 +151,15 @@
    "id": "mahzen",
    "name": "Mahzen",
    "repo": "mahzen",
-   "links": {}
+   "links": {
+    "desktop": {
+     "url": "https://github.com/departures-mil/mahzen/releases/download/v3.8/Mahzen-Setup-3.8.exe",
+     "file": "Mahzen-Setup-3.8.exe",
+     "version": "v3.8",
+     "mb": 2.7,
+     "date": "2026-11-24T09:24:30Z"
+    }
+   }
   },
   {
    "id": "merkezi-servis",
@@ -187,5 +232,5 @@
    }
   }
  ],
- "updated": "2026-11-24T09:13:39Z"
+ "updated": "2026-11-24T09:28:05Z"
 }
