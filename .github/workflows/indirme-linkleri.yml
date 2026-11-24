@@ -1,0 +1,35 @@
+name: İndirme linklerini yenile
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [yeni-surum]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: indirme-linkleri
+  cancel-in-progress: false
+
+jobs:
+  yenile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Linkleri topla
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 indirme-linkleri/topla.py
+      - name: Değiştiyse kaydet
+        run: |
+          if [ -n "$(git status --porcelain INDIRME-LINKLERI.md indirme-linkleri/links.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+            git add INDIRME-LINKLERI.md indirme-linkleri/links.json
+            git commit -m "İndirme linkleri yenilendi"
+            git pull --rebase origin main
+            git push
+          fi
