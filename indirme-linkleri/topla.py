@@ -117,6 +117,9 @@ def main():
         for (repo, pre), title in SUBAPPS.items():
             if repo == name:
                 links = from_tree(name, branch, pre)
+                # Alt programın kendi GitHub sürümleri (ör. TV Bakım → duyurular Releases, TV-Bakim-*.apk) öncelikli
+                rel = {k: v for k, v in from_releases(name).items() if v["file"].lower().startswith(title.lower().replace(" ", "-").replace("ı", "i"))}
+                links.update(rel)
                 if links:
                     apps.append({"id": pre.strip("/"), "name": title, "repo": name, "links": links})
         if name in SKIP:

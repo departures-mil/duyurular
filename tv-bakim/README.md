@@ -1,32 +1,50 @@
-# TV Bakım (v1.0.0'dan itibaren yeni sürüm)
+# TV Bakım (1.1.0'dan beri yeniden yazıldı)
 
-Android TV / TV kutusu için bakım uygulaması. USB bellekten APK kurulup açıldığında bakımı **kendiliğinden** yapar:
-arka plan uygulamalarını kapatır (RAM), önbellekleri siler, gereksiz dosyaları (geçici/günlük/küçük resim, LOST.DIR,
-uygulama dış önbellekleri, boş klasörler) temizler, menü animasyonlarını 0.5x yapar. Fotoğraf, video ve belgelere dokunmaz.
+Android TV / TV kutusu bakım uygulaması (`com.departures.tvbakim`). USB bellekten APK ile kurulur; açılışta bakımı kendiliğinden yapar.
+Normal (root'suz) bir uygulamanın yapabildiği her şey — dürüstçe:
 
-- **Tam Yetki (bir kez):** TV'de "Ağ hata ayıklaması" açıksa uygulama TV'nin kendi ADB'sine (127.0.0.1:5555) bağlanır,
-  kendine `WRITE_SECURE_SETTINGS` verir; bundan sonra bütün uygulamaların önbelleği topluca silinir (`pm trim-caches`),
-  hızlandırma ve "Derin optimizasyon" (`cmd package bg-dexopt-job`) kendiliğinden yapılır.
-- Türkçe / English / العربية; sağ üstte Güncelle, Ayarlar, Küçült, Kapat. Ayarlar'ın sonunda Kullanım Limitleri ve
-  "Admin ile iletişime geç". Admin duyuruları (`tv-bakim` kimliği) gelir.
-- Paket adı `com.departures.tvbakim` (eski `tr.tvbakim` ile yan yana kurulur; uygulama eskisini kaldırmayı önerir).
+- **Genel bakış:** depolama, bellek (bilgi; sahte "RAM hızlandırma" yok), animasyon ölçeği, açık kalma süresi, kurulum durumu.
+- **Temizlik:** kendi önbelleği; iç bellekte gereksiz dosya taraması (kurulum .apk'ları, küçük resim önbelleği, yarım indirmeler/geçici,
+  .log, LOST.DIR, 300 MB+ büyük dosyalar — büyükler kendiliğinden seçilmez). Seçilenler onayla **çöp kutusuna** taşınır
+  (`/sdcard/TVBakim-CopKutusu`, `index.tsv`), geri alınabilir; kalıcı silme yalnız çöp kutusunu boşaltırken, Android'in kendi onay
+  penceresinden sonra. Diğer uygulamaların önbelleği için sistemin uygulama ekranı açılır (Android başka türlüsüne izin vermez).
+  İsteğe bağlı (varsayılan kapalı): "kesin gereksizleri" (küçük resim, geçici, günlük, LOST.DIR) açılışta sormadan çöp kutusuna taşı.
+- **Uygulamalar:** başlatıcıda görünen uygulamalar, boyutları (Kullanım erişimi verilirse veri + önbellek, StorageStatsManager),
+  Aç / Ayrıntılar (sistem ekranı) / Kaldır (sistemin onay penceresi).
+- **Ekran hızı:** animasyon ölçeklerini gösterir, Geliştirici seçeneklerini açar ve 0.5x adımlarını anlatır (ayarı kullanıcı yapar).
+- **Ağ testi:** bağlantı türü, DNS, gecikme, indirme hızı (en çok 25 MB).
+- **Kurulum:** dosya erişimi, kullanım erişimi, ekran hızı, güncelleme kurma izni, eski `tr.tvbakim`, açık kalmış ADB uyarısı.
+- Ortak çekirdek (Falcon görünümü, şemalar — `klasik` = 1.0.x renkleri, tr/en/ar RTL, yazı boyutu, ilk açılış rehberi, neler yeni,
+  duyurular, çökme raporu, Kullanım Limitleri "hizmet yok", Ayarlar'ın EN SONUNDA Admin ile iletişim). Kumanda: yön tuşları + OK + Geri.
 
-## Güncelleme kanalı
-`tv-bakim/guncelleme/surum.json` + `TV-Bakim-<sürüm>.apk`. Uygulama açılışta bakar; "Güncelle" APK'yı yüzde, MB ve hızla
-indirir, sha256 ile doğrular ve kurulum penceresini açar.
+**Kaldırılanlar (güvenlik):** 1.0.x TV'nin kendi ADB'sine (127.0.0.1:5555) bağlanıp `WRITE_SECURE_SETTINGS` alıyor, geliştirici
+seçeneklerini/ADB'yi açık tutuyor, JS'ten herhangi bir yolu silebiliyordu. 1.1.0'da bunların hiçbiri yok; QUERY_ALL_PACKAGES,
+KILL_BACKGROUND_PROCESSES, file:// evrensel erişim ve şifresiz trafik de yok. JS köprüsü dar (bkz. `TvBridge.java`, test listesi).
+
+## Yapı
+`www/` arayüz (düz JS; `js/bakim.js` saf mantık, `js/dpad.js` kumanda, `js/kabuk.js` çekirdek yapıştırıcısı, `js/app.js` ekranlar,
+`js/metinler.js` tr/en/ar, `js/haberler.js` neler yeni), `www/cekirdek/` ortak çekirdek kopyası (`cekirdek/VERSION`),
+`android/` kabuk (Gradle'sız): `MainActivity` (https://tvbakim.local kökeni — DEĞİŞMEZ; 1.0.x ayarları `assets/tasi.html` ile bir kez
+taşınır), `TvBridge` (window.TV), `FcBridge` (window.AndroidBridge: güncelleme), `Tarama` + `CopKutusu` (saf Java, JVM testli),
+`com/departuresmil/ortak/` (FcDelta + ApkPatchInstaller, androidx'siz).
+
+## Sürüm ve yayın
+- Sürüm X.Y.Z, tek kaynak `package.json`. Önce `www/js/haberler.js` en üstüne not (tr/en/ar), sonra `node araclar/surum.js X.Y.Z`
+  (`www/js/surum.js`, `release-notes.json`). versionCode = X·10000 + Y·100 + Z (1.0.2 = 3 idi).
+- **Sürümler `departures-mil/duyurular` deposunun Releases'inde** (ayrı depo yok; bu depoda başka program release'i yapılmaz).
+  Etiket `vX.Y.Z`, `latest.json` → `"app": "tv-bakim"`, kanal `android` (asset `TV-Bakim-X.Y.Z-android.apk` + son 5 sürümden FCD1 yamaları).
+  Uygulama: kurulu APK + yama → yeni APK (SHA-256), olmazsa tam APK; kurulmadan önce paket adı + imza denetlenir.
+- CI `.github/workflows/tv-bakim.yml`: test → APK (imzasız derleme her zaman; imzalı yalnız secret'larla, sertifika 1.0.x ile aynı olmalı)
+  → release (yalnız main'de workflow_dispatch) → eski kanal köprüsü (`araclar/eski-kanal.js`: `guncelleme/surum.json` + APK).
+  Secret'lar: `ANDROID_KEYSTORE_B64`, `ANDROID_KEYSTORE_PASS`, [`ANDROID_KEY_PASS`], [`ANDROID_KEY_ALIAS`]
+  (anahtar: `C:\Claude Programlarım\_Anahtarlar\TVBakim\tvbakim.jks` + `sifre.txt`; depoya girmez). Yoksa android yayını atlanır.
+- Yayın: `gh api -X POST repos/departures-mil/duyurular/actions/workflows/tv-bakim.yml/dispatches -f ref=main`
+
+## Test
+`npm test` (tv-bakim/ içinde): mantık, çeviriler, sürüm, güvenlik kuralları, Java (JVM testi + android.jar derlemesi; `ANDROID_TOOLS`
+ya da `ANDROID_HOME`), arayüz (`PLAYWRIGHT_CORE=…/playwright-core PLAYWRIGHT_BROWSERS_PATH=…`). Ekran görüntüleri:
+`node araclar/ekran.js <klasör>` (960×540 CSS × 2 = 1920×1080). APK: `ANDROID_TOOLS=… APK_IMZASIZ=1 bash araclar/apk.sh`.
 
 ## Sürüm geçmişi
-- **1.0.2:** Kurulum sihirbazı (ağ hata ayıklaması kapalıysa ana ekranda kart + ayar kısayolları), öndeyken 10 sn'de bir
-  kendiliğinden ADB bağlantısı, bağlanınca kalan bakım otomatik, geliştirici seçenekleri/ADB'nin kapanmaması.
-- **1.0.1:** Arka Plan Kısıtlama (kendiliğinden başlayan uygulamaların arka planı kesilir, istisna listesi), Depolama Analizi
-  (klasör boyutları, 200 MB+ dosyalar, bırakılmış .apk'ları tek tuşla silme), Derin Optimizasyona `sm fstrim` (TRIM),
-  açılışta kendiliğinden Tam Yetki (ağ hata ayıklaması açıksa), animasyonları tamamen kapatma seçeneği, uygulama "Durdur".
-- **1.0.0:** İlk sürüm.
-
-## Yeni sürüm
-Bulutta (aapt2/Gradle olmadan): `ANAHTAR_KLASORU=<tvbakim.jks + sifre.txt klasörü> ARACLAR=<android-all.jar, dx.jar, uber.jar klasörü>
-python3 araclar/paketle.py 1.0.2 3 "tr notu" "en note" "ar"` — önceki APK'daki ikili manifest sürüm alanları yamalanır
-(sürüm adı 5 karakter kalmalı: 1.0.9'dan sonra 1.1.0), `www` ve Java yeniden paketlenir, uber-apk-signer ile v1+v2+v3 imzalanır.
-Araçlar: Maven Central `org.robolectric:android-all:14-robolectric-10818077`, `com.jakewharton.android.repackaged:dalvik-dx:16.0.1`;
-GitHub `patrickfav/uber-apk-signer` v1.3.0. Manifest/res değişecekse `araclar/derle.sh` (aapt2 ile) kullanılır.
-versionCode her sürümde artar → `git add -A && git commit && git push`.
+- **1.1.0:** yeniden yazım (yukarıda). 1.0.x kurulumları eski kanaldan (`guncelleme/surum.json`) yeni APK'ya geçer.
+- **1.0.2 / 1.0.1 / 1.0.0:** ADB tabanlı eski sürümler.

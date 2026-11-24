@@ -1,0 +1,140 @@
+# TV Bakım (tv-bakim/) — test → APK → GitHub Release (bu depo: departures-mil/duyurular) → eski kanal köprüsü.
+# TV Bakım'ın ayrı deposu yok; sürümleri BU deponun Releases'inde (etiket vX.Y.Z, latest.json "app": "tv-bakim", kanal "android").
+# Bu depoda başka program sürümü yayınlanmaz (duyurular.json, panel ve indirme linkleri git içinde; Releases kullanmaz).
+#
+# Yayın: tv-bakim/ içinde sürümü yükseltin (www/js/haberler.js en üste not, sonra node tv-bakim/araclar/surum.js X.Y.Z), main'e gönderin, sonra
+#   gh api -X POST repos/departures-mil/duyurular/actions/workflows/tv-bakim.yml/dispatches -f ref=main
+# İmza: secret'lar ANDROID_KEYSTORE_B64, ANDROID_KEYSTORE_PASS, [ANDROID_KEY_PASS], [ANDROID_KEY_ALIAS] (tvbakim.jks, C:\Claude Programlarım\_Anahtarlar\TVBakim).
+#   Secret yoksa APK yalnız imzasız derlenip denetlenir, android kanalı/release ATLANIR (eski kurulumlar etkilenmez).
+#   İmzalı APK'nın sertifikası 1.0.x APK'larınınkiyle (EXPECTED_CERT) aynı olmalı; değilse yayın olmaz (kurulu TV'ler güncellenemezdi).
+name: tv-bakim
+on:
+  push:
+    branches: ['ortak-cekirdek-*', 'main']
+    paths: ['tv-bakim/**', '.github/workflows/tv-bakim.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  EXPECTED_CERT: 46f300018a683012f114d64e14bdcb3a535bc5db76bdada1066c8b22a6fa398a
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tv-bakim
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '17' }
+      - name: Playwright (Chromium) — arayüz testi için
+        run: |
+          npm install --no-save --no-package-lock playwright-core@1.49.1
+          npx playwright-core install --with-deps chromium
+      - name: npm test (mantık, çeviriler, sürüm, güvenlik, Java JVM + android.jar derlemesi, arayüz)
+        env:
+          PLAYWRIGHT_CORE: ${{ github.workspace }}/tv-bakim/node_modules/playwright-core
+        run: npm test
+      - name: Ekran görüntüleri (hata varsa başarısız)
+        env:
+          PLAYWRIGHT_CORE: ${{ github.workspace }}/tv-bakim/node_modules/playwright-core
+        run: node araclar/ekran.js ../ekran
+      - uses: actions/upload-artifact@v4
+        with: { name: ekran-tv-bakim, path: ekran/, retention-days: 7 }
+
+  build-android:
+    needs: test
+    runs-on: ubuntu-latest
+    outputs:
+      apk: ${{ steps.apk.outputs.apk }}
+      version: ${{ steps.ver.outputs.version }}
+    env:
+      HAS_KEY: ${{ secrets.ANDROID_KEYSTORE_B64 != '' && secrets.ANDROID_KEYSTORE_PASS != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '17' }
+      - id: ver
+        run: echo "version=$(node -p "require('./tv-bakim/package.json').version")" >> "$GITHUB_OUTPUT"
+      - name: Android SDK (platform 35, build-tools 35)
+        run: |
+          SM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          [ -f "$ANDROID_HOME/platforms/android-35/android.jar" ] || yes | "$SM" "platforms;android-35" >/dev/null
+          [ -d "$ANDROID_HOME/build-tools/35.0.0" ] || yes | "$SM" "build-tools;35.0.0" >/dev/null
+      - name: İmzasız derleme denetimi (her zaman)
+        run: APK_IMZASIZ=1 bash tv-bakim/araclar/apk.sh && rm -f tv-bakim/cikti/*imzasiz*
+      - name: İmzalı APK
+        id: apk
+        if: env.HAS_KEY == 'true'
+        env:
+          ANDROID_KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          ANDROID_KEYSTORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASS }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASS: ${{ secrets.ANDROID_KEY_PASS }}
+        run: |
+          set -euo pipefail
+          echo "$ANDROID_KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/tvbakim.jks"
+          export ANDROID_KEYSTORE="$RUNNER_TEMP/tvbakim.jks"
+          [ -n "$ANDROID_KEY_PASS" ] || unset ANDROID_KEY_PASS
+          [ -n "$ANDROID_KEY_ALIAS" ] || unset ANDROID_KEY_ALIAS
+          bash tv-bakim/araclar/apk.sh
+          rm -f "$ANDROID_KEYSTORE"
+          BT="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)"
+          APK="$(ls tv-bakim/cikti/TV-Bakim-*.apk)"
+          CERT="$("$BT/apksigner" verify --print-certs "$APK" | sed -n 's/^Signer #1 certificate SHA-256 digest: //p')"
+          if [ "$CERT" != "$EXPECTED_CERT" ]; then echo "::error::APK sertifikası ($CERT) 1.0.x anahtarı değil — yanlış keystore; yayın yok"; exit 1; fi
+          mkdir release && cp "$APK" release/
+          ls -la release && sha256sum release/*
+          echo "apk=true" >> "$GITHUB_OUTPUT"
+      - name: Anahtar yok → Android yayını atlandı
+        if: env.HAS_KEY != 'true'
+        run: echo "::warning::ANDROID_KEYSTORE_B64 / ANDROID_KEYSTORE_PASS secret'ları bu depoda tanımlı değil — APK imzalanmadı, release ve android kanalı bu çalıştırmada yok."
+      - uses: actions/upload-artifact@v4
+        if: steps.apk.outputs.apk == 'true'
+        with: { name: release-tvbakim, path: release/, retention-days: 5 }
+
+  release:
+    needs: [test, build-android]
+    if: needs.build-android.outputs.apk == 'true' && github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+    uses: departures-mil/ortak-cekirdek/.github/workflows/reusable-release.yml@main
+    with:
+      app_id: tv-bakim
+      version: ${{ needs.build-android.outputs.version }}
+      file_prefix: TV-Bakim
+      release_title: TV Bakım v${{ needs.build-android.outputs.version }}
+      files: android=*.apk
+      artifact_pattern: release-tvbakim
+      notes_json: tv-bakim/release-notes.json
+      core_ref: main
+
+  # 1.0.x kurulumları raw tv-bakim/guncelleme/surum.json okur (aynı paket + aynı anahtar → APK doğrudan güncellenir).
+  kopru:
+    needs: [build-android, release]
+    if: needs.release.outputs.released == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Eski kanalı yeni APK'ya yönlendir
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          node tv-bakim/araclar/eski-kanal.js
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add -A tv-bakim/guncelleme
+          git commit -m "TV Bakım: eski kanal köprüsü → v${{ needs.build-android.outputs.version }}" || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
