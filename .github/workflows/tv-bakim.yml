@@ -88,7 +88,8 @@ jobs:
           rm -f "$ANDROID_KEYSTORE"
           BT="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)"
           APK="$(ls tv-bakim/cikti/TV-Bakim-*.apk)"
-          CERT="$("$BT/apksigner" verify --print-certs "$APK" | sed -n 's/^Signer #1 certificate SHA-256 digest: //p')"
+          CERTS="$("$BT/apksigner" verify --print-certs "$APK")"; echo "$CERTS" | grep -i 'SHA-256 digest' || true
+          CERT="$(echo "$CERTS" | grep -m1 'certificate SHA-256 digest' | awk '{print $NF}')"
           if [ "$CERT" != "$EXPECTED_CERT" ]; then echo "::error::APK sertifikası ($CERT) 1.0.x anahtarı değil — yanlış keystore; yayın yok"; exit 1; fi
           mkdir release && cp "$APK" release/
           ls -la release && sha256sum release/*
