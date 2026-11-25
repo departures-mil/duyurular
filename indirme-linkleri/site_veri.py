@@ -33,8 +33,16 @@ def kind_of(name):
     return None
 
 
+GIZLI_RE = re.compile(r"([\w.+-]+@[\w-]+\.[\w.]+|[A-Za-z]:\\\\|[A-Za-z]:\\|/Users/|/home/|AIza[\w-]{20,}|gh[pousr]_\w{20,}|BEGIN [A-Z ]*PRIVATE|keystore|\\.jks|şifre|sifre\\.txt|password)", re.I)
+
+
+def temizle(txt):
+    """Kişisel bilgi güvencesi: e-posta, yerel yol, anahtar/şifre geçen satırlar sitede gösterilmez."""
+    return "\n".join(l for l in txt.split("\n") if not GIZLI_RE.search(l)).strip()
+
+
 def split_notes(body):
-    body = re.sub(r"</?(div|span|p|br)[^>]*>", "", (body or "").replace("\r\n", "\n")).strip()
+    body = temizle(re.sub(r"</?(div|span|p|br)[^>]*>", "", (body or "").replace("\r\n", "\n")))
     if not body:
         return None
     parts = list(LANG_HEAD.finditer(body))

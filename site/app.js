@@ -211,9 +211,8 @@
     if (acikId()) history.pushState(null, '', location.pathname + location.search);
   }
 
-  /* ---------- iletişim formu (programlardaki "Admin ile iletişim" ile aynı gelen kutusu) ---------- */
+  /* ---------- iletişim formu: yalnız gelen kutusu (sitede hiçbir kişisel adres/e-posta bulunmaz) ---------- */
   var INBOX = 'https://firestore.googleapis.com/v1/projects/comm-calc-103111111/databases/(default)/documents/mesajlar?key=AIzaSyB12RFS6ENPpmnnPsETfjedNH-3hmNWQvA';
-  function yedekAdres() { return atob('').split('').reverse().join(''); }
   function cihazId() {
     var id = store('cihaz');
     if (!id) { var b = new Uint8Array(9); crypto.getRandomValues(b); id = Array.prototype.map.call(b, function (x) { return (x < 16 ? '0' : '') + x.toString(16); }).join(''); store('cihaz', id); }
@@ -241,13 +240,6 @@
     var body = { fields: {} }; Object.keys(f).forEach(function (k) { body.fields[k] = { stringValue: String(f[k]) }; });
     fetch(INBOX, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
       .then(function (r) { return r.ok; }, function () { return false; })
-      .then(function (ok) {
-        if (ok) return true;
-        var m = { _subject: 'İndirme sitesi: ' + f.tur, _template: 'table', _captcha: 'false', Tur: f.tur, Mesaj: f.mesaj, Uygulama: f.uygulama, Dil: f.dil, Platform: f.platform };
-        if (f.iletisim) { m.Iletisim = f.iletisim; if (/@/.test(f.iletisim)) m._replyto = f.iletisim; }
-        return fetch('https://formsubmit.co/ajax/' + yedekAdres(), { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(m) })
-          .then(function (r) { return r.json(); }).then(function (j) { return String(j.success) === 'true'; }, function () { return false; });
-      })
       .then(function (ok) {
         btn.disabled = false; btn.textContent = T('fGonder');
         durum.textContent = ok ? T('fTamam') : T('fHata'); durum.className = ok ? 'ok' : 'err';
