@@ -1,4 +1,4 @@
-name: İndirme linklerini yenile
+name: İndirme linklerini yenile ve siteyi yayınla
 
 on:
   schedule:
@@ -6,6 +6,12 @@ on:
   workflow_dispatch:
   repository_dispatch:
     types: [yeni-surum]
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "indirme-linkleri/*.py"
+      - ".github/workflows/indirme-linkleri.yml"
 
 permissions:
   contents: write
@@ -33,3 +39,22 @@ jobs:
             git pull --rebase origin main
             git push
           fi
+      - name: Yayındaki siteyi al
+        run: |
+          rm -rf /tmp/yayinda
+          if git fetch --depth 1 origin gh-pages 2>/dev/null; then
+            mkdir -p /tmp/yayinda && git archive FETCH_HEAD | tar -x -C /tmp/yayinda
+          fi
+      - name: Siteyi hazırla
+        id: hazirla
+        run: python3 indirme-linkleri/yayinla.py /tmp/yayinda
+      - name: GitHub Pages'e yayınla (gh-pages)
+        if: steps.hazirla.outputs.yayinla == 'true'
+        run: |
+          cd _site
+          git init -q -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "İndirme sitesi: $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" gh-pages

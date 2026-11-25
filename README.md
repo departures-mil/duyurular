@@ -1,5 +1,7 @@
 # Duyurular
 
+🌐 **İndirme sitesi (TR · EN · AR):** https://departures-mil.github.io/duyurular/ (kaynak `site/`, veriler GitHub Releases'ten 15 dakikada bir)
+
 📥 **Bütün programların indirme linkleri:** [INDIRME-LINKLERI.md](INDIRME-LINKLERI.md) (15 dakikada bir kendiliğinden yenilenir)
 
 Bütün programlara giden admin duyuruları. Programlar şu dosyayı okur (30 dakikada bir ve açılışta):

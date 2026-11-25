@@ -1,5 +1,7 @@
 # İndirme Linkleri
 
+> 🌐 Aynı liste kartlı, üç dilli site olarak: **https://departures-mil.github.io/duyurular/**
+
 Bütün programların en son masaüstü kurulum (setup) ve Android APK dosyaları.
 Bu sayfa her 15 dakikada bir GitHub'daki yeni sürümlere göre kendiliğinden yenilenir.
 
@@ -23,5 +25,7 @@ Son yenileme: 2026-11-25T13:30:58Z (UTC)
 | **Pixhawk Log Analiz** | [PixhawkLogAnaliz_Setup_1.1.7.exe](https://github.com/departures-mil/pixhawk-log-analiz/releases/download/v1.1.7/PixhawkLogAnaliz_Setup_1.1.7.exe)<br><sub>v1.1.7 · 95.1 MB</sub> | — |
 | **Sınav Hazırlama** | [SinavHazirlama-1.10.3-win-setup.exe](https://github.com/departures-mil/sinav-hazirlama/releases/download/v1.10.3/SinavHazirlama-1.10.3-win-setup.exe)<br><sub>v1.10.3 · 102.3 MB</sub> | — |
 | **TV Bakım** | — | [TV-Bakim-1.1.0-android.apk](https://github.com/departures-mil/duyurular/releases/download/v1.1.0/TV-Bakim-1.1.0-android.apk)<br><sub>v1.1.0 · 0.6 MB</sub> |
+
+🌐 **İndirme sitesi:** https://departures-mil.github.io/duyurular/ (Türkçe · English · العربية)
 
 Makine için: [links.json](indirme-linkleri/links.json)

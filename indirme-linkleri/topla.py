@@ -24,6 +24,7 @@ NAMES = {
     "comm-calc": "Comm-Calc", "kalori-hesaplayici": "Kalori Hesaplayıcı",
     "DesktopDuzenSabitleyici": "Desktop Düzen Sabitleyici",
     "pixhawk-log-analiz": "Pixhawk Log Analiz", "ajandam": "Ajandam (eski)",
+    "3d-maliyet-arsiv": "3D Maliyet ve Arşiv",
 }
 # Program olmayan (içerik/altyapı) depolar: listede gösterilmez.
 SKIP = {"duyurular", "ortak-cekirdek", "iha-mufredat-kaynak", "ing-mufredat-guncelleme",
@@ -52,8 +53,24 @@ def mb(n):
     return round(n / 1048576, 1) if n else None
 
 
+REL_CACHE = {}
+TREE_CACHE = {}
+
+
+def releases(repo):
+    if repo not in REL_CACHE:
+        REL_CACHE[repo] = gh(f"repos/{OWNER}/{repo}/releases?per_page=50") or []
+    return REL_CACHE[repo]
+
+
+def tree(repo, branch):
+    if (repo, branch) not in TREE_CACHE:
+        TREE_CACHE[(repo, branch)] = gh(f"repos/{OWNER}/{repo}/git/trees/{branch}?recursive=1")
+    return TREE_CACHE[(repo, branch)]
+
+
 def from_releases(repo):
-    rels = gh(f"repos/{OWNER}/{repo}/releases?per_page=50") or []
+    rels = list(releases(repo))
     rels = [r for r in rels if not r.get("draft")]
     rels.sort(key=lambda r: r.get("published_at") or "", reverse=True)
     found = {}
@@ -79,7 +96,7 @@ def from_releases(repo):
 
 
 def from_tree(repo, branch, prefix=""):
-    t = gh(f"repos/{OWNER}/{repo}/git/trees/{branch}?recursive=1")
+    t = tree(repo, branch)
     if not t:
         return {}
     best = {}
@@ -131,6 +148,11 @@ def main():
         if links or name in NAMES:
             apps.append({"id": name, "name": NAMES.get(name, name), "repo": name, "links": links})
     apps.sort(key=lambda a: a["name"].lower())
+    try:
+        import site_veri
+        site_veri.yaz(apps, releases, tree, repos)
+    except Exception as e:  # site verisi linkleri asla bozmasın
+        print(f"uyarı: site verisi yazılamadı: {e}", file=sys.stderr)
     data = {"apps": apps}
     path = os.path.join(HERE, "links.json")
     old = None
@@ -157,6 +179,7 @@ def cell(l):
 
 def write_md(data):
     lines = ["# İndirme Linkleri", "",
+             "> 🌐 Aynı liste kartlı, üç dilli site olarak: **https://departures-mil.github.io/duyurular/**", "",
              "Bütün programların en son masaüstü kurulum (setup) ve Android APK dosyaları.",
              "Bu sayfa her 15 dakikada bir GitHub'daki yeni sürümlere göre kendiliğinden yenilenir.", "",
              f"Son yenileme: {data['updated']} (UTC)", "",
@@ -171,7 +194,8 @@ def write_md(data):
     if yok:
         lines += ["", "Kurulum dosyası henüz doğrudan indirilebilir olarak yayında olmayanlar "
                   "(bunlar program içinden güncelleniyor): " + ", ".join(yok)]
-    lines += ["", "Makine için: [links.json](indirme-linkleri/links.json)", ""]
+    lines += ["", "🌐 **İndirme sitesi:** https://departures-mil.github.io/duyurular/ (Türkçe · English · العربية)", "",
+              "Makine için: [links.json](indirme-linkleri/links.json)", ""]
     with open(os.path.join(ROOT, "INDIRME-LINKLERI.md"), "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
 
