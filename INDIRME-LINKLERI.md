@@ -5,7 +5,7 @@
 Bütün programların en son masaüstü kurulum (setup) ve Android APK dosyaları.
 Bu sayfa her 15 dakikada bir GitHub'daki yeni sürümlere göre kendiliğinden yenilenir.
 
-Son yenileme: 2026-11-25T21:29:16Z (UTC)
+Son yenileme: 2026-11-25T22:46:35Z (UTC)
 
 | Program | Masaüstü (Windows kurulum) | Android (APK) |
 |---|---|---|
@@ -22,7 +22,7 @@ Son yenileme: 2026-11-25T21:29:16Z (UTC)
 | **Mahzen** | [Mahzen-3.9.1-win-setup.exe](https://github.com/departures-mil/mahzen/releases/download/v3.9.1/Mahzen-3.9.1-win-setup.exe)<br><sub>v3.9.1 · 3.2 MB</sub> | — |
 | **Merkezi Servis** | [MerkeziServis-1.2.4-win-setup.exe](https://github.com/departures-mil/merkezi-servis/releases/download/v1.2.4/MerkeziServis-1.2.4-win-setup.exe)<br><sub>v1.2.4 · 78.9 MB</sub> | — |
 | **Organizer** | [Organizer-2.3.0-win-setup.exe](https://github.com/departures-mil/organizer/releases/download/v2.3.0/Organizer-2.3.0-win-setup.exe)<br><sub>v2.3.0 · 38.2 MB</sub> | [Organizer-2.3.0-android.apk](https://github.com/departures-mil/organizer/releases/download/v2.3.0/Organizer-2.3.0-android.apk)<br><sub>v2.3.0 · 0.9 MB</sub> |
-| **Pixhawk Log Analiz** | [PixhawkLogAnaliz_Setup_1.1.10.exe](https://github.com/departures-mil/pixhawk-log-analiz/releases/download/v1.1.10/PixhawkLogAnaliz_Setup_1.1.10.exe)<br><sub>v1.1.10 · 95.3 MB</sub> | — |
+| **Pixhawk Log Analiz** | [PixhawkLogAnaliz_Setup_1.1.11.exe](https://github.com/departures-mil/pixhawk-log-analiz/releases/download/v1.1.11/PixhawkLogAnaliz_Setup_1.1.11.exe)<br><sub>v1.1.11 · 104.4 MB</sub> | — |
 | **Sınav Hazırlama** | [SinavHazirlama-1.10.4-win-setup.exe](https://github.com/departures-mil/sinav-hazirlama/releases/download/v1.10.4/SinavHazirlama-1.10.4-win-setup.exe)<br><sub>v1.10.4 · 102.3 MB</sub> | — |
 | **TV Bakım** | — | [TV-Bakim-1.1.0-android.apk](https://github.com/departures-mil/duyurular/releases/download/v1.1.0/TV-Bakim-1.1.0-android.apk)<br><sub>v1.1.0 · 0.6 MB</sub> |
 
