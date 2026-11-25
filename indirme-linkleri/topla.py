@@ -63,7 +63,7 @@ def releases(repo):
     return REL_CACHE[repo]
 
 
-def tree(repo, branch):
+def agac(repo, branch):
     if (repo, branch) not in TREE_CACHE:
         TREE_CACHE[(repo, branch)] = gh(f"repos/{OWNER}/{repo}/git/trees/{branch}?recursive=1")
     return TREE_CACHE[(repo, branch)]
@@ -96,7 +96,7 @@ def from_releases(repo):
 
 
 def from_tree(repo, branch, prefix=""):
-    t = tree(repo, branch)
+    t = agac(repo, branch)
     if not t:
         return {}
     best = {}
@@ -150,7 +150,7 @@ def main():
     apps.sort(key=lambda a: a["name"].lower())
     try:
         import site_veri
-        site_veri.yaz(apps, releases, tree, repos)
+        site_veri.yaz(apps, releases, agac, repos)
     except Exception as e:  # site verisi linkleri asla bozmasın
         print(f"uyarı: site verisi yazılamadı: {e}", file=sys.stderr)
     data = {"apps": apps}
