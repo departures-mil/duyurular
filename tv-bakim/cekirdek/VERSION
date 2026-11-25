@@ -4,3 +4,5 @@ Kopyalanan: web/dist/fc-core.js, web/css, web/fonts → www/cekirdek/ · delta/j
 Yerel düzeltmeler (Kitaplık'takilerle aynı; çekirdeğe önerildi):
 - www/cekirdek/fc-core.js (updater.run): FC.host.update.run(plan, ilerleme) varsa indirme + yama + kurulum kabukta (Android ApkPatchInstaller).
 - ApkPatchInstaller.java: androidx FileProvider yerine uygulamanın kendi ContentProvider adresi (Gradle'sız kabuk; kopya Kitaplık'tan).
+
+Yerel düzeltme (2026-11-25): contact — kişisel e-posta yedeği (FormSubmit) kaldırıldı; ortak-cekirdek c3ccfb6 ile aynı.

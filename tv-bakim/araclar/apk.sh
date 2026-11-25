@@ -3,7 +3,7 @@
 #   bash araclar/apk.sh            → cikti/TV-Bakim-<sürüm>.apk  (sürüm ve versionCode araclar/surum.js'ten; uzunluk sınırı yok)
 # Android SDK: $ANDROID_TOOLS (bt/<sürüm>/, pf/android-NN/) ya da $ANDROID_HOME / $ANDROID_SDK_ROOT (build-tools/, platforms/).
 # İmza: ANDROID_KEYSTORE (dosya yolu) + ANDROID_KEYSTORE_PASS (+ ANDROID_KEY_ALIAS [yoksa keystore'daki ilk takma ad], ANDROID_KEY_PASS).
-#   Anahtar depoda YOK: C:\Claude Programlarım\_Anahtarlar\TVBakim\tvbakim.jks (+ sifre.txt). Tüm sürümler AYNI anahtarla
+#   Anahtar depoda YOK: geliştiricinin bilgisayarındaki anahtar klasörü (+ sifre.txt). Tüm sürümler AYNI anahtarla
 #   imzalanmalı; başka anahtarla imzalanan APK kurulu TV Bakım'ın üstüne kurulmaz.
 #   Anahtar yoksa APK_IMZASIZ=1 ile yalnız derleme denenir (cikti/TV-Bakim-<sürüm>-imzasiz.apk, CI derleme denetimi).
 set -euo pipefail

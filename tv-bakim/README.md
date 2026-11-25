@@ -37,7 +37,7 @@ taşınır), `TvBridge` (window.TV), `FcBridge` (window.AndroidBridge: güncelle
 - CI `.github/workflows/tv-bakim.yml`: test → APK (imzasız derleme her zaman; imzalı yalnız secret'larla, sertifika 1.0.x ile aynı olmalı)
   → release (yalnız main'de workflow_dispatch) → eski kanal köprüsü (`araclar/eski-kanal.js`: `guncelleme/surum.json` + APK).
   Secret'lar: `ANDROID_KEYSTORE_B64`, `ANDROID_KEYSTORE_PASS`, [`ANDROID_KEY_PASS`], [`ANDROID_KEY_ALIAS`]
-  (anahtar: `C:\Claude Programlarım\_Anahtarlar\TVBakim\tvbakim.jks` + `sifre.txt`; depoya girmez). Yoksa android yayını atlanır.
+  (anahtar: geliştiricinin bilgisayarındaki anahtar klasörü + `sifre.txt`; depoya girmez). Yoksa android yayını atlanır.
 - Yayın: `gh api -X POST repos/departures-mil/duyurular/actions/workflows/tv-bakim.yml/dispatches -f ref=main`
 
 ## Test

@@ -8,7 +8,7 @@ Bütün programlara giden admin duyuruları. Programlar şu dosyayı okur (30 da
 
 `https://raw.githubusercontent.com/departures-mil/duyurular/main/duyurular.json`
 
-- `panel/Duyuru-Paneli.html` — admin paneli (bilgisayarda `C:\Claude Programlarım\_Admin`).
+- `panel/Duyuru-Paneli.html` — admin paneli (geliştiricinin bilgisayarında).
 - `istemci/duyuru.js` — web arayüzlü programlara eklenen ortak istemci.
 
 ## Duyuru biçimi

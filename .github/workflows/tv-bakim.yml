@@ -4,7 +4,7 @@
 #
 # Yayın: tv-bakim/ içinde sürümü yükseltin (www/js/haberler.js en üste not, sonra node tv-bakim/araclar/surum.js X.Y.Z), main'e gönderin, sonra
 #   gh api -X POST repos/departures-mil/duyurular/actions/workflows/tv-bakim.yml/dispatches -f ref=main
-# İmza: secret'lar ANDROID_KEYSTORE_B64, ANDROID_KEYSTORE_PASS, [ANDROID_KEY_PASS], [ANDROID_KEY_ALIAS] (tvbakim.jks, C:\Claude Programlarım\_Anahtarlar\TVBakim).
+# İmza: secret'lar ANDROID_KEYSTORE_B64, ANDROID_KEYSTORE_PASS, [ANDROID_KEY_PASS], [ANDROID_KEY_ALIAS] (tvbakim.jks, geliştiricinin bilgisayarındaki anahtar klasörü).
 #   Secret yoksa APK yalnız imzasız derlenip denetlenir, android kanalı/release ATLANIR (eski kurulumlar etkilenmez).
 #   İmzalı APK'nın sertifikası 1.0.x APK'larınınkiyle (EXPECTED_CERT) aynı olmalı; değilse yayın olmaz (kurulu TV'ler güncellenemezdi).
 name: tv-bakim
