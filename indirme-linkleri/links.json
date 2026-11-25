@@ -1,23 +1,37 @@
 {
  "apps": [
   {
+   "id": "3d-maliyet-arsiv",
+   "name": "3d-maliyet-arsiv",
+   "repo": "3d-maliyet-arsiv",
+   "links": {
+    "desktop": {
+     "url": "https://github.com/departures-mil/3d-maliyet-arsiv/releases/download/v1.0.0/MaliyetArsiv3D-Setup-1.0.0.exe",
+     "file": "MaliyetArsiv3D-Setup-1.0.0.exe",
+     "version": "v1.0.0",
+     "mb": 2.8,
+     "date": "2026-11-24T21:24:03Z"
+    }
+   }
+  },
+  {
    "id": "aile-ajandasi",
    "name": "Ajandam (Aile Ajandası)",
    "repo": "aile-ajandasi",
    "links": {
     "apk": {
-     "url": "https://github.com/departures-mil/aile-ajandasi/releases/download/v5.7.1/Ajandam-5.7.1-android.apk",
-     "file": "Ajandam-5.7.1-android.apk",
-     "version": "v5.7.1",
+     "url": "https://github.com/departures-mil/aile-ajandasi/releases/download/v5.7.3/Ajandam-5.7.3-android.apk",
+     "file": "Ajandam-5.7.3-android.apk",
+     "version": "v5.7.3",
      "mb": 4.9,
-     "date": "2026-11-24T09:26:29Z"
+     "date": "2026-11-24T21:29:16Z"
     },
     "desktop": {
-     "url": "https://github.com/departures-mil/aile-ajandasi/releases/download/v5.7.1/Ajandam-5.7.1-win-setup.exe",
-     "file": "Ajandam-5.7.1-win-setup.exe",
-     "version": "v5.7.1",
+     "url": "https://github.com/departures-mil/aile-ajandasi/releases/download/v5.7.3/Ajandam-5.7.3-win-setup.exe",
+     "file": "Ajandam-5.7.3-win-setup.exe",
+     "version": "v5.7.3",
      "mb": 79.9,
-     "date": "2026-11-24T09:26:29Z"
+     "date": "2026-11-24T21:29:16Z"
     }
    }
   },
@@ -27,11 +41,11 @@
    "repo": "baski-hesabi",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/baski-hesabi/releases/download/v1.14.0/BaskiHesabi-Setup-1.14.0.exe",
-     "file": "BaskiHesabi-Setup-1.14.0.exe",
-     "version": "v1.14.0",
+     "url": "https://github.com/departures-mil/baski-hesabi/releases/download/v1.14.1/BaskiHesabi-Setup-1.14.1.exe",
+     "file": "BaskiHesabi-Setup-1.14.1.exe",
+     "version": "v1.14.1",
      "mb": 2.7,
-     "date": "2026-11-24T09:41:44Z"
+     "date": "2026-11-24T21:25:22Z"
     }
    }
   },
@@ -41,18 +55,18 @@
    "repo": "bereket-defter",
    "links": {
     "apk": {
-     "url": "https://github.com/departures-mil/bereket-defter/releases/download/v1.21.1/BereketDefter-1.21.1-android.apk",
-     "file": "BereketDefter-1.21.1-android.apk",
-     "version": "v1.21.1",
+     "url": "https://github.com/departures-mil/bereket-defter/releases/download/v1.21.3/BereketDefter-1.21.3-android.apk",
+     "file": "BereketDefter-1.21.3-android.apk",
+     "version": "v1.21.3",
      "mb": 0.9,
-     "date": "2026-11-24T15:24:16Z"
+     "date": "2026-11-24T21:30:16Z"
     },
     "desktop": {
-     "url": "https://github.com/departures-mil/bereket-defter/releases/download/v1.21.1/BereketDefter-1.21.1-win-setup.exe",
-     "file": "BereketDefter-1.21.1-win-setup.exe",
-     "version": "v1.21.1",
+     "url": "https://github.com/departures-mil/bereket-defter/releases/download/v1.21.3/BereketDefter-1.21.3-win-setup.exe",
+     "file": "BereketDefter-1.21.3-win-setup.exe",
+     "version": "v1.21.3",
      "mb": 34.1,
-     "date": "2026-11-24T15:24:16Z"
+     "date": "2026-11-24T21:30:16Z"
     }
    }
   },
@@ -62,11 +76,11 @@
    "repo": "comm-calc",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/comm-calc/releases/download/v1.13.0/CommCalc-1.13.0-win-setup.exe",
-     "file": "CommCalc-1.13.0-win-setup.exe",
-     "version": "v1.13.0",
+     "url": "https://github.com/departures-mil/comm-calc/releases/download/v1.13.2/CommCalc-1.13.2-win-setup.exe",
+     "file": "CommCalc-1.13.2-win-setup.exe",
+     "version": "v1.13.2",
      "mb": 116.6,
-     "date": "2026-11-24T19:08:18Z"
+     "date": "2026-11-24T21:30:01Z"
     },
     "apk": {
      "url": "https://github.com/departures-mil/comm-calc/releases/download/v1.11/Comm-Calc-v1.11.apk",
@@ -83,11 +97,11 @@
    "repo": "cv-maker",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/cv-maker/releases/download/v2.1.1/CV-Maker-Setup-2.1.1.exe",
-     "file": "CV-Maker-Setup-2.1.1.exe",
-     "version": "v2.1.1",
+     "url": "https://github.com/departures-mil/cv-maker/releases/download/v2.1.3/CV-Maker-Setup-2.1.3.exe",
+     "file": "CV-Maker-Setup-2.1.3.exe",
+     "version": "v2.1.3",
      "mb": 103.3,
-     "date": "2026-11-24T15:33:12Z"
+     "date": "2026-11-24T21:30:33Z"
     }
    }
   },
@@ -97,11 +111,11 @@
    "repo": "DesktopDuzenSabitleyici",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/DesktopDuzenSabitleyici/releases/download/v1.1.1/DesktopDuzenSabitleyici-Setup-1.1.1.exe",
-     "file": "DesktopDuzenSabitleyici-Setup-1.1.1.exe",
-     "version": "v1.1.1",
-     "mb": 57.4,
-     "date": "2026-11-24T15:33:59Z"
+     "url": "https://github.com/departures-mil/DesktopDuzenSabitleyici/releases/download/v1.1.2/DesktopDuzenSabitleyici-Setup-1.1.2.exe",
+     "file": "DesktopDuzenSabitleyici-Setup-1.1.2.exe",
+     "version": "v1.1.2",
+     "mb": 57.5,
+     "date": "2026-11-24T21:21:25Z"
     }
    }
   },
@@ -111,11 +125,11 @@
    "repo": "falcon-ofis",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/falcon-ofis/releases/download/v1.58.1/FalconOfis-1.58.1-win-setup.exe",
-     "file": "FalconOfis-1.58.1-win-setup.exe",
-     "version": "v1.58.1",
+     "url": "https://github.com/departures-mil/falcon-ofis/releases/download/v1.58.3/FalconOfis-1.58.3-win-setup.exe",
+     "file": "FalconOfis-1.58.3-win-setup.exe",
+     "version": "v1.58.3",
      "mb": 128.5,
-     "date": "2026-11-24T15:28:55Z"
+     "date": "2026-11-24T21:09:44Z"
     }
    }
   },
@@ -139,18 +153,18 @@
    "repo": "kitaplik",
    "links": {
     "apk": {
-     "url": "https://github.com/departures-mil/kitaplik/releases/download/v2.15.2/Kitaplik-2.15.2-android.apk",
-     "file": "Kitaplik-2.15.2-android.apk",
-     "version": "v2.15.2",
+     "url": "https://github.com/departures-mil/kitaplik/releases/download/v2.15.4/Kitaplik-2.15.4-android.apk",
+     "file": "Kitaplik-2.15.4-android.apk",
+     "version": "v2.15.4",
      "mb": 6.4,
-     "date": "2026-11-24T15:30:30Z"
+     "date": "2026-11-24T21:29:45Z"
     },
     "desktop": {
-     "url": "https://github.com/departures-mil/kitaplik/releases/download/v2.15.2/Kitaplik-2.15.2-win-setup.exe",
-     "file": "Kitaplik-2.15.2-win-setup.exe",
-     "version": "v2.15.2",
+     "url": "https://github.com/departures-mil/kitaplik/releases/download/v2.15.4/Kitaplik-2.15.4-win-setup.exe",
+     "file": "Kitaplik-2.15.4-win-setup.exe",
+     "version": "v2.15.4",
      "mb": 83.8,
-     "date": "2026-11-24T15:30:30Z"
+     "date": "2026-11-24T21:29:45Z"
     }
    }
   },
@@ -160,11 +174,11 @@
    "repo": "mahzen",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/mahzen/releases/download/v3.9.0/Mahzen-3.9.0-win-setup.exe",
-     "file": "Mahzen-3.9.0-win-setup.exe",
-     "version": "v3.9.0",
+     "url": "https://github.com/departures-mil/mahzen/releases/download/v3.9.1/Mahzen-3.9.1-win-setup.exe",
+     "file": "Mahzen-3.9.1-win-setup.exe",
+     "version": "v3.9.1",
      "mb": 3.2,
-     "date": "2026-11-24T09:42:40Z"
+     "date": "2026-11-24T21:23:27Z"
     }
    }
   },
@@ -174,11 +188,11 @@
    "repo": "merkezi-servis",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/merkezi-servis/releases/download/v1.2.2/MerkeziServis-1.2.2-win-setup.exe",
-     "file": "MerkeziServis-1.2.2-win-setup.exe",
-     "version": "v1.2.2",
+     "url": "https://github.com/departures-mil/merkezi-servis/releases/download/v1.2.4/MerkeziServis-1.2.4-win-setup.exe",
+     "file": "MerkeziServis-1.2.4-win-setup.exe",
+     "version": "v1.2.4",
      "mb": 78.9,
-     "date": "2026-11-24T15:36:59Z"
+     "date": "2026-11-24T21:29:30Z"
     }
    }
   },
@@ -188,18 +202,18 @@
    "repo": "organizer",
    "links": {
     "apk": {
-     "url": "https://github.com/departures-mil/organizer/releases/download/v2.2.1/Organizer-2.2.1-android.apk",
-     "file": "Organizer-2.2.1-android.apk",
-     "version": "v2.2.1",
+     "url": "https://github.com/departures-mil/organizer/releases/download/v2.2.3/Organizer-2.2.3-android.apk",
+     "file": "Organizer-2.2.3-android.apk",
+     "version": "v2.2.3",
      "mb": 0.8,
-     "date": "2026-11-24T15:18:02Z"
+     "date": "2026-11-24T21:31:51Z"
     },
     "desktop": {
-     "url": "https://github.com/departures-mil/organizer/releases/download/v2.2.1/Organizer-2.2.1-win-setup.exe",
-     "file": "Organizer-2.2.1-win-setup.exe",
-     "version": "v2.2.1",
-     "mb": 35.2,
-     "date": "2026-11-24T15:18:02Z"
+     "url": "https://github.com/departures-mil/organizer/releases/download/v2.2.3/Organizer-2.2.3-win-setup.exe",
+     "file": "Organizer-2.2.3-win-setup.exe",
+     "version": "v2.2.3",
+     "mb": 35.3,
+     "date": "2026-11-24T21:31:51Z"
     }
    }
   },
@@ -209,11 +223,11 @@
    "repo": "pixhawk-log-analiz",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/pixhawk-log-analiz/releases/download/v1.1.2/PixhawkLogAnaliz_Setup_1.1.2.exe",
-     "file": "PixhawkLogAnaliz_Setup_1.1.2.exe",
-     "version": "v1.1.2",
-     "mb": 94.8,
-     "date": "2026-11-24T15:34:46Z"
+     "url": "https://github.com/departures-mil/pixhawk-log-analiz/releases/download/v1.1.4/PixhawkLogAnaliz_Setup_1.1.4.exe",
+     "file": "PixhawkLogAnaliz_Setup_1.1.4.exe",
+     "version": "v1.1.4",
+     "mb": 95.0,
+     "date": "2026-11-24T21:39:59Z"
     }
    }
   },
@@ -223,11 +237,11 @@
    "repo": "sinav-hazirlama",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/sinav-hazirlama/releases/download/v1.10.1/SinavHazirlama-1.10.1-win-setup.exe",
-     "file": "SinavHazirlama-1.10.1-win-setup.exe",
-     "version": "v1.10.1",
+     "url": "https://github.com/departures-mil/sinav-hazirlama/releases/download/v1.10.3/SinavHazirlama-1.10.3-win-setup.exe",
+     "file": "SinavHazirlama-1.10.3-win-setup.exe",
+     "version": "v1.10.3",
      "mb": 102.3,
-     "date": "2026-11-24T10:15:49Z"
+     "date": "2026-11-24T21:29:48Z"
     }
    }
   },
@@ -246,5 +260,5 @@
    }
   }
  ],
- "updated": "2026-11-24T20:12:46Z"
+ "updated": "2026-11-25T03:34:11Z"
 }
