@@ -125,11 +125,11 @@
    "repo": "falcon-ofis",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/falcon-ofis/releases/download/v1.58.5/FalconOfis-1.58.5-win-setup.exe",
-     "file": "FalconOfis-1.58.5-win-setup.exe",
-     "version": "v1.58.5",
-     "mb": 128.5,
-     "date": "2026-11-25T18:34:01Z"
+     "url": "https://github.com/departures-mil/falcon-ofis/releases/download/v1.59.2/FalconOfis-1.59.2-win-setup.exe",
+     "file": "FalconOfis-1.59.2-win-setup.exe",
+     "version": "v1.59.2",
+     "mb": 128.6,
+     "date": "2026-11-27T14:59:33Z"
     }
    }
   },
@@ -197,6 +197,27 @@
    }
   },
   {
+   "id": "ofis-gunlugu-guncelleme",
+   "name": "ofis-gunlugu-guncelleme",
+   "repo": "ofis-gunlugu-guncelleme",
+   "links": {
+    "apk": {
+     "url": "https://github.com/departures-mil/ofis-gunlugu-guncelleme/releases/download/v1.0.32/OfisGunlugu-1.0.32-android.apk",
+     "file": "OfisGunlugu-1.0.32-android.apk",
+     "version": "v1.0.32",
+     "mb": 16.2,
+     "date": "2026-11-27T13:58:34Z"
+    },
+    "desktop": {
+     "url": "https://github.com/departures-mil/ofis-gunlugu-guncelleme/releases/download/v1.0.32/OfisGunlugu-1.0.32-win-setup.exe",
+     "file": "OfisGunlugu-1.0.32-win-setup.exe",
+     "version": "v1.0.32",
+     "mb": 122.4,
+     "date": "2026-11-27T13:58:34Z"
+    }
+   }
+  },
+  {
    "id": "organizer",
    "name": "Organizer",
    "repo": "organizer",
@@ -223,11 +244,11 @@
    "repo": "pixhawk-log-analiz",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/pixhawk-log-analiz/releases/download/v1.1.11/PixhawkLogAnaliz_Setup_1.1.11.exe",
-     "file": "PixhawkLogAnaliz_Setup_1.1.11.exe",
-     "version": "v1.1.11",
-     "mb": 104.4,
-     "date": "2026-11-25T21:51:58Z"
+     "url": "https://github.com/departures-mil/pixhawk-log-analiz/releases/download/v1.1.12/PixhawkLogAnaliz_Setup_1.1.12.exe",
+     "file": "PixhawkLogAnaliz_Setup_1.1.12.exe",
+     "version": "v1.1.12",
+     "mb": 104.5,
+     "date": "2026-11-27T14:35:19Z"
     }
    }
   },
@@ -260,5 +281,5 @@
    }
   }
  ],
- "updated": "2026-11-26T14:30:07Z"
+ "updated": "2026-11-27T15:03:57Z"
 }
