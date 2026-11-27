@@ -1,6 +1,12 @@
 /* "Neler yeni" — her sürümde EN ÜSTE yeni kayıt (tr/en/ar), sonra: node araclar/surum.js X.Y.Z */
 window.TV_NEWS = [
   {
+    v: '1.1.1',
+    tr: ['TV\'de «Güncelleme denetlenemedi / Failed to fetch» hatası düzeltildi: güncelleme denetimi artık TV\'nin kendisi tarafından yapılır. Bu sürümü bir kez elle kurun; sonraki güncellemeler yine tek tuşla gelir.'],
+    en: ['Fixed «Could not check for updates / Failed to fetch» on the TV: the update check is now done by the TV itself. Install this version once by hand; later updates come with one press again.'],
+    ar: ['تم إصلاح خطأ «تعذّر التحقق من التحديثات / Failed to fetch» على التلفاز: أصبح التلفاز نفسه يتحقق من التحديثات. ثبّت هذا الإصدار مرة واحدة يدوياً؛ بعد ذلك تصل التحديثات بضغطة واحدة.']
+  },
+  {
     v: '1.1.0',
     tr: [
       'Baştan yazıldı: yeni görünüm (Falcon), renk şemaları ("Klasik" eski görünüm), yazı boyutu, Türkçe / English / العربية.',

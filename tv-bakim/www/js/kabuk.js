@@ -59,7 +59,29 @@
     };
     FC.host.can.update = true;
   }
-
+  /* Android: latest.json yerelde indirilir (WebView'den GitHub'a fetch CORS'a takılır → "Failed to fetch"); ortak-cekirdek 1c11eb0 ile aynı sözleşme */
+  if (FC.host.kind === 'android' && AB && typeof AB.httpGet === 'function') {
+    var httpSeq = 0, httpWait = {};
+    window.__fcHttp = function (id, r) { var f = httpWait[id]; if (f) { delete httpWait[id]; f(r || {}); } };
+    FC.host.net = {
+      maxBytes: 2 * 1024 * 1024,
+      download: function (url, onProgress) {
+        return new Promise(function (resolve, reject) {
+          var id = 'h' + (++httpSeq) + '_' + Date.now();
+          var to = setTimeout(function () { delete httpWait[id]; reject(Object.assign(new Error('TIMEOUT'), { code: 'TIMEOUT' })); }, 45000);
+          httpWait[id] = function (r) {
+            clearTimeout(to);
+            if (r.error) return reject(Object.assign(new Error(String(r.error)), { code: 'NETWORK' }));
+            if (r.status !== 200) return reject(Object.assign(new Error('HTTP_' + r.status), { code: 'HTTP_' + r.status }));
+            var b = new TextEncoder().encode(String(r.body || ''));
+            if (onProgress) try { onProgress({ done: b.length, finished: true }); } catch (e) { /* yok */ }
+            resolve(b);
+          };
+          try { AB.httpGet(id, url); } catch (e) { clearTimeout(to); delete httpWait[id]; reject(e); }
+        });
+      }
+    };
+  }
   /* ---------- çekirdek ---------- */
   // Sürümler departures-mil/duyurular deposunun Releases'inde (ayrı depo yok); latest.json "app": "tv-bakim", kanal "android".
   FC.init({ app: 'tv-bakim', repo: 'duyurular', version: VER, channel: 'android', announcements: true, whatsnew: false, onboarding: false });

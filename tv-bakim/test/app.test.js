@@ -175,7 +175,7 @@ test('güvenlik: manifest ve köprü yasakları', () => {
     'appDetails', 'apps', 'cancelScan', 'clearOwnCache', 'emptyTrash', 'info', 'legacy', 'legacyDone', 'netTest', 'openApp', 'openSettings',
     'requestStorage', 'restore', 'scan', 'tasi', 'trash', 'trashList', 'uninstall'].sort());
   assert.deepStrictEqual(methods(fs.readFileSync(path.join(dir, 'FcBridge.java'), 'utf8')),
-    ['apkUpdate', 'appVersion', 'moveTaskToBack', 'openExternal', 'updateBegin', 'updateChunk', 'updateFinish']);
+    ['apkUpdate', 'appVersion', 'httpGet', 'moveTaskToBack', 'openExternal', 'updateBegin', 'updateChunk', 'updateFinish']);  // httpGet: 1.1.1 (yalnız https, ≤ 2 MB, latest.json)
   const tv = fs.readFileSync(path.join(dir, 'TvBridge.java'), 'utf8');
   // çöp kutusuna taşıma yalnız tarama numarasıyla (yol kabul edilmez); kalıcı silme yerel onay penceresinden sonra
   assert.match(tv, /public void trash\(String idsJson\)/);
