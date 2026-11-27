@@ -1,13 +1,13 @@
 {
- "version": "1.1.0",
- "code": 10100,
- "apk": "TV-Bakim-1.1.0.apk",
+ "version": "1.1.1",
+ "code": 10101,
+ "apk": "TV-Bakim-1.1.1.apk",
  "size": 605007,
- "sha256": "739e7749b3969729e644dd46134cf96c7f3c1d04c9ac1c3177be4d61f9886e5e",
- "date": "2026-11-24T19:07:33Z",
+ "sha256": "373a62b5fcb6b414789740373eacfac6d4162ff0e3011211ce677cd8e27f639f",
+ "date": "2026-11-27T18:10:17Z",
  "notes": {
-  "tr": "Baştan yazıldı: yeni görünüm (Falcon), renk şemaları (\"Klasik\" eski görünüm), yazı boyutu, Türkçe / English / العربية.\nGereksiz dosyalar artık silinmiyor: önce size gösteriliyor, onayınızla \"TVBakim-CopKutusu\" klasörüne taşınıyor ve geri alınabiliyor.\nYeni: uygulamaların kapladığı yer, ağ hız testi, ekran hızı (animasyon) rehberi, kurulum sayfası.\nGüvenlik: TV'nin kendi hata ayıklama (ADB) bağlantısı ve geliştirici seçeneklerini açık tutma kaldırıldı; isterseniz ADB'yi kapatabilirsiniz.\nGüncellemeler artık GitHub sürümlerinden; yalnızca değişen kısımlar iner (yüzde, MB, kalan, hız).",
-  "en": "Rewritten: new look (Falcon), colour schemes (\"Classic\" is the previous look), font size, Türkçe / English / العربية.\nJunk files are no longer deleted: they are shown to you first, moved to the \"TVBakim-CopKutusu\" folder with your confirmation, and can be restored.\nNew: space used by apps, network speed test, screen speed (animation) guide, setup page.\nSecurity: the connection to the TV's own debugging (ADB) and keeping developer options on were removed; you can turn ADB off.\nUpdates now come from GitHub releases; only the changed parts are downloaded (percent, MB, remaining, speed).",
-  "ar": "أُعيدت كتابته: مظهر جديد (Falcon)، أنظمة ألوان (\"الكلاسيكي\" هو المظهر السابق)، حجم الخط، Türkçe / English / العربية.\nلم تعد الملفات غير الضرورية تُحذف: تُعرض عليك أولاً، وتُنقل بموافقتك إلى مجلد \"TVBakim-CopKutusu\" ويمكن استعادتها.\nجديد: المساحة التي تشغلها التطبيقات، اختبار سرعة الشبكة، دليل سرعة الشاشة (الحركة)، صفحة الإعداد.\nالأمان: أُزيل الاتصال بتصحيح أخطاء التلفاز (ADB) وإبقاء خيارات المطوّر مفعّلة؛ يمكنك إيقاف ADB.\nالتحديثات الآن من إصدارات GitHub؛ تُنزَّل الأجزاء المتغيرة فقط (النسبة، MB، المتبقي، السرعة)."
+  "tr": "TV'de «Güncelleme denetlenemedi / Failed to fetch» hatası düzeltildi: güncelleme denetimi artık TV'nin kendisi tarafından yapılır. Bu sürümü bir kez elle kurun; sonraki güncellemeler yine tek tuşla gelir.",
+  "en": "Fixed «Could not check for updates / Failed to fetch» on the TV: the update check is now done by the TV itself. Install this version once by hand; later updates come with one press again.",
+  "ar": "تم إصلاح خطأ «تعذّر التحقق من التحديثات / Failed to fetch» على التلفاز: أصبح التلفاز نفسه يتحقق من التحديثات. ثبّت هذا الإصدار مرة واحدة يدوياً؛ بعد ذلك تصل التحديثات بضغطة واحدة."
  }
 }
