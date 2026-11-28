@@ -5,7 +5,7 @@
 Bütün programların en son masaüstü kurulum (setup) ve Android APK dosyaları.
 Bu sayfa her 15 dakikada bir GitHub'daki yeni sürümlere göre kendiliğinden yenilenir.
 
-Son yenileme: 2026-11-27T23:27:24Z (UTC)
+Son yenileme: 2026-11-28T04:53:08Z (UTC)
 
 | Program | Masaüstü (Windows kurulum) | Android (APK) |
 |---|---|---|
@@ -23,7 +23,7 @@ Son yenileme: 2026-11-27T23:27:24Z (UTC)
 | **Merkezi Servis** | [MerkeziServis-1.3.0-win-setup.exe](https://github.com/departures-mil/merkezi-servis/releases/download/v1.3.0/MerkeziServis-1.3.0-win-setup.exe)<br><sub>v1.3.0 · 78.9 MB</sub> | — |
 | **ofis-gunlugu-guncelleme** | [OfisGunlugu-1.0.32-win-setup.exe](https://github.com/departures-mil/ofis-gunlugu-guncelleme/releases/download/v1.0.32/OfisGunlugu-1.0.32-win-setup.exe)<br><sub>v1.0.32 · 122.4 MB</sub> | [OfisGunlugu-1.0.32-android.apk](https://github.com/departures-mil/ofis-gunlugu-guncelleme/releases/download/v1.0.32/OfisGunlugu-1.0.32-android.apk)<br><sub>v1.0.32 · 16.2 MB</sub> |
 | **Organizer** | [Organizer-2.3.1-win-setup.exe](https://github.com/departures-mil/organizer/releases/download/v2.3.1/Organizer-2.3.1-win-setup.exe)<br><sub>v2.3.1 · 38.2 MB</sub> | [Organizer-2.3.1-android.apk](https://github.com/departures-mil/organizer/releases/download/v2.3.1/Organizer-2.3.1-android.apk)<br><sub>v2.3.1 · 0.9 MB</sub> |
-| **Pixhawk Log Analiz** | [PixhawkLogAnaliz_Setup_1.1.16.exe](https://github.com/departures-mil/pixhawk-log-analiz/releases/download/v1.1.16/PixhawkLogAnaliz_Setup_1.1.16.exe)<br><sub>v1.1.16 · 104.6 MB</sub> | — |
+| **Pixhawk Log Analiz** | [PixhawkLogAnaliz_Setup_1.1.17.exe](https://github.com/departures-mil/pixhawk-log-analiz/releases/download/v1.1.17/PixhawkLogAnaliz_Setup_1.1.17.exe)<br><sub>v1.1.17 · 104.7 MB</sub> | — |
 | **Sınav Hazırlama** | [SinavHazirlama-1.10.4-win-setup.exe](https://github.com/departures-mil/sinav-hazirlama/releases/download/v1.10.4/SinavHazirlama-1.10.4-win-setup.exe)<br><sub>v1.10.4 · 102.3 MB</sub> | — |
 | **TV Bakım** | — | [TV-Bakim-1.1.1-android.apk](https://github.com/departures-mil/duyurular/releases/download/v1.1.1/TV-Bakim-1.1.1-android.apk)<br><sub>v1.1.1 · 0.6 MB</sub> |
 

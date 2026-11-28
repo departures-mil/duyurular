@@ -244,11 +244,11 @@
    "repo": "pixhawk-log-analiz",
    "links": {
     "desktop": {
-     "url": "https://github.com/departures-mil/pixhawk-log-analiz/releases/download/v1.1.16/PixhawkLogAnaliz_Setup_1.1.16.exe",
-     "file": "PixhawkLogAnaliz_Setup_1.1.16.exe",
-     "version": "v1.1.16",
-     "mb": 104.6,
-     "date": "2026-11-27T21:06:02Z"
+     "url": "https://github.com/departures-mil/pixhawk-log-analiz/releases/download/v1.1.17/PixhawkLogAnaliz_Setup_1.1.17.exe",
+     "file": "PixhawkLogAnaliz_Setup_1.1.17.exe",
+     "version": "v1.1.17",
+     "mb": 104.7,
+     "date": "2026-11-28T02:33:25Z"
     }
    }
   },
@@ -281,5 +281,5 @@
    }
   }
  ],
- "updated": "2026-11-27T23:27:24Z"
+ "updated": "2026-11-28T04:53:08Z"
 }
