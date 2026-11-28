@@ -46,5 +46,7 @@ ya da `ANDROID_HOME`), arayüz (`PLAYWRIGHT_CORE=…/playwright-core PLAYWRIGHT_
 `node araclar/ekran.js <klasör>` (960×540 CSS × 2 = 1920×1080). APK: `ANDROID_TOOLS=… APK_IMZASIZ=1 bash araclar/apk.sh`.
 
 ## Sürüm geçmişi
+- **1.1.2:** Ekran hızı rehberi duruma göre (7 kez basma bitmeden geliştirici düğmesi yok, markaya göre yollar), kısıtlı profil /
+  yönetilen kullanıcı tanıma (devRestricted), Erişilebilirlik → Animasyonları kaldır kısayolu (accessScreen), openSettings access/users.
 - **1.1.0:** yeniden yazım (yukarıda). 1.0.x kurulumları eski kanaldan (`guncelleme/surum.json`) yeni APK'ya geçer.
 - **1.0.2 / 1.0.1 / 1.0.0:** ADB tabanlı eski sürümler.

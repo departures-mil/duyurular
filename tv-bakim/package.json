@@ -1,7 +1,7 @@
 {
   "name": "tv-bakim",
   "productName": "TV Bakım",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "private": true,
   "description": "TV Bakım — Android TV bakım uygulaması (depolama, gereksiz dosyalar + çöp kutusu, uygulamalar, ekran hızı rehberi, ağ testi). Kaynak duyurular deposunda (tv-bakim/), sürümler duyurular deposunun Releases'inde.",
   "author": "departures-mil",

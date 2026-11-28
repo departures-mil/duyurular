@@ -1,6 +1,21 @@
 /* "Neler yeni" — her sürümde EN ÜSTE yeni kayıt (tr/en/ar), sonra: node araclar/surum.js X.Y.Z */
 window.TV_NEWS = [
   {
+    v: '1.1.2',
+    tr: [
+      'Ekran hızı: TV "Geliştirici seçenekleri kapalı / kullanılamaz" derse ne yapılacağı adım adım, markaya göre yollarla anlatılır.',
+      'Kısıtlı profil tanınır (ana kullanıcıya geçiş önerilir); Erişilebilirlik → "Animasyonları kaldır" kısayolu eklendi.'
+    ],
+    en: [
+      'Screen speed: if the TV says "Developer options are off / not available", the fix is explained step by step with brand-specific paths.',
+      'Restricted profiles are detected (switch to the main user is suggested); Accessibility → "Remove animations" shortcut added.'
+    ],
+    ar: [
+      'سرعة الشاشة: إذا قال التلفاز "خيارات المطوّر معطّلة / غير متاحة" يُشرح الحل خطوة بخطوة مع مسارات حسب العلامة التجارية.',
+      'يُكشف الملف المقيّد (ويُقترح الانتقال إلى المستخدم الرئيسي)؛ أُضيف اختصار إمكانية الوصول ← "إزالة الحركات".'
+    ]
+  },
+  {
     v: '1.1.1',
     tr: ['TV\'de «Güncelleme denetlenemedi / Failed to fetch» hatası düzeltildi: güncelleme denetimi artık TV\'nin kendisi tarafından yapılır. Bu sürümü bir kez elle kurun; sonraki güncellemeler yine tek tuşla gelir.'],
     en: ['Fixed «Could not check for updates / Failed to fetch» on the TV: the update check is now done by the TV itself. Install this version once by hand; later updates come with one press again.'],

@@ -311,12 +311,29 @@
       vals.appendChild(el('div.tv-scale' + (v != null && v <= 0.5 ? '.ok' : ''), null, [el('span', { text: T('tv.speed.' + p[0]) }), el('b', { text: v == null ? '—' : B.scaleText(+v) })]));
     });
     c.appendChild(card(T('tv.speed.now'), 'zap', null, [vals, notice(a.state === 'fast' || a.state === 'off' ? 'ok' : '', a.state === 'fast' || a.state === 'off' ? T('tv.speed.good') : T('tv.speed.can')), el('p.tv-small', { text: T('tv.speed.why') })]));
-    var steps = el('ol.tv-steps');
-    steps.appendChild(el('li' + (i.devOptions ? '.done' : ''), null, [el('span', { text: i.devOptions ? T('tv.speed.step1ok') : T('tv.speed.step1') }),
-      i.devOptions ? null : row([btn('small', T('tv.speed.about'), 'info', function () { acil('about'); }, { 'data-k': 'about' })])]));
-    steps.appendChild(el('li', null, [el('span', { text: T('tv.speed.step2') }), row([btn('small.primary', T('tv.setup.openDev'), 'ext', function () { acil('dev'); }, { 'data-k': 'dev', 'data-autofocus': '' })])]));
-    steps.appendChild(el('li', null, [el('span', { text: T('tv.speed.step3') })]));
-    c.appendChild(card(T('tv.setup.howto'), 'list', null, [steps]));
+    var hizli = a.state === 'fast' || a.state === 'off';
+    if (i.devRestricted) {
+      // Kısıtlı profil / yönetilen kullanıcı: TV "Geliştirici seçenekleri kullanılamaz" der; çözüm ana (sahip) kullanıcıya geçmek.
+      c.appendChild(card(T('tv.speed.restricted'), 'key', null, [notice('warn', T('tv.speed.restricted.d')),
+        row([btn('small.primary', T('tv.speed.users'), 'ext', function () { acil('users'); }, { 'data-k': 'users', 'data-autofocus': '' })])]));
+    } else if (!hizli) {
+      var steps = el('ol.tv-steps');
+      if (!i.devOptions) {
+        // 1. adım: önce "Derleme" 7 kez — bu yapılmadan Geliştirici seçenekleri açılmaz ("kapalı / kullanılamaz" uyarısı bundan).
+        steps.appendChild(el('li', null, [el('span', { text: T('tv.speed.step1') }), el('p.tv-small', { text: T('tv.speed.devLocked') }),
+          el('p.tv-small', { text: T('tv.speed.paths') }),
+          row([btn('small.primary', T('tv.speed.about'), 'info', function () { acil('about'); }, { 'data-k': 'about', 'data-autofocus': '' })])]));
+        steps.appendChild(el('li', null, [el('span', { text: T('tv.speed.step2wait') })]));
+      } else {
+        steps.appendChild(el('li.done', null, [el('span', { text: T('tv.speed.step1ok') })]));
+        steps.appendChild(el('li', null, [el('span', { text: T('tv.speed.step2') }),
+          row([btn('small.primary', T('tv.setup.openDev'), 'ext', function () { if (!TVB || !TVB.openSettings('dev')) ui.toast(T('tv.speed.devFail'), 'error', 8000); }, { 'data-k': 'dev', 'data-autofocus': '' })])]));
+      }
+      steps.appendChild(el('li', null, [el('span', { text: T('tv.speed.step3') })]));
+      c.appendChild(card(T('tv.setup.howto'), 'list', null, [steps]));
+      if (i.accessScreen) c.appendChild(card(T('tv.speed.alt'), 'sparkles', null, [el('p.tv-small', { text: T('tv.speed.alt.d') }),
+        row([btn('small', T('tv.speed.openAccess'), 'ext', function () { acil('access'); }, { 'data-k': 'access' })])]));
+    }
     var tips = el('ul.tv-tips');
     ['tip1', 'tip2', 'tip3'].forEach(function (k) { tips.appendChild(el('li', { text: T('tv.speed.' + k) })); });
     c.appendChild(card(T('tv.speed.tips'), 'sparkles', null, [tips]));

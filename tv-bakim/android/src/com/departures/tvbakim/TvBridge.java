@@ -99,6 +99,19 @@ final class TvBridge {
         try { return Settings.Global.getInt(a.getContentResolver(), ad, 0); } catch (Exception e) { return 0; }
     }
 
+    /** Kısıtlı profil / yönetilen kullanıcı: geliştirici özellikleri bu kullanıcı için yasaklanmış ("Geliştirici seçenekleri kullanılamaz"). */
+    private boolean gelistiriciKisitli() {
+        try {
+            android.os.UserManager um = (android.os.UserManager) a.getSystemService(Context.USER_SERVICE);
+            return um != null && (um.hasUserRestriction(android.os.UserManager.DISALLOW_DEBUGGING_FEATURES)
+                    || (Build.VERSION.SDK_INT >= 24 && um.isDemoUser()));
+        } catch (Exception e) { return false; }
+    }
+
+    private boolean cozulur(Intent i) {
+        try { return a.getPackageManager().resolveActivity(i, 0) != null; } catch (Exception e) { return false; }
+    }
+
     boolean kurulu(String pkg) {
         try { a.getPackageManager().getPackageInfo(pkg, 0); return true; } catch (Exception e) { return false; }
     }
@@ -125,6 +138,9 @@ final class TvBridge {
                     .put("animTransition", olcek(Settings.Global.TRANSITION_ANIMATION_SCALE))
                     .put("animator", olcek(Settings.Global.ANIMATOR_DURATION_SCALE))
                     .put("devOptions", global(Settings.Global.DEVELOPMENT_SETTINGS_ENABLED) == 1)
+                    .put("devRestricted", gelistiriciKisitli())
+                    .put("devScreen", cozulur(new Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS)) || cozulur(bilesen("com.android.tv.settings", "com.android.tv.settings.system.development.DevelopmentActivity")))
+                    .put("accessScreen", Build.VERSION.SDK_INT >= 28 && cozulur(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)))
                     .put("adb", global(Settings.Global.ADB_ENABLED) == 1)
                     .put("storagePerm", dosyaIzni())
                     .put("storagePermKind", Build.VERSION.SDK_INT >= 30 ? "all-files" : Build.VERSION.SDK_INT >= 23 ? "runtime" : "none")
@@ -383,6 +399,8 @@ final class TvBridge {
             case "about":
                 l.add(new Intent(Settings.ACTION_DEVICE_INFO_SETTINGS));
                 l.add(bilesen("com.android.tv.settings", "com.android.tv.settings.about.AboutActivity"));
+                l.add(bilesen("com.android.tv.settings", "com.android.tv.settings.device.DevicePrefsActivity"));
+                l.add(new Intent(Settings.ACTION_SETTINGS));
                 break;
             case "storage":
                 l.add(new Intent(Settings.ACTION_INTERNAL_STORAGE_SETTINGS));
@@ -392,6 +410,8 @@ final class TvBridge {
                 l.add(new Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS));
                 l.add(new Intent(Settings.ACTION_APPLICATION_SETTINGS));
                 break;
+            case "access": l.add(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)); break;
+            case "users": l.add(new Intent("android.settings.USER_SETTINGS")); l.add(new Intent(Settings.ACTION_SETTINGS)); break;
             case "wifi": l.add(new Intent(Settings.ACTION_WIFI_SETTINGS)); break;
             case "network": l.add(new Intent(Settings.ACTION_WIRELESS_SETTINGS)); l.add(new Intent(Settings.ACTION_WIFI_SETTINGS)); break;
             case "display": l.add(new Intent(Settings.ACTION_DISPLAY_SETTINGS)); break;
