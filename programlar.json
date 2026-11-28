@@ -1,0 +1,211 @@
+{
+ "_aciklama": "Sitedeki program tanıtımları (tr/en/ar). Sürüm, link, boyut, SHA-256 ve yenilikler GitHub'dan kendiliğinden gelir; burada yalnız tanıtım metni durur. Yeni program bu listede yoksa da sitede görünür (adıyla).",
+ "kategoriler": {
+  "is": {"tr": "Ofis ve iş", "en": "Office & business", "ar": "المكتب والأعمال"},
+  "havacilik": {"tr": "Havacılık ve İHA", "en": "Aviation & UAV", "ar": "الطيران والطائرات المسيّرة"},
+  "uc-boyut": {"tr": "3B baskı", "en": "3D printing", "ar": "الطباعة ثلاثية الأبعاد"},
+  "kisisel": {"tr": "Kişisel düzen", "en": "Personal organisation", "ar": "التنظيم الشخصي"},
+  "arac": {"tr": "Sistem araçları", "en": "System tools", "ar": "أدوات النظام"}
+ },
+ "programlar": {
+  "falcon-ofis": {
+   "kategori": "is", "renk": "#1f6feb", "sira": 1,
+   "ad": {"tr": "Falcon Ofis", "en": "Falcon Office", "ar": "فالكون أوفيس"},
+   "kisa": {"tr": "Ofis ve kasa yönetimi: günlük işlemler, kayıtlar ve raporlar tek programda.",
+            "en": "Office and cash-desk management: daily transactions, records and reports in one application.",
+            "ar": "إدارة المكتب والصندوق: المعاملات اليومية والسجلات والتقارير في برنامج واحد."},
+   "ozellik": {
+    "tr": ["Kasa hareketleri ve ofis kayıtları", "Raporlar ve arşiv", "Bilgisayar ile telefon arasında bulut ve aynı Wi‑Fi ağında internetsiz eşitleme", "Falcon görünümü ve renk şemaları"],
+    "en": ["Cash movements and office records", "Reports and archive", "Cloud sync between computer and phone, plus offline sync over the same Wi‑Fi network", "Falcon interface with colour schemes"],
+    "ar": ["حركات الصندوق وسجلات المكتب", "التقارير والأرشيف", "مزامنة سحابية بين الحاسوب والهاتف، ومزامنة دون إنترنت عبر شبكة Wi‑Fi نفسها", "واجهة فالكون مع أنظمة ألوان متعددة"]
+   }
+  },
+  "merkezi-servis": {
+   "kategori": "is", "renk": "#0e7490", "sira": 2,
+   "ad": {"tr": "Merkezi Servis", "en": "Central Shuttle Service", "ar": "خدمة النقل المركزية"},
+   "kisa": {"tr": "Fabrika personel servisi yönetimi: hatlar, araçlar, personel ve günlük çizelgeler.",
+            "en": "Staff shuttle management for factories: routes, vehicles, personnel and daily schedules.",
+            "ar": "إدارة نقل العاملين في المصانع: الخطوط والمركبات والموظفون والجداول اليومية."},
+   "ozellik": {
+    "tr": ["Servis hatları ve araç kayıtları", "Personel ve durak listeleri", "Günlük çizelge ve raporlar"],
+    "en": ["Shuttle routes and vehicle records", "Personnel and stop lists", "Daily schedules and reports"],
+    "ar": ["خطوط النقل وسجلات المركبات", "قوائم الموظفين ونقاط التوقف", "الجداول والتقارير اليومية"]
+   }
+  },
+  "bereket-defter": {
+   "kategori": "is", "renk": "#15803d", "sira": 3,
+   "ad": {"tr": "Bereket Defter", "en": "Bereket Ledger", "ar": "دفتر بركة"},
+   "kisa": {"tr": "Alacak-verecek defteri: kimden ne alacağınızı, kime ne borcunuz olduğunu düzenli tutar.",
+            "en": "Receivables and payables ledger: keeps track of what is owed to you and what you owe.",
+            "ar": "دفتر الذمم المدينة والدائنة: يتابع ما لك من مستحقات وما عليك من التزامات."},
+   "ozellik": {
+    "tr": ["Kişi bazında alacak ve borç kayıtları", "Bilgisayar ve telefon birlikte", "Kendi Firebase hesabınızla ve aynı Wi‑Fi ağında eşitleme"],
+    "en": ["Receivables and payables per person", "Works on both computer and phone", "Sync through your own Firebase account and over the same Wi‑Fi network"],
+    "ar": ["سجلات المستحقات والديون لكل شخص", "يعمل على الحاسوب والهاتف معاً", "مزامنة عبر حساب Firebase الخاص بك وعبر شبكة Wi‑Fi نفسها"]
+   }
+  },
+  "ofis-gunlugu": {
+   "kategori": "is", "renk": "#7c3aed", "sira": 4, "yakinda": true,
+   "ad": {"tr": "Ofis Günlüğü", "en": "Office Logbook", "ar": "سجل المكتب اليومي"},
+   "kisa": {"tr": "Ofisteki günlük işlerin ve olayların kaydı.",
+            "en": "A record of daily office tasks and events.",
+            "ar": "سجل للمهام والأحداث اليومية في المكتب."}
+  },
+  "sinav-hazirlama": {
+   "kategori": "is", "renk": "#b45309", "sira": 5,
+   "ad": {"tr": "Sınav Hazırlama", "en": "Exam Builder", "ar": "إعداد الاختبارات"},
+   "kisa": {"tr": "Çoktan seçmeli sınav hazırlama, çeviri ve baskıya hazır çıktı programı.",
+            "en": "Multiple-choice exam preparation, translation and print-ready output.",
+            "ar": "إعداد اختبارات الاختيار من متعدد وترجمتها وإخراجها جاهزة للطباعة."},
+   "ozellik": {
+    "tr": ["Soru bankası ve çevrim içi soru arşivi", "Türkçe, İngilizce ve Arapça çeviri", "Baskıya hazır sınav kâğıdı ve cevap anahtarı", "Sınavlar kendi Firebase hesabınızda eşitlenir"],
+    "en": ["Question bank and online question archive", "Turkish, English and Arabic translation", "Print-ready exam papers and answer keys", "Exams sync through your own Firebase account"],
+    "ar": ["بنك أسئلة وأرشيف أسئلة عبر الإنترنت", "ترجمة بين التركية والإنجليزية والعربية", "أوراق اختبار ومفاتيح إجابة جاهزة للطباعة", "مزامنة الاختبارات عبر حساب Firebase الخاص بك"]
+   }
+  },
+  "cv-maker": {
+   "kategori": "is", "renk": "#be185d", "sira": 6,
+   "ad": {"tr": "CV Maker", "en": "CV Maker", "ar": "منشئ السيرة الذاتية"},
+   "kisa": {"tr": "Düzenli ve profesyonel özgeçmiş hazırlama programı; Türkçe, İngilizce ve Arapça.",
+            "en": "Prepare well-structured, professional CVs in Turkish, English and Arabic.",
+            "ar": "إعداد سير ذاتية منظمة واحترافية بالتركية والإنجليزية والعربية."},
+   "ozellik": {
+    "tr": ["Hazır şablonlar", "PDF çıktı", "Kayıtlar bilgisayarınızda kalır"],
+    "en": ["Ready-made templates", "PDF output", "Your data stays on your computer"],
+    "ar": ["قوالب جاهزة", "إخراج بصيغة PDF", "تبقى بياناتك على حاسوبك"]
+   }
+  },
+  "comm-calc": {
+   "kategori": "havacilik", "renk": "#0369a1", "sira": 10,
+   "ad": {"tr": "Comm-Calc", "en": "Comm-Calc", "ar": "Comm-Calc"},
+   "kisa": {"tr": "İHA veri bağı (alıcı/verici) bağlantı bütçesi hesaplayıcısı: bağlantının kurulup kurulamayacağını ve kalitesini gösterir.",
+            "en": "UAV data-link budget calculator: shows whether the link will close and with what margin.",
+            "ar": "حاسبة ميزانية وصلة البيانات للطائرات المسيّرة: تبيّن إمكانية إغلاق الوصلة وهامشها."},
+   "ozellik": {
+    "tr": ["Verici gücü, anten kazancı, kablo/konnektör/VSWR kayıpları ve alıcı hassasiyeti", "Serbest uzay kaybı, Fresnel bölgesi, radyo ufku", "Blok, seviye, menzil ve Fresnel diyagramları", "Anten ansiklopedisi ve ışıma diyagramları"],
+    "en": ["Transmitter power, antenna gain, cable/connector/VSWR losses and receiver sensitivity", "Free-space path loss, Fresnel zone and radio horizon", "Block, level, range and Fresnel diagrams", "Antenna reference and radiation patterns"],
+    "ar": ["قدرة المرسل وكسب الهوائي وفقد الكابلات والموصلات ونسبة VSWR وحساسية المستقبل", "فقد المسار في الفضاء الحر ومنطقة فرينل والأفق الراديوي", "مخططات الكتل والمستويات والمدى ومنطقة فرينل", "مرجع للهوائيات ومخططات الإشعاع"]
+   }
+  },
+  "pixhawk-log-analiz": {
+   "kategori": "havacilik", "renk": "#1d4ed8", "sira": 11,
+   "ad": {"tr": "Pixhawk Log Analiz", "en": "Pixhawk Log Analyzer", "ar": "محلل سجلات Pixhawk"},
+   "kisa": {"tr": "Pixhawk / ArduPilot .BIN ve .tlog uçuş kayıtlarını analiz eder; kaza, sorunlu ya da normal uçuş kararını kanıtlarıyla verir.",
+            "en": "Analyses Pixhawk / ArduPilot .BIN and .tlog flight logs and classifies each flight as crash, abnormal or nominal, with evidence.",
+            "ar": "يحلل سجلات الطيران ‎.BIN‎ و‎.tlog‎ من Pixhawk / ArduPilot ويصنّف الرحلة إلى حادث أو غير طبيعية أو طبيعية مع الأدلة."},
+   "ozellik": {
+    "tr": ["Kök neden motoru: GPS, EKF, batarya, radyo, stall, titreşim, pusula, motor/ESC/pervane", "0–100 sağlık puanı, uçuş aşamaları ve parametre denetimi", "Antetli DOCX / PDF rapor ve grafikler", "Çevrim içi ve çevrim dışı yapay zekâ desteği"],
+    "en": ["Root-cause engine: GPS, EKF, battery, radio, stall, vibration, compass, motor/ESC/propeller", "0–100 health score, flight phases and parameter audit", "Letter-headed DOCX / PDF report with charts", "Online and offline AI assistance"],
+    "ar": ["محرك تحديد السبب الجذري: GPS وEKF والبطارية والراديو والانهيار الإيروديناميكي والاهتزاز والبوصلة والمحرك/ESC/المروحة", "مؤشر سلامة من 0 إلى 100 ومراحل الطيران وتدقيق المعاملات", "تقرير DOCX / PDF بترويسة رسمية مع الرسوم البيانية", "دعم بالذكاء الاصطناعي متصل وغير متصل"]
+   }
+  },
+  "baski-hesabi": {
+   "kategori": "uc-boyut", "renk": "#c2410c", "sira": 20,
+   "ad": {"tr": "Baskı Hesabı", "en": "Print Cost Calculator", "ar": "حاسبة تكلفة الطباعة"},
+   "kisa": {"tr": "3B yazıcı parçalarının maliyetini ve kârını hesaplar; baskı ve satış kayıtlarını tutar.",
+            "en": "Calculates the cost and profit of 3D-printed parts and keeps print and sales records.",
+            "ar": "يحسب تكلفة القطع المطبوعة ثلاثياً وأرباحها ويحفظ سجلات الطباعة والمبيعات."},
+   "ozellik": {
+    "tr": ["Filament, elektrik, işçilik, makine aşınması ve fire payı", "Sonuç dolar, Türk lirası ve Suriye lirası olarak", "Yazıcı kartları: parça, saat, ciro ve kâr"],
+    "en": ["Filament, electricity, labour, machine wear and failure allowance", "Results in US dollars, Turkish lira and Syrian pound", "Printer cards: parts, hours, revenue and profit"],
+    "ar": ["الخيوط والكهرباء والعمالة واهتلاك الآلة ونسبة الهدر", "النتائج بالدولار الأمريكي والليرة التركية والليرة السورية", "بطاقات الطابعات: القطع والساعات والإيرادات والأرباح"]
+   }
+  },
+  "3d-maliyet-arsiv": {
+   "kategori": "uc-boyut", "renk": "#9a3412", "sira": 21,
+   "ad": {"tr": "3D Maliyet ve Arşiv", "en": "3D Cost & Archive", "ar": "تكاليف وأرشيف ثلاثي الأبعاد"},
+   "kisa": {"tr": "3B baskı işleri için maliyet ve kâr hesabı, görselli parça arşivi, filament stoku ve yazıcı bakımı.",
+            "en": "Cost and profit for 3D-printing jobs, an illustrated parts archive, filament stock and printer maintenance.",
+            "ar": "حساب التكلفة والربح لأعمال الطباعة ثلاثية الأبعاد، وأرشيف مصوّر للقطع، ومخزون الخيوط وصيانة الطابعات."},
+   "ozellik": {
+    "tr": ["Dilimleyiciden al: Orca, Bambu, Cura ekran görüntüsü, G-code veya 3MF", "Filament gramı makaradan otomatik düşer", "Müşteriler, giderler ve raporlar"],
+    "en": ["Import from the slicer: Orca, Bambu, Cura screenshot, G-code or 3MF", "Filament weight is deducted from the spool automatically", "Customers, expenses and reports"],
+    "ar": ["الاستيراد من برنامج التقطيع: لقطة شاشة Orca أو Bambu أو Cura، أو G-code أو 3MF", "خصم وزن الخيط من البكرة تلقائياً", "العملاء والمصروفات والتقارير"]
+   }
+  },
+  "aile-ajandasi": {
+   "kategori": "kisisel", "renk": "#db2777", "sira": 30,
+   "ad": {"tr": "Ajandam", "en": "Ajandam (Family Planner)", "ar": "أجندتي (أجندة العائلة)"},
+   "kisa": {"tr": "Aile ajandası: etkinlikler, hatırlatmalar ve notlar; bilgisayar ile telefonda birlikte.",
+            "en": "Family planner: events, reminders and notes on both computer and phone.",
+            "ar": "أجندة العائلة: المواعيد والتذكيرات والملاحظات على الحاسوب والهاتف معاً."},
+   "ozellik": {
+    "tr": ["Etkinlik ve hatırlatmalar", "Hiçbir kayıt silinmez ya da üzerine yazılmaz; çakışmalar yedeklenir", "Bulut ve aynı Wi‑Fi ağında eşitleme"],
+    "en": ["Events and reminders", "No record is ever deleted or overwritten; conflicts are backed up", "Cloud and same-Wi‑Fi sync"],
+    "ar": ["المواعيد والتذكيرات", "لا يُحذف أي سجل ولا يُكتب فوقه؛ ويُحتفظ بنسخة عند التعارض", "مزامنة سحابية وعبر شبكة Wi‑Fi نفسها"]
+   }
+  },
+  "kitaplik": {
+   "kategori": "kisisel", "renk": "#7c2d12", "sira": 31,
+   "ad": {"tr": "Kitaplık", "en": "Library", "ar": "المكتبة"},
+   "kisa": {"tr": "Kişisel kitaplığınızı kaydedin, düzenleyin ve bilgisayar ile telefon arasında eşitleyin.",
+            "en": "Catalogue and organise your personal library and keep it in sync between computer and phone.",
+            "ar": "فهرس مكتبتك الشخصية ونظّمها وزامنها بين الحاسوب والهاتف."},
+   "ozellik": {
+    "tr": ["Kitap kayıtları ve arşiv", "Windows ve Android", "Bulut ve aynı Wi‑Fi ağında internetsiz eşitleme"],
+    "en": ["Book records and archive", "Windows and Android", "Cloud sync and offline sync over the same Wi‑Fi network"],
+    "ar": ["سجلات الكتب والأرشيف", "ويندوز وأندرويد", "مزامنة سحابية ومزامنة دون إنترنت عبر شبكة Wi‑Fi نفسها"]
+   }
+  },
+  "mahzen": {
+   "kategori": "kisisel", "renk": "#334155", "sira": 32,
+   "ad": {"tr": "Mahzen", "en": "Mahzen Vault", "ar": "مخزن (Mahzen)"},
+   "kisa": {"tr": "Hesaplarınız, şifreleriniz ve dosyalarınız için şifreli kasa.",
+            "en": "An encrypted vault for your accounts, passwords and files.",
+            "ar": "خزنة مشفّرة لحساباتك وكلمات المرور والملفات."},
+   "ozellik": {
+    "tr": ["Şifreli saklama", "Kendi Firebase projenizle ve aynı Wi‑Fi ağında şifreli eşitleme", "Windows ve Android"],
+    "en": ["Encrypted storage", "Encrypted sync through your own Firebase project and over the same Wi‑Fi network", "Windows and Android"],
+    "ar": ["تخزين مشفّر", "مزامنة مشفّرة عبر مشروع Firebase الخاص بك وعبر شبكة Wi‑Fi نفسها", "ويندوز وأندرويد"]
+   }
+  },
+  "organizer": {
+   "kategori": "kisisel", "renk": "#0f766e", "sira": 33,
+   "ad": {"tr": "Organizer (Düzenli Evim)", "en": "Organizer (Tidy Home)", "ar": "المنظِّم (منزلي المرتب)"},
+   "kisa": {"tr": "Ev eşyaları arşivi: neyin nerede olduğunu kaydeder, kolayca bulmanızı sağlar.",
+            "en": "Household inventory: records where everything is kept so it can be found quickly.",
+            "ar": "أرشيف الأغراض المنزلية: يسجّل مكان كل غرض ليسهل العثور عليه."},
+   "ozellik": {
+    "tr": ["Eşya, oda ve kutu kayıtları", "Windows ve Android", "Bulut ve aynı Wi‑Fi ağında eşitleme"],
+    "en": ["Items, rooms and boxes", "Windows and Android", "Cloud and same-Wi‑Fi sync"],
+    "ar": ["الأغراض والغرف والصناديق", "ويندوز وأندرويد", "مزامنة سحابية وعبر شبكة Wi‑Fi نفسها"]
+   }
+  },
+  "kalori-hesaplayici": {
+   "kategori": "kisisel", "renk": "#65a30d", "sira": 34,
+   "ad": {"tr": "Kalori Hesaplayıcı", "en": "Calorie Calculator", "ar": "حاسبة السعرات الحرارية"},
+   "kisa": {"tr": "Yemek fotoğrafından kalori analizi, barkod okuma ve günlük toplam takibi.",
+            "en": "Calorie analysis from meal photos, barcode scanning and daily totals.",
+            "ar": "تحليل السعرات من صور الوجبات، وقراءة الباركود، ومتابعة المجموع اليومي."},
+   "ozellik": {
+    "tr": ["Çevrim içi yapay zekâ analizi; internet yokken cihaz üzerinde analiz", "Barkod okuma (Open Food Facts)", "Ajanda ve günlük toplam"],
+    "en": ["Online AI analysis; on-device analysis when offline", "Barcode scanning (Open Food Facts)", "Diary and daily totals"],
+    "ar": ["تحليل بالذكاء الاصطناعي عبر الإنترنت، وتحليل على الجهاز دون اتصال", "قراءة الباركود (Open Food Facts)", "مفكرة ومجموع يومي"]
+   }
+  },
+  "DesktopDuzenSabitleyici": {
+   "kategori": "arac", "renk": "#4338ca", "sira": 40,
+   "ad": {"tr": "Masaüstü Düzen Sabitleyici", "en": "Desktop Layout Keeper", "ar": "مثبّت ترتيب سطح المكتب"},
+   "kisa": {"tr": "Ekran, çözünürlük ya da ölçek değiştiğinde masaüstü simgelerinin yerini korur.",
+            "en": "Keeps desktop icons in place when the display, resolution or scaling changes.",
+            "ar": "يحافظ على مواضع أيقونات سطح المكتب عند تغيير الشاشة أو الدقة أو نسبة التكبير."},
+   "ozellik": {
+    "tr": ["Düzeni kendiliğinden kaydeder ve birkaç saniyede geri getirir", "Oransal mod: düzen yeni ekrana orantılı taşınır", "Ekran başına ayrı profil"],
+    "en": ["Saves the layout automatically and restores it within seconds", "Proportional mode: the layout scales to the new screen", "Separate profile per display"],
+    "ar": ["يحفظ الترتيب تلقائياً ويستعيده خلال ثوانٍ", "الوضع النسبي: يُنقل الترتيب بالتناسب إلى الشاشة الجديدة", "ملف تعريف مستقل لكل شاشة"]
+   }
+  },
+  "tv-bakim": {
+   "kategori": "arac", "renk": "#0891b2", "sira": 41,
+   "ad": {"tr": "TV Bakım", "en": "TV Care", "ar": "صيانة التلفاز"},
+   "kisa": {"tr": "Android TV ve TV kutuları için bakım: güvenli temizlik, uygulamalar ve ağ testi.",
+            "en": "Maintenance for Android TV and TV boxes: safe clean-up, apps and network test.",
+            "ar": "صيانة أجهزة Android TV وصناديق التلفاز: تنظيف آمن والتطبيقات واختبار الشبكة."},
+   "ozellik": {
+    "tr": ["Gereksiz dosyalar önce gösterilir, onayla geri alınabilir çöp kutusuna taşınır", "Uygulamalar ve kapladıkları yer", "Ağ ve hız testi", "Kumanda ile tam kullanım"],
+    "en": ["Unneeded files are listed first and moved to a recoverable recycle bin on approval", "Installed apps and their storage", "Network and speed test", "Fully usable with the remote control"],
+    "ar": ["تُعرض الملفات غير الضرورية أولاً وتُنقل بعد الموافقة إلى سلة محذوفات قابلة للاسترجاع", "التطبيقات المثبتة والمساحة التي تشغلها", "اختبار الشبكة والسرعة", "استخدام كامل بجهاز التحكم عن بُعد"]
+   }
+  }
+ }
+}

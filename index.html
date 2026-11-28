@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="tr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Program İndirme Merkezi</title>
+<meta name="description" content="Windows ve Android programlarının en güncel kurulum dosyaları · Latest installers for Windows and Android · أحدث ملفات التثبيت">
+<meta name="theme-color" content="#0b5cad">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<meta property="og:title" content="Program İndirme Merkezi">
+<meta property="og:description" content="Windows ve Android programlarının en güncel kurulum dosyaları">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script>
+  (function () { // tema ilk boyamadan önce
+    try { var t = localStorage.getItem('tema'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+<a class="skip" href="#programlar">↓</a>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="#" aria-label="home">
+      <img src="logo.svg" alt="" width="36" height="36">
+      <span data-t="baslik">Program İndirme Merkezi</span>
+    </a>
+    <nav class="menu" aria-label="menu">
+      <a href="#programlar" data-t="menuProgramlar">Programlar</a>
+      <a href="#rehber" data-t="menuRehber">Kurulum rehberi</a>
+      <a href="#sss" data-t="menuSss">SSS</a>
+      <a href="#iletisim" data-t="menuIletisim">İletişim</a>
+    </nav>
+    <div class="tools">
+      <div class="lang" role="group" aria-label="Language">
+        <button data-lang="tr">TR</button><button data-lang="en">EN</button><button data-lang="ar">ع</button>
+      </div>
+      <button class="icon-btn" id="tema" aria-label="theme" title="">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 3a9 9 0 1 0 0 18V3z"/><circle cx="12" cy="12" r="8.2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <h1 data-t="baslik">Program İndirme Merkezi</h1>
+      <p class="lead" data-t="alt"></p>
+      <div class="stats" id="stats"></div>
+      <div class="filters">
+        <label class="search">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input id="ara" type="search" autocomplete="off" data-tp="ara">
+        </label>
+        <div class="chips" id="platform" role="tablist">
+          <button data-p="" class="on" data-t="tumu">Tümü</button>
+          <button data-p="desktop"><span class="os win"></span><span data-t="windows">Windows</span></button>
+          <button data-p="apk"><span class="os and"></span><span data-t="android">Android</span></button>
+        </div>
+      </div>
+      <div class="chips cats" id="kategori"></div>
+    </div>
+  </section>
+
+  <section id="programlar" class="wrap">
+    <div class="grid" id="grid" aria-live="polite"></div>
+    <p class="empty" id="bos" hidden data-t="sonuc0"></p>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <h2 data-t="ortakBaslik"></h2>
+      <div class="common" id="ortak"></div>
+    </div>
+  </section>
+
+  <section id="rehber" class="wrap">
+    <h2 data-t="rehberBaslik"></h2>
+    <div class="guide">
+      <article class="panel">
+        <h3><span class="os win big"></span><span data-t="rehberWin"></span></h3>
+        <ol id="winAdim"></ol>
+        <div class="note warn" id="smartscreen">
+          <h4 data-t="smartBaslik"></h4>
+          <p data-t="smartMetin"></p>
+          <div class="ss-demo" aria-hidden="true">
+            <div class="ss-win">
+              <div class="ss-title">Windows protected your PC</div>
+              <div class="ss-body">Microsoft Defender SmartScreen prevented an unrecognised app from starting…<br><u class="ss-hl">More info</u></div>
+              <div class="ss-foot"><span class="ss-btn ss-hl">Run anyway</span><span class="ss-btn">Don’t run</span></div>
+            </div>
+          </div>
+          <ol id="smartAdim"></ol>
+        </div>
+      </article>
+      <article class="panel">
+        <h3><span class="os and big"></span><span data-t="rehberApk"></span></h3>
+        <ol id="apkAdim"></ol>
+        <div class="note">
+          <h4 data-t="dogrulaBaslik"></h4>
+          <p data-t="dogrulaMetin"></p>
+          <pre class="code" dir="ltr"><code>Get-FileHash .\Dosya-Setup.exe -Algorithm SHA256</code></pre>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="sss" class="wrap">
+    <h2 data-t="sssBaslik"></h2>
+    <div class="faq" id="faq"></div>
+  </section>
+
+  <section id="iletisim" class="band">
+    <div class="wrap contact">
+      <div>
+        <h2 data-t="iletisimBaslik"></h2>
+        <p data-t="iletisimAlt"></p>
+      </div>
+      <form id="form" class="panel" novalidate>
+        <div class="row2">
+          <label><span data-t="fTur"></span><select id="fTur"></select></label>
+          <label><span data-t="fProgram"></span><select id="fProgram"></select></label>
+        </div>
+        <label><span data-t="fMesaj"></span><textarea id="fMesaj" rows="5" maxlength="5000" required></textarea></label>
+        <label><span data-t="fIletisim"></span><input id="fIletisim" type="email" maxlength="160" dir="ltr"></label>
+        <input type="text" id="fBal" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">
+        <div class="form-foot">
+          <button class="btn primary" id="fGonder" type="submit" data-t="fGonder"></button>
+          <span id="fDurum" role="status"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <span><img src="logo.svg" alt="" width="20" height="20"> <span data-t="baslik"></span></span>
+    <span data-t="altBilgi"></span>
+    <span id="sonYenileme"></span>
+    <a href="https://github.com/departures-mil" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</footer>
+
+<dialog id="detay" aria-labelledby="dBaslik"></dialog>
+
+<script src="metinler.js"></script>
+<script src="qrcode.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
